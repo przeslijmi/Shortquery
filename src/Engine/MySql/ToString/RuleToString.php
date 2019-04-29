@@ -46,44 +46,51 @@ class RuleToString
     public function toString() : string
     {
 
-        $left = $this->rule->getLeft();
+        $left  = $this->rule->getLeft();
         $right = $this->rule->getRight();
 
-        $leftIs = get_class($left);
+        $leftIs  = get_class($left);
         $rightIs = get_class($right);
+
         $compMethodIs = $this->rule->getComp()->getMethod();
 
         switch ($leftIs) {
-        case 'Przeslijmi\Shortquery\Items\Field':
-            $left = (new FieldToString($left))->toString();
+            case 'Przeslijmi\Shortquery\Items\Field':
+                $left = ( new FieldToString($left) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Val':
-            $left = (new ValToString($left))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Val':
+                $left = ( new ValToString($left) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Vals':
-            $left = (new ValsToString($left))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Vals':
+                $left = ( new ValsToString($left) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Func':
-            $left = (new FuncToString($left))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Func':
+                $left = ( new FuncToString($left) )->toString();
             break;
         }
 
         switch ($rightIs) {
-        case 'Przeslijmi\Shortquery\Items\Field':
-            $right = (new FieldToString($right))->toString();
+            case 'Przeslijmi\Shortquery\Items\Field':
+                $right = ( new FieldToString($right) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Val':
-            $right = (new ValToString($right))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Val':
+                $right = ( new ValToString($right) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Vals':
-            $right = (new ValsToString($right))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Vals':
+                $right = ( new ValsToString($right) )->toString();
             break;
-        case 'Przeslijmi\Shortquery\Items\Func':
-            $right = (new FuncToString($right))->toString();
+
+            case 'Przeslijmi\Shortquery\Items\Func':
+                $right = ( new FuncToString($right) )->toString();
             break;
         }
 
-        $comp = (new CompToString($this->rule->getComp()))->toString();
+        $comp = ( new CompToString($this->rule->getComp()) )->toString();
 
         return $left . $comp . $right;
     }

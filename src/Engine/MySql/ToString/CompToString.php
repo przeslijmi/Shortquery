@@ -46,20 +46,22 @@ class CompToString
     public function toString() : string
     {
 
-        // this can be silenced by
+        // This can be silenced by.
         if ($this->comp->getSilent() === true) {
             return '';
         }
 
         switch ($this->comp->getMethod()) {
-        case 'eq':
-            $result = '=';
+            case 'eq':
+                $result = '=';
             break;
-        case 'neq':
-            $result = '!=';
+
+            case 'neq':
+                $result = '!=';
             break;
-        case 'leq':
-            $result = '<=';
+
+            case 'leq':
+                $result = '<=';
             break;
         }
 

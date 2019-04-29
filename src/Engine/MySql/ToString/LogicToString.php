@@ -50,11 +50,12 @@ class LogicToString
     public function toString() : string
     {
 
-        $conjunction = ( is_a($this->logicItem, 'Przeslijmi\Shortquery\Items\LogicOr') === true ? 'OR' : 'AND' );
-        $results = [];
+        $isALogicOr  = ( is_a($this->logicItem, 'Przeslijmi\Shortquery\Items\LogicOr') === true );
+        $conjunction = ( ( $isALogicOr === true ) ? 'OR' : 'AND' );
+        $results     = [];
 
         foreach ($this->logicItem->getRules() as $rule) {
-            $results[] = (new RuleToString($rule))->toString();
+            $results[] = ( new RuleToString($rule) )->toString();
         }
 
         if (count($results) === 0) {

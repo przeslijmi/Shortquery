@@ -14,8 +14,6 @@ use Przeslijmi\Shortquery\Data\Relation;
 
 /**
  * Child class of Collection containing model related information.
- *
- * @since v1.0
  */
 class Model
 {
@@ -84,8 +82,9 @@ class Model
     /**
      * Getter for name.
      *
-     * @return string
      * @since  v1.0
+     * @throws PropertyIsEmptyException On name.
+     * @return string
      */
     public function getName() : string
     {
@@ -102,8 +101,8 @@ class Model
      *
      * @param string $name Collection name.
      *
-     * @return void
      * @since  v1.0
+     * @return void
      */
     public function setName(string $name) : void
     {
@@ -114,8 +113,9 @@ class Model
     /**
      * Getter for engine name.
      *
-     * @return string
      * @since  v1.0
+     * @throws PropertyIsEmptyException On engine.
+     * @return string
      */
     public function getEngine() : string
     {
@@ -132,8 +132,8 @@ class Model
      *
      * @param string $engine Engine name.
      *
-     * @return void
      * @since  v1.0
+     * @return void
      */
     public function setEngine(string $engine) : void
     {
@@ -144,8 +144,9 @@ class Model
     /**
      * Getter for instance class name.
      *
-     * @return string
      * @since  v1.0
+     * @throws PropertyIsEmptyException On instanceName.
+     * @return string
      */
     public function getInstanceName() : string
     {
@@ -162,8 +163,10 @@ class Model
      *
      * @param string $instanceName Instance class name.
      *
-     * @return void
      * @since  v1.0
+     * @throws ClassDonoexException On collectionInstanceClass.
+     * @throws MethodFopException On settingInstanceName.
+     * @return void
      */
     public function setInstanceName(string $instanceName) : void
     {
@@ -182,6 +185,7 @@ class Model
     /**
      * Return list of fields in model.
      *
+     * @since  v1.0
      * @return array Field[].
      */
     public function getFields() : array
@@ -193,6 +197,10 @@ class Model
     /**
      * Return Field by given name.
      *
+     * @param string $name Name of field.
+     *
+     * @since  v1.0
+     * @throws KeyDonoexException On fieldDoesNotExists.
      * @return Field.
      */
     public function getFieldByName(string $name) : Field
@@ -230,9 +238,12 @@ class Model
 
             $fieldNameExploded = explode('_', $fieldName);
 
-            array_walk($fieldNameExploded, function(&$value, $key) {
-                $value = ucfirst($value);
-            });
+            array_walk(
+                $fieldNameExploded,
+                function (&$value) {
+                    $value = ucfirst($value);
+                }
+            );
 
             $gettersNames[] = 'get' . implode('', $fieldNameExploded);
         }
@@ -243,6 +254,7 @@ class Model
     /**
      * Return list of setter methods of each field.
      *
+     * @since  v1.0
      * @return array string[].
      */
     public function getFieldsSettersNames() : array
@@ -254,9 +266,12 @@ class Model
 
             $fieldNameExploded = explode('_', $fieldName);
 
-            array_walk($fieldNameExploded, function(&$value, $key) {
-                $value = ucfirst($value);
-            });
+            array_walk(
+                $fieldNameExploded,
+                function (&$value) {
+                    $value = ucfirst($value);
+                }
+            );
 
             $gettersNames[] = 'set' . implode('', $propNameExploded);
         }
@@ -269,8 +284,9 @@ class Model
      *
      * @param Field $field Field object.
      *
-     * @return void
      * @since  v1.0
+     * @throws KeyAlrexException On fieldWithThisNameAlreadyExists.
+     * @return void
      */
     public function addField(Field $field) : void
     {
@@ -285,6 +301,7 @@ class Model
     /**
      * Return list of relations in model.
      *
+     * @since  v1.0
      * @return array Relation[].
      */
     public function getRelations() : array
@@ -296,6 +313,10 @@ class Model
     /**
      * Return Relation by given name.
      *
+     * @param string $name Name of relation.
+     *
+     * @since  v1.0
+     * @throws KeyDonoexException On relationDoesNotExists.
      * @return Relation.
      */
     public function getRelationByName(string $name) : Relation
@@ -311,6 +332,7 @@ class Model
     /**
      * Return list of fields names.
      *
+     * @since  v1.0
      * @return array string[].
      */
     public function getRelationsNames() : array
@@ -320,12 +342,13 @@ class Model
     }
 
     /**
-     * Adds field for the model.
+     * Adds relation for the model.
      *
-     * @param Field $field Field object.
+     * @param Relation $relation Relation object.
      *
-     * @return void
      * @since  v1.0
+     * @throws KeyAlrexException On relationWithThisNameAlreadyExists.
+     * @return void
      */
     public function addRelation(Relation $relation) : void
     {

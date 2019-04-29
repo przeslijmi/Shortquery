@@ -2,6 +2,9 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
+/**
+ * Converts function MIN to string.
+ */
 class FuncMinToString extends FuncToStringParent
 {
 
@@ -16,7 +19,7 @@ class FuncMinToString extends FuncToStringParent
 
         $this->throwIfItemsCountNotEquals(1);
 
-        $result = ' MIN(';
+        $result  = ' MIN(';
         $result .= $this->itemToString($this->func->getItem(0));
         $result .= ') ';
 

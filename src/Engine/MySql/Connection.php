@@ -23,55 +23,71 @@ class Connection
     /**
      * Gets (and creates if needed) connection.
      *
-     * @param int $id (opt., 0) Id of instance of connection.
+     * @param integer $id Opt., 0. Id of instance of connection.
      *
+     * @since  v1.0
      * @throws ClassFopException When connection is not established.
      * @return MySqli
-     * @since  v1.0
      */
-    public static function get(int $id=0) : MySQLi
+    public static function get(int $id = 0) : MySQLi
     {
 
-        // no instance with given id - create new one
+        // No instance with given id - create new one.
         if (isset($connections[$id]) === false) {
             try {
-                $connections[$id] = self::startConnection('localhost', 'user', 'user1234!', 'stolem', '3306');
+                $connections[$id] = self::startConnection(
+                    'localhost',
+                    'user',
+                    'user1234!',
+                    'stolem',
+                    '3306'
+                );
             } catch (MethodFopException $e) {
                 throw new ClassFopException('mysqliConnectionNotEstablished', $e);
             }
         }
 
-        // return instance of given id
+        // Return instance of given id.
         return $connections[$id];
     }
 
     /**
      * Starts new connection if it is needed.
      *
-     * @param string $host     Host of DB.
-     * @param string $user     User name.
-     * @param string $password Password (open text!).
-     * @param string $database Name of database.
-     * @param int    $port     (opt., 3306) Port for database.
+     * @param string  $host     Host of DB.
+     * @param string  $user     User name.
+     * @param string  $password Password (open text!).
+     * @param string  $database Name of database.
+     * @param integer $port     Opt., 3306. Port for database.
      *
+     * @since  v1.0
      * @throws MethodFopException When connection is not established.
      * @return MySqli
-     * @since  v1.0
+     *
+     * @phpcs:disable Generic.PHP.NoSilencedErrors
+     * @phpcs:disable Squiz.NamingConventions.ValidVariableName
+     * @phpcs:disable PEAR.NamingConventions.ValidVariableName
+     * @phpcs:disable Zend.NamingConventions.ValidVariableName
      */
-    private static function startConnection(string $host, string $user, string $password, string $database, int $port=3306) : MySqli
-    {
+    private static function startConnection(
+        string $host,
+        string $user,
+        string $password,
+        string $database,
+        int $port = 3306
+    ) : MySqli {
 
-        // try to connect
+        // Try to connect.
         $connection = @new MySQLi($host, $user, $password, $database, $port);
 
-        // if there was an error - throw exception
+        // If there was an error - throw exception.
         if (empty($connection->connect_error) === false) {
             throw (new MethodFopException('mysqliConnectionError'))
                 ->addInfo('errorNo', $connection->connect_errno)
                 ->addInfo('error', trim($connection->connect_error))
                 ->addInfo('host', $host)
                 ->addInfo('user', $user)
-                ->addInfo('usingPassword', [ 'NO', 'YES' ][(bool) $password])
+                ->addInfo('usingPassword', [ 'NO', 'YES' ][ (bool) $password])
                 ->addInfo('database', $database)
                 ->addInfo('port', $port);
         }

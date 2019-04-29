@@ -35,15 +35,21 @@ class LogicsToString
      *
      * @param LogicItem[] $logics Collection of LogicItem elements to be converted to string.
      *
-     * @since v1.0
+     * @since  v1.0
+     * @throws ParamWrotypeException On mysqlEngineConvLogicsToString.
      */
-    public function __construct($logics)
+    public function __construct(array $logics)
     {
 
         try {
             TypeHinting::isArrayOf($logics, 'Przeslijmi\Shortquery\Items\LogicItem');
         } catch (TypeHintingFailException $e) {
-            throw new ParamWrotypeException('mysqlEngineConvLogicsToString', 'Przeslijmi\Shortquery\Items\LogicItem[]', $e->getIsInFact(), $e);
+            throw new ParamWrotypeException(
+                'mysqlEngineConvLogicsToString',
+                'Przeslijmi\Shortquery\Items\LogicItem[]',
+                $e->getIsInFact(),
+                $e
+            );
         }
 
         $this->logics = $logics;
@@ -58,12 +64,12 @@ class LogicsToString
     public function toString() : string
     {
 
-        // lvd
+        // Lvd.
         $results = [];
 
-        // add every logic
+        // Add every logic.
         foreach ($this->logics as $logicItem) {
-            $results[] = (new LogicToString($logicItem))->toString();
+            $results[] = ( new LogicToString($logicItem) )->toString();
         }
 
         return implode(' AND ', $results);

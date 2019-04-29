@@ -2,9 +2,17 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
+/**
+ * Converts function BETWEEN to string.
+ */
 class FuncBetweenToString extends FuncToStringParent
 {
 
+    /**
+     * Func possible only for given comparison methods.
+     *
+     * @var string[]
+     */
     protected $onlyForCompMethods = [ 'eq', 'neq' ];
 
     /**
@@ -22,13 +30,13 @@ class FuncBetweenToString extends FuncToStringParent
         $this->throwIfItemsCountNotEquals(2);
         $this->throwIfCompMethodIsInappropriate();
 
-        if ($this->func->isRuleAParent()) {
+        if ($this->func->isRuleAParent() === true) {
             if ($this->func->getRuleParent()->getComp()->getMethod() === 'neq') {
                 $negation = ' NOT';
             }
         }
 
-        $result = $negation . ' BETWEEN ';
+        $result  = $negation . ' BETWEEN ';
         $result .= $this->itemToString($this->func->getItem(0));
         $result .= ' AND ';
         $result .= $this->itemToString($this->func->getItem(1));

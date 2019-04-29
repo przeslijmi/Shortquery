@@ -64,6 +64,8 @@ class FuncToString
      * Converts to string.
      *
      * @since  v1.0
+     * @throws ParamOtosetException On functionName when given function name is not present.
+     * @throws MethodFopException When sth went wrong on converting Func toString.
      * @return string
      */
     public function toString() : string
@@ -72,15 +74,19 @@ class FuncToString
         try {
 
             if (isset(self::SERVED_FUNCS[$this->func->getName()]) === false) {
-                throw new ParamOtosetException('functionName', self::SERVED_FUNCS, $this->func->getName());
+                throw new ParamOtosetException(
+                    'functionName',
+                    self::SERVED_FUNCS,
+                    $this->func->getName()
+                );
             }
 
             $childClassName = self::SERVED_FUNCS[$this->func->getName()];
-            $child = new $childClassName($this->func);
-            $result = $child->toString();
+            $child          = new $childClassName($this->func);
+            $result         = $child->toString();
 
         } catch (Sexception $e) {
-            throw (new MethodFopException('toString', $e))
+            throw ( new MethodFopException('toString', $e) )
                 ->addInfo('funcName', $this->func->getName());
         }
 

@@ -14,7 +14,7 @@ abstract class ContentItem extends AnyItem
     /**
      * Holds parent Rule object.
      *
-     * @var Rule
+     * @var   Rule
      * @since v1.0
      */
     private $ruleParent;
@@ -22,7 +22,7 @@ abstract class ContentItem extends AnyItem
     /**
      * Holds parent Func object.
      *
-     * @var Func
+     * @var   Func
      * @since v1.0
      */
     private $funcParent;
@@ -30,9 +30,10 @@ abstract class ContentItem extends AnyItem
     /**
      * Setter for parent Rule.
      *
-     * @param Rule $ruleParent
+     * @param Rule $ruleParent Set given Rule as a parent of this object.
+     *
+     * @since  v1.0
      * @return void
-     * @since v1.0
      */
     public function setRuleParent(Rule $ruleParent) : void
     {
@@ -43,8 +44,8 @@ abstract class ContentItem extends AnyItem
     /**
      * Getter for parent Rule.
      *
+     * @since  v1.0
      * @return Rule
-     * @since v1.0
      */
     public function getRuleParent() : Rule
     {
@@ -55,9 +56,10 @@ abstract class ContentItem extends AnyItem
     /**
      * Setter for parent Func.
      *
-     * @param Func $funcParent
+     * @param Func $funcParent Set given Func as a parent of this object.
+     *
+     * @since  v1.0
      * @return void
-     * @since v1.0
      */
     public function setFuncParent(Func $funcParent) : void
     {
@@ -68,8 +70,8 @@ abstract class ContentItem extends AnyItem
     /**
      * Getter for parent Func.
      *
+     * @since  v1.0
      * @return Func
-     * @since v1.0
      */
     public function getFuncParent() : Func
     {
@@ -77,9 +79,17 @@ abstract class ContentItem extends AnyItem
         return $this->funcParent;
     }
 
+    /**
+     * Returns true if a parent of this object is a Rule object
+     *
+     * @since  v1.0
+     * @return boolean
+     *
+     * @phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
+     */
     public function isRuleAParent() : bool
     {
 
-        return (is_null($this->ruleParent) !== true);
+        return ( is_null($this->ruleParent) !== true );
     }
 }

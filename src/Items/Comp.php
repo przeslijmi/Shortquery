@@ -21,7 +21,7 @@ class Comp extends AnyItem
     /**
      * Method name (eg. eq, neq).
      *
-     * @var String
+     * @var   string
      * @since v1.0
      */
     private $method;
@@ -29,10 +29,10 @@ class Comp extends AnyItem
     /**
      * Parent Rule object.
      *
-     * @var Rule
+     * @var   Rule
      * @since v1.0
      */
-    private $ruleParent; // Rule
+    private $ruleParent;
 
     /**
      * Trigger to make comparison method silent. If set to true comparison will be empty string.
@@ -42,7 +42,7 @@ class Comp extends AnyItem
      * $this->func->getRuleParent()->getComp()->setSilent();
      * ```
      *
-     * @var boolean
+     * @var   boolean
      * @since v1.0
      */
     private $silent = false;
@@ -51,14 +51,15 @@ class Comp extends AnyItem
      * Constructor.
      *
      * @param string $method Method of comparison (eg. eq, noq, gt, etc.).
-     * @since v1.0
-     * @throws ParamOtosetException
+     *
+     * @since  v1.0
+     * @throws ParamOtosetException When given comp. method does not exists.
      */
     public function __construct(string $method)
     {
 
-        // check
-        if (!in_array($method, Shoq::COMPARISON_METHODS)) {
+        // Check.
+        if (in_array($method, Shoq::COMPARISON_METHODS) === false) {
             throw new ParamOtosetException('compareMethod', Shoq::COMPARISON_METHODS, $method);
         }
 
@@ -68,7 +69,7 @@ class Comp extends AnyItem
     /**
      * Getter for method name.
      *
-     * @since v1.0
+     * @since  v1.0
      * @return string
      */
     public function getMethod() : string
@@ -80,8 +81,9 @@ class Comp extends AnyItem
     /**
      * Setter for parent Rule object.
      *
-     * @param Rule $ruleParent [description]
-     * @since v1.0
+     * @param Rule $ruleParent Set given Rule as a parent of this object.
+     *
+     * @since  v1.0
      * @return void
      */
     public function setRuleParent(Rule $ruleParent) : void
@@ -93,8 +95,8 @@ class Comp extends AnyItem
     /**
      * Getter for parent Rule.
      *
+     * @since  v1.0
      * @return Rule
-     * @since v1.0
      */
     public function getRuleParent() : Rule
     {
@@ -105,8 +107,9 @@ class Comp extends AnyItem
     /**
      * Setter for silent comparison mode (make string empty).
      *
-     * @param bool $silent (opt., true)
-     * @since v1.0
+     * @param boolean $silent Opt., true.
+     *
+     * @since  v1.0
      * @return void
      */
     public function setSilent(bool $silent = true) : void
@@ -118,8 +121,8 @@ class Comp extends AnyItem
     /**
      * Getter for silent.
      *
-     * @return bool
-     * @since v1.0
+     * @since  v1.0
+     * @return boolean
      */
     public function getSilent() : bool
     {

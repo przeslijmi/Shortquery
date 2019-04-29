@@ -2,13 +2,16 @@
 
 namespace Przeslijmi\Shortquery\Items;
 
+/**
+ * Field item - table name and field name.
+ */
 class Field extends ContentItem
 {
 
     /**
      * Table name for the field.
      *
-     * @var string
+     * @var   string
      * @since v1.0
      */
     private $table = '';
@@ -16,7 +19,7 @@ class Field extends ContentItem
     /**
      * Field name.
      *
-     * @var string
+     * @var   string
      * @since v1.0
      */
     private $field = '';
@@ -25,14 +28,15 @@ class Field extends ContentItem
      * Constructor.
      *
      * @param string $tableAndField Can have both (table & field) or only field.
+     *
+     * @since  v1.0
      * @return self
-     * @since v1.0
      */
     public function __construct(string $tableAndField)
     {
 
-        // keep table and field name organized
-        if (strpos($tableAndField, '.')) {
+        // Keep table and field name organized.
+        if (strpos($tableAndField, '.') === true) {
             list($table, $field) = explode('.', $tableAndField);
         } else {
             $table = '';
@@ -46,8 +50,8 @@ class Field extends ContentItem
     /**
      * Getter for table name.
      *
+     * @since  v1.0
      * @return string
-     * @since v1.0
      */
     public function getTable() : string
     {
@@ -58,8 +62,8 @@ class Field extends ContentItem
     /**
      * Getter for field name.
      *
+     * @since  v1.0
      * @return string
-     * @since v1.0
      */
     public function getField() : string
     {

@@ -2,9 +2,17 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
+/**
+ * Converts function IN to string.
+ */
 class FuncInToString extends FuncToStringParent
 {
 
+    /**
+     * Func possible only for given comparison methods.
+     *
+     * @var string[]
+     */
     protected $onlyForCompMethods = [ 'eq', 'neq' ];
 
     /**
@@ -22,7 +30,7 @@ class FuncInToString extends FuncToStringParent
         $this->throwIfItemsCountLessThan(1);
         $this->throwIfCompMethodIsInappropriate();
 
-        if ($this->func->isRuleAParent()) {
+        if ($this->func->isRuleAParent() === true) {
             if ($this->func->getRuleParent()->getComp()->getMethod() === 'neq') {
                 $negation = ' NOT';
             }

@@ -9,18 +9,35 @@ use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Sivalidator\TypeHinting;
 
+/**
+ * Creates model objects from array with values.
+ */
 class InstancesFactory
 {
 
+    /**
+     * Creates model objects from array with values.
+     *
+     * @param object|string $classOrClassName Model class or model class name.
+     * @param array         $props            Array with properties of object.
+     *
+     * @since  v1.0
+     * @throws ClassDonoexException On creatingInstanceForShortquery.
+     * @throws ParamWrosynException On className.
+     * @throws ParamWrotypeException On props.
+     * @throws MethodFopException On constructorOfInstancesFailed.
+     * @throws MethodFopException On creatingInstanceFromArrayFailed.
+     * @return object Model object.
+     */
     public static function fromArray($classOrClassName, array $props) : object
     {
 
         $className = null;
-        $instance = null;
+        $instance  = null;
 
         if (is_string($classOrClassName) === true) {
             $className = $classOrClassName;
-        } else if (is_object($classOrClassName) === true) {
+        } elseif (is_object($classOrClassName) === true) {
             $instance = $classOrClassName;
         } else {
             die('sdadfgseawf345w3qrfestbr');
@@ -30,49 +47,62 @@ class InstancesFactory
 
             if (is_null($className) === false) {
 
-                // chk arg 1
+                // Chk arg 1.
                 try {
-                    if (!class_exists($className)) {
+                    if (class_exists($className) === false) {
                         throw new ClassDonoexException('creatingInstanceForShortquery', $className);
                     }
                 } catch (ClassDonoexException $e) {
                     throw new ParamWrosynException('className', $className, $e);
                 }
 
-                // chk arg 2
+                // Chk arg 2.
                 try {
                     TypeHinting::isArrayOfStrings($props, true);
                 } catch (TypeHintingFailException $e) {
                     throw new ParamWrotypeException('props', 'string[]', $e->getIsInFact(), $e);
                 }
 
-                // create instance
+                // Create instance.
                 try {
                     $instance = new $className();
                 } catch (Sexception $e) {
                     throw (new MethodFopException('constructorOfInstancesFailed', $e))->addInfo('class', $className);
                 }
-            }
+            }//end if
 
             $instance = self::fromArrayDo($instance, $props);
 
         } catch (\Exception $e) {
             throw (new MethodFopException('creatingInstanceFromArrayFailed', $e))->addInfo('class', $className);
-        }
+        }//end try
 
         return $instance;
     }
 
+    /**
+     * Helper method doing actual convertion from array to objects.
+     *
+     * @param object $instance Empty object of model.
+     * @param array  $props    Properties.
+     *
+     * @since  v1.0
+     * @throws MethodFopException On settingValueForInstanceFailed.
+     * @return object Model object.
+     */
     private static function fromArrayDo(object $instance, array $props) : object
     {
 
-        // fill up instance
+        // Fill up instance.
         foreach ($props as $propName => $propValue) {
 
             $propNameExploded = explode('_', $propName);
-            array_walk($propNameExploded, function(&$value, $key) {
-                $value = ucfirst($value);
-            });
+            array_walk(
+                $propNameExploded,
+                function (&$value) {
+                    $value = ucfirst($value);
+                }
+            );
             $setterName = 'set' . implode('', $propNameExploded);
 
             try {
