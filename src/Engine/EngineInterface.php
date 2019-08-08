@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine;
 
@@ -8,10 +8,4 @@ namespace Przeslijmi\Shortquery\Engine;
 interface EngineInterface
 {
 
-    /**
-     * Calls engine to get/select/read data.
-     *
-     * @return array Array of Instances (ef. Car[]) with records.
-     */
-    public function read() : array;
 }

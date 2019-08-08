@@ -1,7 +1,8 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
+use Przeslijmi\Shortquery\Items\Aggregation;
 use Przeslijmi\Shortquery\Items\Comp;
 use Przeslijmi\Shortquery\Items\Field;
 use Przeslijmi\Shortquery\Items\Func;
@@ -17,13 +18,36 @@ use Przeslijmi\Shortquery\Items\Vals;
  * \\ ...
  * $collection = new SomeKindOfCollection();
  * $collection
- *     ->addRuleEq('id', 3)                   // normal behaviour - first is Field, second is Val
- *     ->addRuleEq('id', Sifc::field('name')) // changed behaviour (id has to be equal to name) - second is also Field
+ *     ->getLogics()->addRuleEq('id', 3)                   // normal behaviour - first is Field, second is Val
+ *     ->getLogics()->addRuleEq('id', Sifc::field('name')) // changed behaviour (id has to be equal to name)
+ *                                                         // second is also Field
  *     ;
  * ```
  */
 class ItemsFactory
 {
+
+    /**
+     * Creates Aggregation object.
+     *
+     * @return Aggregation
+     */
+    public static function aggreggation() : Aggregation
+    {
+
+        return Aggregation::factory(...func_get_args());
+    }
+
+    /**
+     * Creates Aggregation object (alias to `::aggregation()`).
+     *
+     * @return Aggregation
+     */
+    public static function aggr() : Aggregation
+    {
+
+        return Aggregation::factory(...func_get_args());
+    }
 
     /**
      * Creates Comp object.
@@ -33,7 +57,7 @@ class ItemsFactory
     public static function comp() : Comp
     {
 
-        return Comp::make(...func_get_args());
+        return Comp::factory(...func_get_args());
     }
 
     /**
@@ -44,7 +68,7 @@ class ItemsFactory
     public static function field() : Field
     {
 
-        return new Field(...func_get_args());
+        return Field::factory(...func_get_args());
     }
 
     /**
@@ -55,7 +79,7 @@ class ItemsFactory
     public static function func() : Func
     {
 
-        return Func::make(...func_get_args());
+        return Func::factory(...func_get_args());
     }
 
     /**
@@ -66,7 +90,7 @@ class ItemsFactory
     public static function val() : Val
     {
 
-        return Val::make(...func_get_args());
+        return Val::factory(...func_get_args());
     }
 
     /**
@@ -77,6 +101,6 @@ class ItemsFactory
     public static function vals() : Val
     {
 
-        return Vals::make(...func_get_args());
+        return Vals::factory(...func_get_args());
     }
 }

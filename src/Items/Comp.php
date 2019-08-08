@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
@@ -12,7 +12,7 @@ use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
  * ## Usage example
  * ```
  * // comparison is the middle `eq` element meaning `eguals`.
- * $model->addRule('id', 'eq', 3);
+ * $model->getLogics()->addRule('id', 'eq', 3);
  * ```
  */
 class Comp extends AnyItem
@@ -58,12 +58,7 @@ class Comp extends AnyItem
     public function __construct(string $method)
     {
 
-        // Check.
-        if (in_array($method, Shoq::COMPARISON_METHODS) === false) {
-            throw new ParamOtosetException('compareMethod', Shoq::COMPARISON_METHODS, $method);
-        }
-
-        $this->method = $method;
+        $this->setMethod($method);
     }
 
     /**
@@ -76,6 +71,25 @@ class Comp extends AnyItem
     {
 
         return $this->method;
+    }
+
+    /**
+     * setter for method name.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function setMethod(string $method) : self
+    {
+
+        // Check.
+        if (in_array($method, Shoq::COMPARISON_METHODS) === false) {
+            throw new ParamOtosetException('compareMethod', Shoq::COMPARISON_METHODS, $method);
+        }
+
+        $this->method = $method;
+
+        return $this;
     }
 
     /**

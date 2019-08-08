@@ -1,42 +1,18 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\MySql\Queries;
 
+use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine\MySql;
+use Przeslijmi\Shortquery\Engine\MySql\Query;
 
 /**
  * Tool for creating INSERT query (including its string representation).
  */
-class InsertQuery
+class InsertQuery extends Query
 {
 
-    /**
-     * Link to Engine object.
-     *
-     * @var Engine.
-     */
-    private $engine;
-
-    /**
-     * Link to Collection object.
-     *
-     * @var Collection
-     */
-    private $collection;
-
-    /**
-     * Constructor.
-     *
-     * @param MySql $engine Engine.
-     *
-     * @since v1.0
-     */
-    public function __construct(MySql $engine)
-    {
-
-        $this->engine     = $engine;
-        $this->collection = $engine->getCollection();
-    }
+    private $addedPk;
 
     /**
      * Converts INSERT query into string.
@@ -47,40 +23,83 @@ class InsertQuery
     public function toString()
     {
 
-        $setsToAdd = [];
+        // Lvd.
+        $recordsToAdd = [];
+        $columnsToAdd = [];
+        $fields       = $this->getModel()->getFields();
 
-        $fieldsGettersNames = $this->collection->getModel()->getFieldsGettersNames();
+        // Go with each records.
+        foreach ($this->getInstances() as $instance) {
 
-        foreach ($this->collection->getObjects() as $object) {
+            foreach ($fields as $field) {
+                $columnsToAdd[] = $field->getName();
+            }
 
+            break;
+        }
+
+        // Go with each records.
+        foreach ($this->getInstances() as $instance) {
+
+            // Lvd.
             $fieldsToAdd = [];
 
-            foreach ($fieldsGettersNames as $getterName) {
+            // Work on each field.
+            foreach ($fields as $field) {
 
-                $value = $object->$getterName();
+                // Lvd.
+                $getterName = $field->getGetterName();
 
-                if (is_null($value) === true) {
-                    $fieldsToAdd[] = 'NULL';
-                } elseif (is_string($value) === true) {
-                    $fieldsToAdd[] = "'" . addslashes($value) . "'";
-                } elseif (is_bool($value) === true) {
-                    $fieldsToAdd[] = (int) $value;
-                } elseif (is_scalar($value) === true) {
-                    $fieldsToAdd[] = str_replace(',', '.', $value);
+                if ($field->isPrimaryKey() === true && $instance->hasPrimaryKey() === false) {
+                    $fieldsToAdd[] = $this->valueify(null);
                 } else {
-                    // @todo make throw instead of this
-                    die('jdfgoijaf3498afjw9qjg54');
+                    $fieldsToAdd[] = $this->valueify($instance->$getterName());
                 }
             }
 
-            $setsToAdd[] = '(' . implode(', ', $fieldsToAdd) . ')';
+            // Save record.
+            $recordsToAdd[] = '(' . implode(', ', $fieldsToAdd) . ')';
         }//end foreach
 
+        // Create query.
         $query  = 'INSERT INTO ';
-        $query .= $this->collection->getModel()->getName();
+        $query .= '`' . $this->getModel()->getName() . '`';
+        $query .= ' (`' . implode('`, `', $columnsToAdd) . '`)';
         $query .= ' VALUES ';
-        $query .= implode(', ', $setsToAdd) . ';';
+        $query .= implode(', ', $recordsToAdd) . ';';
 
         return $query;
+    }
+
+    public function call()
+    {
+
+        $this->engineCallQuery();
+
+        foreach ($this->getInstances() as $instance) {
+            $instance->defineIsAdded(true);
+        }
+    }
+
+    public function fire()
+    {
+
+        $this->engineFireQuery();
+
+        foreach ($this->getInstances() as $instance) {
+            $instance->defineIsAdded(true);
+        }
+    }
+
+    protected function setAddedPk(int $addedPk)
+    {
+
+        $this->addedPk = $addedPk;
+    }
+
+    public function getAddedPk(int $forRecord = 0) : int
+    {
+
+        return ( $this->addedPk - $forRecord );
     }
 }

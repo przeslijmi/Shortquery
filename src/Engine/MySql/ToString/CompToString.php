@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
@@ -62,6 +62,14 @@ class CompToString
 
             case 'leq':
                 $result = '<=';
+            break;
+
+            case 'is':
+                $result = ' IS ';
+            break;
+
+            case 'nis':
+                $result = ' IS NOT ';
             break;
         }
 

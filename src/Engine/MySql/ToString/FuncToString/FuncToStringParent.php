@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
@@ -6,6 +6,8 @@ use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\FieldToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\IntValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\NullValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValToString;
 use Przeslijmi\Shortquery\Items\ContentItem;
@@ -77,8 +79,8 @@ class FuncToStringParent
 
         if ($this->func->countItems() < $minCount) {
             throw (new MethodFopException('convertingFuncToString'))
-                ->addInfo('itemsNeededAtLeas', $minCount)
-                ->addInfo('itemsGiven', $this->func->countItems());
+                ->addInfo('itemsNeededAtLeast', (string) $minCount)
+                ->addInfo('itemsGiven', (string) $this->func->countItems());
         }
     }
 
@@ -136,6 +138,14 @@ class FuncToStringParent
                 $result = ( new ValToString($item) )->toString();
             break;
 
+            case 'Przeslijmi\Shortquery\Items\IntVal':
+                $result = ( new IntValToString($item) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\NullVal':
+                $result = ( new NullValToString($item) )->toString();
+            break;
+
             case 'Przeslijmi\Shortquery\Items\Vals':
                 $result = ( new ValsToString($item) )->toString();
             break;
@@ -147,6 +157,14 @@ class FuncToStringParent
             case 'Przeslijmi\Shortquery\Items\Field':
                 $result = ( new FieldToString($item) )->toString();
             break;
+
+            default:
+                $result = null;
+            break;
+        }
+
+        if ($result === null) {
+            die('sdfgsaregfaw435e');
         }
 
         return $result;

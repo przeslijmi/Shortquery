@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql;
 
@@ -40,7 +40,7 @@ class Connection
                     'user',
                     'user1234!',
                     'stolem',
-                    '3306'
+                    3306
                 );
             } catch (MethodFopException $e) {
                 throw new ClassFopException('mysqliConnectionNotEstablished', $e);
@@ -74,7 +74,7 @@ class Connection
         string $user,
         string $password,
         string $database,
-        int $port = 3306
+        int $port = 330
     ) : MySqli {
 
         // Try to connect.
@@ -83,13 +83,13 @@ class Connection
         // If there was an error - throw exception.
         if (empty($connection->connect_error) === false) {
             throw (new MethodFopException('mysqliConnectionError'))
-                ->addInfo('errorNo', $connection->connect_errno)
+                ->addInfo('errorNo', (string) $connection->connect_errno)
                 ->addInfo('error', trim($connection->connect_error))
                 ->addInfo('host', $host)
                 ->addInfo('user', $user)
                 ->addInfo('usingPassword', [ 'NO', 'YES' ][ (bool) $password])
                 ->addInfo('database', $database)
-                ->addInfo('port', $port);
+                ->addInfo('port', (string) $port);
         }
 
         return $connection;

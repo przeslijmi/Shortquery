@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery;
 
@@ -40,6 +40,7 @@ abstract class Engine
     {
 
         $this->collection = $collection;
+        $this->addLogics(...$collection->getLogics()->get());
     }
 
     /**
@@ -62,7 +63,7 @@ abstract class Engine
      * @since  v1.0
      * @return void
      */
-    public function addLogics(LogicItem ...$newLogics) : void
+    private function addLogics(LogicItem ...$newLogics) : void
     {
 
         $this->logics = array_merge($this->logics, $newLogics);

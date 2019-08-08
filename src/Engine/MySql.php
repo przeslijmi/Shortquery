@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine;
 
@@ -8,13 +8,12 @@ use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Engine;
 use Przeslijmi\Shortquery\Engine\EngineInterface;
 use Przeslijmi\Shortquery\Engine\Mysql\Connection;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\InsertQuery;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery;
+use Przeslijmi\Silogger\Log;
 
 /**
  * Engine creating queries for MySql language.
  */
-class MySql extends Engine implements EngineInterface
+abstract class MySql extends Engine implements EngineInterface
 {
 
     /**
@@ -23,14 +22,14 @@ class MySql extends Engine implements EngineInterface
      * @since  v1.0
      * @return void
      */
-    public function create() : void
+    /*public function create() : void
     {
 
         // Call to create query final syntax..
         $queryObject = new InsertQuery($this);
 
-        $this->fireQuery($queryObject->toString());
-    }
+        $this->fire($queryObject->toString());
+    }*/
 
     /**
      * Method for reading new records in database.
@@ -38,18 +37,18 @@ class MySql extends Engine implements EngineInterface
      * @since  v1.0
      * @return array
      */
-    public function read() : array
+    /*public function read() : array
     {
 
-        // Call to create query final syntax..
+        // Call to create query final syntax.
         $queryObject = new SelectQuery($this);
 
         // Get results.
-        $result = $this->callQuery($queryObject->toString());
+        $result = $this->call($queryObject->toString());
         $array  = $result->fetch_all(MYSQLI_ASSOC);
 
         return $array;
-    }
+    }*/
 
     /**
      * Method of calling query incl. waiting for response.
@@ -61,14 +60,22 @@ class MySql extends Engine implements EngineInterface
      * @throws MethodFopException On mysqliQueryWrosyn.
      * @return mysqli_result
      */
-    private function callQuery(string $query) : mysqli_result
+    protected function engineCallQuery() : mysqli_result
     {
+
+        // Lvd.
+        $query = $this->toString();
 
         // Check connection.
         try {
             $mysqli = Connection::get();
         } catch (ClassFopException $e) {
             throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
+        }
+
+        // Log.
+        if (substr(trim($query), 0, 7) !== 'SELECT ') {
+            Log::notice($query);
         }
 
         // Call query.
@@ -78,7 +85,7 @@ class MySql extends Engine implements EngineInterface
         if ($result === false) {
             throw (new MethodFopException('mysqliQueryWrosyn'))
                 ->addInfo('query', trim($query))
-                ->addInfo('errorNo', $mysqli->errno)
+                ->addInfo('errorNo', (string) $mysqli->errno)
                 ->addInfo('error', $mysqli->error);
         }
 
@@ -94,9 +101,19 @@ class MySql extends Engine implements EngineInterface
      * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
      * @throws MethodFopException On mysqliQueryWrosyn.
      * @return mysqli_result
+     *
+     * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
+     * @phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
      */
-    private function fireQuery(string $query) : bool
+    protected function engineFireQuery() : bool
     {
+
+        // Lvd.
+        $query = $this->toString();
+
+        if (empty($query) === true) {
+            return true;
+        }
 
         // Check connection.
         try {
@@ -105,15 +122,22 @@ class MySql extends Engine implements EngineInterface
             throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
         }
 
+        // Log.
+        Log::notice($query);
+
         // Call query.
-        $result = $mysqli->query($query);
+        $result = $mysqli->multi_query($query);
 
         // Throw when result is false.
         if ($result === false) {
             throw (new MethodFopException('mysqliQueryWrosyn'))
                 ->addInfo('query', trim($query))
-                ->addInfo('errorNo', $mysqli->errno)
+                ->addInfo('errorNo', (string) $mysqli->errno)
                 ->addInfo('error', $mysqli->error);
+        }
+
+        if (method_exists($this, 'setAddedPk') === true) {
+            $this->setAddedPk($mysqli->insert_id);
         }
 
         return true;

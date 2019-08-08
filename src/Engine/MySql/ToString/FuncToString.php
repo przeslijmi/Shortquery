@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
@@ -43,8 +43,11 @@ class FuncToString
 
     const SERVED_FUNCS = [
         'between' => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncBetweenToString',
+        'count'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncCountToString',
         'in'      => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInToString',
+        'inset'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInSetToString',
         'min'     => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncMinToString',
+        'sum'     => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncSumToString',
     ];
 
     /**
@@ -84,6 +87,10 @@ class FuncToString
             $childClassName = self::SERVED_FUNCS[$this->func->getName()];
             $child          = new $childClassName($this->func);
             $result         = $child->toString();
+
+            if ($this->func->getAlias() !== '') {
+                $result .= ' AS `' . $this->func->getAlias() . '`';
+            }
 
         } catch (Sexception $e) {
             throw ( new MethodFopException('toString', $e) )

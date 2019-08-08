@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
@@ -10,7 +10,7 @@ use Przeslijmi\Shortquery\Items\Field;
  * ## Usage example
  * ```
  * $field = new Field('tableName.fieldName');
- * echo (new FieldToString($field))->toString(); // will return `tableName.fieldName`
+ * echo (new FieldToString($field))->toString(); // will return `tableName`.`fieldName`
  * ```
  */
 class FieldToString
@@ -52,7 +52,11 @@ class FieldToString
             $result .= '`' . $this->field->getTable() . '`.';
         }
 
-        $result .= '`' . $this->field->getField() . '`';
+        if ($this->field->getField() === '*') {
+            $result .= '*';
+        } else {
+            $result .= '`' . $this->field->getField() . '`';
+        }
 
         return $result;
     }

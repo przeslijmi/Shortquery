@@ -1,10 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
-use Przeslijmi\Shortquery\Items\LogicItem;
-use Przeslijmi\Sexceptions\Sexception;
 use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
+use Przeslijmi\Sexceptions\Sexception;
+use Przeslijmi\Shortquery\Items\Func;
+use Przeslijmi\Shortquery\Items\IntVal;
+use Przeslijmi\Shortquery\Items\LogicItem;
+use Przeslijmi\Shortquery\Items\NullVal;
+use Przeslijmi\Shortquery\Items\Val;
+use Przeslijmi\Shortquery\Items\TrueVal;
 
 /**
  * Rule item - left item is in relation item (Comp) to right item.
@@ -51,20 +56,30 @@ class Rule extends AnyItem
      * @throws MethodFopException On creationOfCompFailed.
      * @return Rule
      */
-    public static function make($left, $comp, $right = null) : Rule
+    public static function factory($left, $comp = null, $right = null) : Rule
     {
 
+        // In only left is given.
+        if (func_num_args() === 1) {
+            $comp = 'eq';
+            $right = true;
+        }
+
         // By default use `eq` comparison.
-        if (is_null($right) === true) {
+        if (func_num_args() === 2) {
             $right = $comp;
             $comp  = 'eq';
         }
 
         // If $left is not a ContentItem - then create Field ContentItem
         // cause typical comparison is <field> equals <value>.
-        if (is_a($left, 'Przeslijmi\Shortquery\Items\ContentItem') === false || is_scalar($left) === true) {
-            $left = new Field($left);
-        } else {
+        if (is_a($left, 'Przeslijmi\Shortquery\Items\ContentItem') === false) {
+            if (is_string($left) === true) {
+                $left = Field::factory($left);
+            } elseif (is_array($left) === true) {
+                $left = Func::factory(...$left);
+            }
+        // } else {
             // @todo Add throw wrotype (as below) here.
         }
 
@@ -79,8 +94,16 @@ class Rule extends AnyItem
 
         // If $right is not a ContentItem alreaty - then try to create Func<in> or value.
         if (is_a($right, 'Przeslijmi\Shortquery\Items\ContentItem') === false) {
-            if (is_array($right) === true) {
-                $right = Func::make('in', $right);
+            if (is_array($right) && count($right) === 2 && isset($right[1]) && is_array($right[1])) {
+                $right = Func::factory(...$right);
+            } elseif (is_array($right) === true) {
+                $right = Func::factory('in', $right);
+            } elseif (is_int($right) === true) {
+                $right = new IntVal($right);
+            } elseif (is_null($right) === true) {
+                $right = new NullVal();
+            } elseif ($right === true) {
+                $right = new TrueVal();
             } else {
                 $right = new Val($right);
             }
@@ -88,6 +111,18 @@ class Rule extends AnyItem
         }
 
         return new Rule($left, $comp, $right);
+    }
+
+    public static function factoryWrapped($left, $comp = null, $right = null) : LogicItem
+    {
+
+        if (func_num_args() === 1) {
+            return new LogicAnd(self::factory($left));
+        } elseif (func_num_args() === 2) {
+            return new LogicAnd(self::factory($left, $comp));
+        } elseif (func_num_args() === 3) {
+            return new LogicAnd(self::factory($left, $comp, $right));
+        }
     }
 
     /**

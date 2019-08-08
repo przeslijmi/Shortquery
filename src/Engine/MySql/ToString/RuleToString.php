@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
@@ -42,6 +42,8 @@ class RuleToString
      *
      * @since  v1.0
      * @return string
+     *
+     * @phpcs:disable Generic.Metrics.CyclomaticComplexity
      */
     public function toString() : string
     {
@@ -63,12 +65,28 @@ class RuleToString
                 $left = ( new ValToString($left) )->toString();
             break;
 
+            case 'Przeslijmi\Shortquery\Items\IntVal':
+                $left = ( new IntValToString($left) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\NullVal':
+                $left = ( new NullValToString($left) )->toString();
+            break;
+
             case 'Przeslijmi\Shortquery\Items\Vals':
                 $left = ( new ValsToString($left) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Func':
                 $left = ( new FuncToString($left) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\TrueVal':
+                $left = ( new TrueValToString($left) )->toString();
+            break;
+
+            default:
+                $left = null;
             break;
         }
 
@@ -81,6 +99,14 @@ class RuleToString
                 $right = ( new ValToString($right) )->toString();
             break;
 
+            case 'Przeslijmi\Shortquery\Items\IntVal':
+                $right = ( new IntValToString($right) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\NullVal':
+                $right = ( new NullValToString($right) )->toString();
+            break;
+
             case 'Przeslijmi\Shortquery\Items\Vals':
                 $right = ( new ValsToString($right) )->toString();
             break;
@@ -88,6 +114,24 @@ class RuleToString
             case 'Przeslijmi\Shortquery\Items\Func':
                 $right = ( new FuncToString($right) )->toString();
             break;
+
+            case 'Przeslijmi\Shortquery\Items\TrueVal':
+                $right = ( new TrueValToString($right) )->toString();
+            break;
+
+            default:
+                $right = null;
+            break;
+        }
+
+        if ($right === null || $left === null) {
+            die('sfiosjioejfiosr');
+        }
+
+        if ($rightIs === 'Przeslijmi\Shortquery\Items\NullVal' && $compMethodIs === 'eq') {
+            $this->rule->getComp()->setMethod('is');
+        } elseif ($rightIs === 'Przeslijmi\Shortquery\Items\NullVal' && $compMethodIs === 'neq') {
+            $this->rule->getComp()->setMethod('nis');
         }
 
         $comp = ( new CompToString($this->rule->getComp()) )->toString();

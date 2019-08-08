@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery;
 
@@ -24,6 +24,8 @@ class Shoq
         'eq',  // Equal.
         'neq', // Not equal.
         'leq', // Lower or equal.
+        'is',  // IS
+        'nis', // NOT IS
     ];
 
     /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
@@ -14,18 +14,23 @@ abstract class ContentItem extends AnyItem
     /**
      * Holds parent Rule object.
      *
-     * @var   Rule
-     * @since v1.0
+     * @var Rule
      */
     private $ruleParent;
 
     /**
      * Holds parent Func object.
      *
-     * @var   Func
-     * @since v1.0
+     * @var Func
      */
     private $funcParent;
+
+    /**
+     * Holds alias name for this Content Item.
+     *
+     * @var string
+     */
+    private $alias = '';
 
     /**
      * Setter for parent Rule.
@@ -91,5 +96,19 @@ abstract class ContentItem extends AnyItem
     {
 
         return ( is_null($this->ruleParent) !== true );
+    }
+
+    public function setAlias(string $alias) : self
+    {
+
+        $this->alias = $alias;
+
+        return $this;
+    }
+
+    public function getAlias() : string
+    {
+
+        return $this->alias;
     }
 }

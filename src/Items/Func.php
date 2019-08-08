@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
@@ -9,6 +9,8 @@ use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
  * Func item - eg. MAX(), MIN(), etc..
+ *
+ * @todo alias
  */
 class Func extends ContentItem
 {
@@ -37,13 +39,19 @@ class Func extends ContentItem
      * @since  v1.0
      * @return Func
      */
-    public static function make(string $name, array $items) : Func
+    public static function factory(string $name, array $items) : Func
     {
 
         foreach ($items as $i => $item) {
             if (is_a($item, 'Przeslijmi\Shortquery\Items\ContentItem') === false) {
                 if (is_array($item) === true) {
                     $items[$i] = new Vals($item);
+                } elseif (is_integer($item) === true) {
+                    $items[$i] = new IntVal($item);
+                } elseif (is_null($item) === true) {
+                    $items[$i] = new NullVal($item);
+                } elseif (is_string($item) === true && substr($item, 0, 1) === '`' && substr($item, -1) === '`') {
+                    $items[$i] = new Field(trim($item, '`'));
                 } else {
                     $items[$i] = new Val($item);
                 }
@@ -70,6 +78,22 @@ class Func extends ContentItem
         } catch (TypeHintingFailException $e) {
             throw new ParamWrotypeException('items', 'ContentItem[]', $e->getIsInFact());
         }
+
+
+        // Exclude duplicates.
+        /*$foundValues = [];
+
+        foreach ($items as $i => $item) {
+            if (isset($foundValues[$item->getValue()]) === true) {
+                unset($items[$i]);
+            }
+
+            $foundValues[$item->getValue()] = true;
+        }*/
+
+        // $items = array_slice($items, 0, 1);
+        // var_dump($items[0]->getValue());
+        // die;
 
         $this->name  = strtolower($name);
         $this->items = $items;
@@ -127,8 +151,8 @@ class Func extends ContentItem
     public function getItem(int $itemId) : ContentItem
     {
 
-        if (isset($this->items[$itemId]) === true) {
-            throw (new ParamOtosetException('itemId', array_keys($this->items), $itemId))
+        if (isset($this->items[$itemId]) === false) {
+            throw (new ParamOtosetException('itemId', array_keys($this->items), (string) $itemId))
                 ->addInfo('funcName', $this->name);
         }
 

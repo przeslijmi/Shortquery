@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Tools;
 
@@ -8,6 +8,7 @@ use Przeslijmi\Sexceptions\Exceptions\ParamWrosynException;
 use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Sivalidator\TypeHinting;
+use Przeslijmi\Shortquery\Data\Collection;
 
 /**
  * Creates model objects from array with values.

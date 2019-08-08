@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
@@ -42,7 +42,7 @@ class FuncInToString extends FuncToStringParent
             $results[] = $this->itemToString($item);
         }
 
-        $result = $negation . ' IN (' . implode(', ', $results) . ') ';
+        $result = $negation . ' IN (' . implode(', ', $results) . ')';
 
         return $result;
     }

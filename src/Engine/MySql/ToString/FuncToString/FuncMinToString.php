@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
@@ -19,9 +19,9 @@ class FuncMinToString extends FuncToStringParent
 
         $this->throwIfItemsCountNotEquals(1);
 
-        $result  = ' MIN(';
+        $result  = 'MIN(';
         $result .= $this->itemToString($this->func->getItem(0));
-        $result .= ') ';
+        $result .= ')';
 
         return $result;
     }

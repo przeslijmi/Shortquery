@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
@@ -46,7 +46,7 @@ class ValsToString
     public function toString() : string
     {
 
-        $results = [];
+        $results = ['aaa'];
 
         foreach ($this->vals->getValues() as $val) {
             $results[] = '\'' . str_replace('\'', '\\\'', $val) . '\'';

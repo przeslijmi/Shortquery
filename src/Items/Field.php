@@ -1,15 +1,19 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
+use Przeslijmi\Shortquery\Items\ContentItem;
+
 /**
  * Field item - table name and field name.
+ *
+ * @todo alias
  */
 class Field extends ContentItem
 {
 
     /**
-     * Table name for the field.
+     * Table name for this Field.
      *
      * @var   string
      * @since v1.0
@@ -25,6 +29,31 @@ class Field extends ContentItem
     private $field = '';
 
     /**
+     * Factory method.
+     *
+     * @param string $fieldOrTableWithField Field name or field and table name separated with dot.
+     *
+     * @since  v1.0
+     * @return Field
+     */
+    public static function factory(string $fieldOrTableWithField) : Field
+    {
+
+        // Delete gravis.
+        $fieldOrTableWithField = trim($fieldOrTableWithField, '`');
+
+        // Keep table and field name organized.
+        if (strpos($fieldOrTableWithField, '.') !== false) {
+            list($table, $field) = explode('.', $fieldOrTableWithField);
+        } else {
+            $table = '';
+            $field = $fieldOrTableWithField;
+        }
+
+        return new self($field, $table);
+    }
+
+    /**
      * Constructor.
      *
      * @param string $tableAndField Can have both (table & field) or only field.
@@ -32,19 +61,27 @@ class Field extends ContentItem
      * @since  v1.0
      * @return self
      */
-    public function __construct(string $tableAndField)
+    public function __construct(string $field, string $table = '')
     {
 
-        // Keep table and field name organized.
-        if (strpos($tableAndField, '.') === true) {
-            list($table, $field) = explode('.', $tableAndField);
-        } else {
-            $table = '';
-            $field = $tableAndField;
-        }
+        $this->setTable($table);
+        $this->setField($field);
+    }
+
+    /**
+     * Setter for table.
+     *
+     * @param string $table Table name for this Field.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function setTable(string $table) : self
+    {
 
         $this->table = $table;
-        $this->field = $field;
+
+        return $this;
     }
 
     /**
@@ -57,6 +94,22 @@ class Field extends ContentItem
     {
 
         return $this->table;
+    }
+
+    /**
+     * Setter for field.
+     *
+     * @param string $field Field name.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function setField(string $field) : self
+    {
+
+        $this->field = $field;
+
+        return $this;
     }
 
     /**

@@ -1,10 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Przeslijmi\Shortquery\Items;
 
 use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Shortquery\Data\Collection;
+use Przeslijmi\Shortquery\Items\LogicAnd;
+use Przeslijmi\Shortquery\Items\Rule;
 use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
@@ -12,6 +14,34 @@ use Przeslijmi\Sivalidator\TypeHinting;
  */
 abstract class LogicItem extends AnyItem
 {
+
+    public static function factory()
+    {
+
+        $args   = func_get_args();
+        $rules  = [];
+        $logics = [];
+
+        // Convert arrays to Rules.
+        foreach ($args as $id => $arg) {
+
+            if (is_array($arg) === true) {
+                $args[$id] = Rule::factory(...$arg);
+            }
+
+            if (is_a($args[$id], 'Przeslijmi\Shortquery\Items\Rule') === true) {
+                $rules[] = $args[$id];
+            } elseif (is_a($args[$id], 'Przeslijmi\Shortquery\Items\LogicItem') === true) {
+                $logics[] = $args[$id];
+            }
+        }
+
+        if (count($rules) > 0) {
+            $logics[] = new LogicAnd(...$rules);
+        }
+
+        return $logics;
+    }
 
     /**
      * Parent Collection object.
