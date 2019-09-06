@@ -4,7 +4,7 @@ namespace Przeslijmi\Shortquery\Data\Collection;
 
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
-use Przeslijmi\Shortquery\Exceptions\Records\CollectionSliceNotPossibleException;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 
 /**
  * Parent for all Collection of Instances (records).
@@ -12,6 +12,16 @@ use Przeslijmi\Shortquery\Exceptions\Records\CollectionSliceNotPossibleException
 abstract class Tools
 {
 
+    /**
+     * Changes content of given Collection to be identical with given raw array.
+     *
+     * *BEWARE!* This might change order of Collection.
+     *
+     * @param array $new How Collection should be visible.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function makeContentAnalogousToArray(array $new) : self
     {
 
@@ -20,27 +30,31 @@ abstract class Tools
 
             try {
 
-                // If one exists in collection already.
+                // If one exists in Collection already.
                 $instance = $this->getOne($id);
 
             } catch (CollectionSliceNotPossibleException $exc) {
 
-                //
+                // Create new Instance and fill with data.
                 $instanceClass = $this->getModel()->getClass('instanceClass');
                 $instance      = new $instanceClass();
 
+                // Put this new, empty instance into this Collection.
                 $this->put($instance);
             }
 
+            // Fill empty or different Instance with new values.
             foreach ($newContent as $fieldName => $value) {
                 $setterName = $this->getModel()->getFieldByName($fieldName)->getSetterName();
                 $instance->$setterName($value);
             }
         }
 
+        // Lvd.
         $countOld = count($this->get());
         $countNew = count($new);
 
+        // Delete if needed.
         if ($countOld > $countNew) {
             for ($i = $countNew; $i < $countOld; ++$i) {
                 $this->getOne($i)->defineIsToBeDeleted(true);
@@ -50,62 +64,101 @@ abstract class Tools
         return $this;
     }
 
+    /**
+     * Changes content of given Collection to be identical with given raw array but both splitted by value of one field.
+     *
+     * *BEWARE!* This might change order of Collection.
+     *
+     * @param Field $field Field to be used to split.
+     * @param array $new   How Collection should be visible.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function makeSplittedContentsAnalogousToArray(
         Field $field,
         array $new
     ) : self {
 
+        // Split Collections.
         $collections = $this->splitByField($field, array_keys($new));
 
-        $parts = array_keys($collections);
+        // Take parts (keys of splitting).
+        $keys = array_keys($collections);
 
-        // Change states of events.
-        foreach ($parts as $part) {
-            $collections[$part]->makeContentAnalogousToArray($new[$part]);
+        // Change states to every key of splitting.
+        foreach ($keys as $key) {
+            $collections[$key]->makeContentAnalogousToArray($new[$key]);
         }
+
+        // Eliminate keys from final array.
         $collections = array_values($collections);
 
+        // Call to recompose.
         $this->recomposeItemsFrom(...$collections);
 
         return $this;
     }
 
+    /**
+     * Splits Collection by given field into smaller Collections.
+     *
+     * @param Field $field         Field to be used to split.
+     * @param array $forcedNewKeys Optional, null. If set those given new keys will be added with empty Collections.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function splitByField(Field $field, ?array $forcedNewKeys = null) : array
     {
 
+        // Lvd.
         $getter = $field->getGetterName();
         $result = [];
 
+        // Add forced new keys if asked.
         if (is_array($forcedNewKeys) === true) {
             foreach ($forcedNewKeys as $newKey) {
                 $result[$newKey] = clone $this;
-                $result[$newKey]->clear();
                 $result[$newKey]->getLogics()->addRule($field->getName(), $newKey);
             }
         }
 
+        // Now scan thru Collection and put instances where them belong.
         foreach ($this->get() as $instance) {
 
-            $splitter = $instance->$getter();
+            // Get splitter value.
+            $splitterValue = $instance->$getter();
 
-            if (isset($result[$splitter]) === false) {
-                $result[$splitter] = clone $this;
-                $result[$splitter]->clear();
-                $result[$splitter]->getLogics()->addRule($field->getName(), $splitter);
+            // If there is no Collection for this splitter value - create one.
+            if (isset($result[$splitterValue]) === false) {
+                $result[$splitterValue] = clone $this;
+                $result[$splitterValue]->getLogics()->addRule($field->getName(), $splitterValue);
             }
 
-            $result[$splitter]->put($instance);
+            // Put instance into Collection for this spitter value.
+            $result[$splitterValue]->put($instance);
         }
 
         return $result;
     }
 
-    public function recomposeItemsFrom()
+    /**
+     * Gather all splitted Collection back to mother (`$this`) Collection.
+     *
+     * @param Collection[] $sollections Splitted collection to gather into `$this`.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function recomposeItemsFrom(Collection ...$collections)
     {
 
+        // Clear this (mother) Collection.
         $this->clear();
 
-        foreach (func_get_args() as $collection) {
+        // Put each Instance from each Collection into mother.
+        foreach ($collections as $collection) {
             foreach ($collection->get() as $instance) {
                 $this->put($instance);
             }

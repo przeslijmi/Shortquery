@@ -3,11 +3,12 @@
 namespace Przeslijmi\Shortquery\Data;
 
 use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Shortquery\Data\FieldEchoingMethods;
 
 /**
  * Field in Model object.
  */
-abstract class Field
+abstract class Field extends FieldEchoingMethods
 {
 
     /**
@@ -63,6 +64,12 @@ abstract class Field
      *
      */
     private $phpTypeOutput;
+    private $phpDocsTypeInput;
+
+    /**
+     *
+     */
+    private $phpDocsTypeOutput;
 
     /**
      * Constructor.
@@ -87,7 +94,7 @@ abstract class Field
      * @since  v1.0
      * @return self
      */
-    public function setName(string $name) : self
+    private function setName(string $name) : self
     {
 
         $this->name = $name;
@@ -147,6 +154,18 @@ abstract class Field
     }
 
     /**
+     * Checks if Field has model.
+     *
+     * @since  v1.0
+     * @return boolean
+     */
+    public function hasModel() : bool
+    {
+
+        return ( $this->model !== null );
+    }
+
+    /**
      * Getter for Model instance in which Field is used.
      *
      * @since  v1.0
@@ -175,11 +194,6 @@ abstract class Field
         // If this is PK - it is also NOT NULL.
         if ($this->isPrimaryKey === true) {
             $this->setNotNull(true);
-        }
-
-        // Check.
-        if (is_null($this->model) === false) {
-            $this->getModel()->validate();
         }
 
         return $this;
@@ -219,7 +233,7 @@ abstract class Field
      * @since  v1.0
      * @return self
      */
-    public function setNotNull(bool $isNotNull) : self
+    private function setNotNull(bool $isNotNull) : self
     {
 
         $this->isNotNull = $isNotNull;
@@ -247,7 +261,7 @@ abstract class Field
      * @since  v1.0
      * @return self
      */
-    public function setType(string $type) : self
+    protected function setType(string $type) : self
     {
 
         $this->type = $type;
@@ -316,6 +330,19 @@ abstract class Field
         return $this;
     }
 
+    public function setPhpDocsType(string $phpDocsTypeInput, ?string $phpDocsTypeOutput = null) : self
+    {
+
+        if (is_null($phpDocsTypeOutput) === true) {
+            $phpDocsTypeOutput = $phpDocsTypeInput;
+        }
+
+        $this->phpDocsTypeInput  = $phpDocsTypeInput;
+        $this->phpDocsTypeOutput = $phpDocsTypeOutput;
+
+        return $this;
+    }
+
     /**
      * Getter for `phpTypeInput`.
      *
@@ -336,6 +363,21 @@ abstract class Field
     }
 
     /**
+     * Getter for `phpDocsTypeOutput`.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getPhpDocsTypeInput() : string
+    {
+
+        $result  = ( ( $this->isNotNull() === false ) ? 'null|' : '' );
+        $result .= $this->phpDocsTypeInput;
+
+        return $result;
+    }
+
+    /**
      * Getter for `phpTypeOutput`.
      *
      * @since  v1.0
@@ -344,12 +386,25 @@ abstract class Field
     public function getPhpTypeOutput() : string
     {
 
-        if (empty($this->phpTypeOutput) === true) {
-            return '';
-        }
-
+        // Create result.
         $result  = ( ( $this->isNotNull() === false ) ? '?' : '' );
-        $result .= $this->phpTypeOutput . ' ';
+        $result .= $this->phpTypeOutput;
+
+        return $result;
+    }
+
+    /**
+     * Getter for `phpDocsTypeOutput`.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getPhpDocsTypeOutput() : string
+    {
+
+        // Create result.
+        $result  = ( ( $this->isNotNull() === false ) ? 'null|' : '' );
+        $result .= $this->phpDocsTypeOutput;
 
         return $result;
     }
@@ -394,46 +449,5 @@ abstract class Field
         );
 
         return 'set' . implode('', $nameExploded);
-    }
-
-    protected function ind(int $repeatments) : string
-    {
-
-        // Lvd.
-        $indent = '    ';
-
-        return str_repeat($indent, $repeatments);
-    }
-
-    protected function ln(int $repeatments, string $lineOfCode, int $newLines = 1) : string
-    {
-
-        return $this->ind($repeatments) . $lineOfCode . str_repeat(PHP_EOL, $newLines);
-    }
-
-    protected function ex($variable) : string
-    {
-
-        return var_export($variable, true);
-    }
-
-    protected function imp(array $array, string $start = '\'', string $end = '\'', string $middle = ', ') : string
-    {
-
-        // Lvd.
-        $separator = $end . $middle . $start;
-
-        // Add enclosers.
-        foreach ($array as $i => $element) {
-            $array[$i] = $start . str_replace($end, '\\' . $end, $element) . $end;
-        }
-
-        return implode($middle, $array);
-    }
-
-    protected function csv(array $array) : string
-    {
-
-        return $this->imp($array, '\'', '\'', ',');
     }
 }

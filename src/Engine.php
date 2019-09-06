@@ -15,6 +15,13 @@ abstract class Engine
 {
 
     /**
+     * Database name that uses this engine (has to be present at PRZESLIJMI_SHORTQUERY_DATABASES).
+     *
+     * @var string
+     */
+    protected $database;
+
+    /**
      * Array of logics.
      *
      * @var LogicItem[]
@@ -58,7 +65,7 @@ abstract class Engine
     /**
      * Adder for LogicItem.
      *
-     * @param LogicItem[] ...$newLogics Array of LogicItems.
+     * @param LogicItem ...$newLogics Array of LogicItems.
      *
      * @since  v1.0
      * @return void

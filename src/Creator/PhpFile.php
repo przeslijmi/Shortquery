@@ -71,12 +71,12 @@ abstract class PhpFile
     /**
      * Saves file to final location.
      *
-     * @param boolean $forced Opt., true. If set to false and file exists - it won't be overwritten.
+     * @param boolean $overwrite If set to true and file exists - it will be overwritten.
      *
      * @since  v1.0
      * @return self
      */
-    public function save(bool $forced = true) : self
+    public function save(bool $overwrite) : self
     {
 
         // Get path.
@@ -84,7 +84,7 @@ abstract class PhpFile
         $path = str_replace('\\', '/', $path);
 
         // Ignore saving when file exists (if needed).
-        if (file_exists($path) === true && $forced === false) {
+        if (file_exists($path) === true && $overwrite === false) {
             return $this;
         }
 
@@ -94,18 +94,6 @@ abstract class PhpFile
         $file->save();
 
         return $this;
-    }
-
-    /**
-     * Saves file to final location only if there is no file present.
-     *
-     * @since  v1.0
-     * @return self
-     */
-    public function saveIfNotExists() : self
-    {
-
-        return $this->save(false);
     }
 
     /**
@@ -174,7 +162,7 @@ abstract class PhpFile
     protected function getFirstLinePhp() : string
     {
 
-        return chr(60) . chr(63) . 'php declare(strict_types=1);' . PHP_EOL;
+        return chr(60) . chr(63) . 'php declare(strict_types=1);' . "\n";
     }
 
     protected function addUse(string $namespace) : self
@@ -196,7 +184,7 @@ abstract class PhpFile
 
         // Fill up.
         foreach ($this->namespaces as $namespace) {
-            $result .= 'use ' . $namespace . ';' . PHP_EOL;
+            $result .= 'use ' . $namespace . ';' . "\n";
         }
 
         echo $result;

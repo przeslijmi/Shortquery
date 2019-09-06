@@ -23,24 +23,28 @@ class Connection
     /**
      * Gets (and creates if needed) connection.
      *
-     * @param integer $id Opt., 0. Id of instance of connection.
+     * @param string  $database Name of database to get configs from (PRZESLIJMI_SHORTQUERY_DATABASES).
+     * @param integer $id       Opt., 0. Id of instance of connection.
      *
      * @since  v1.0
      * @throws ClassFopException When connection is not established.
      * @return MySqli
      */
-    public static function get(int $id = 0) : MySQLi
+    public static function get(string $database, int $id = 0) : MySQLi
     {
 
+        // Lvd.
+        $auth = PRZESLIJMI_SHORTQUERY_DATABASES[$database]['auth'];
+
         // No instance with given id - create new one.
-        if (isset($connections[$id]) === false) {
+        if (isset($connections[$database][$id]) === false) {
             try {
-                $connections[$id] = self::startConnection(
-                    'localhost',
-                    'user',
-                    'user1234!',
-                    'stolem',
-                    3306
+                $connections[$database][$id] = self::startConnection(
+                    $auth['url'],
+                    $auth['user'],
+                    $auth['pass'],
+                    $auth['db'],
+                    $auth['port']
                 );
             } catch (MethodFopException $e) {
                 throw new ClassFopException('mysqliConnectionNotEstablished', $e);
@@ -48,7 +52,7 @@ class Connection
         }
 
         // Return instance of given id.
-        return $connections[$id];
+        return $connections[$database][$id];
     }
 
     /**

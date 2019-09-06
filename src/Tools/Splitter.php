@@ -2,6 +2,9 @@
 
 namespace Przeslijmi\Shortquery\Tools;
 
+/**
+ * Tool used for advanced splitting of string.
+ */
 class Splitter
 {
 
@@ -75,9 +78,6 @@ class Splitter
         $this->incr  = $incr;
         $this->decr  = $decr;
         $this->esc   = $esc;
-
-        // @todo text not empty.
-        // @todo others only one char length.
     }
 
     /**

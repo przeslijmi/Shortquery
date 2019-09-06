@@ -94,7 +94,11 @@ class Rule extends AnyItem
 
         // If $right is not a ContentItem alreaty - then try to create Func<in> or value.
         if (is_a($right, 'Przeslijmi\Shortquery\Items\ContentItem') === false) {
-            if (is_array($right) && count($right) === 2 && isset($right[1]) && is_array($right[1])) {
+            if (is_array($right) === true
+                && count($right) === 2
+                && isset($right[1]) === true
+                && is_array($right[1]) === true
+            ) {
                 $right = Func::factory(...$right);
             } elseif (is_array($right) === true) {
                 $right = Func::factory('in', $right);
@@ -107,12 +111,22 @@ class Rule extends AnyItem
             } else {
                 $right = new Val($right);
             }
-            // @todo Include try catch commands here.
         }
 
         return new Rule($left, $comp, $right);
     }
 
+    /**
+     * Static factory method with many possible input types delivering LogicItem with Rule inside.
+     *
+     * @param scalar|ContentItem      $left  Left item of comparison.
+     * @param scalar|Comp             $comp  Comparison itself.
+     * @param null|scalar|ContentItem $right Right item of comparison.
+     *
+     * @since  v1.0
+     * @throws MethodFopException On creationOfCompFailed.
+     * @return Rule
+     */
     public static function factoryWrapped($left, $comp = null, $right = null) : LogicItem
     {
 

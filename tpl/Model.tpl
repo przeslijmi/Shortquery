@@ -53,19 +53,19 @@ class <?= $this->model->getClass('modelClassName') ?> extends Model
 
         // Define Model.
         $this->setName('<?= $this->model->getName() ?>');
-        $this->setEngine('<?= $this->model->getEngine() ?>');
+        $this->setDatabases(<?= $this->model->getDatabasesAsString() ?>);
         $this->setNamespace('<?= $this->model->getNamespace() ?>');
         $this->setInstanceClassName('<?= $this->model->getInstanceClassName() ?>');
         $this->setCollectionClassName('<?= $this->model->getCollectionClassName() ?>');
-
 <?php if (count($this->model->getFields()) > 0): ?>
+
         // Define Fields of Model.
 <?php foreach ($this->model->getFields() as $field): ?>
         $this->addField(<?= $field->toPhp() ?>);
 <?php endforeach; ?>
 <?php endif; ?>
-
 <?php if (count($this->model->getRelations()) > 0): ?>
+
         // Define Relations of Model.
 <?php foreach ($this->model->getRelations() as $relation): ?>
         $this->addRelation(<?= $relation->toPhp() ?>);

@@ -12,7 +12,7 @@ foreach ($this->model->getRelations() as $relation):
     $this->addUse($relation->getModelTo()->getClass('collectionClass'));
     $this->addUse($relation->getModelTo()->getClass('instanceClass'));
 endforeach;
-$this->addUse('Przeslijmi\\Shortquery\\Exceptions\\Records\\CollectionSliceNotPossibleException');
+$this->addUse('Przeslijmi\\Shortquery\\Exceptions\\Data\\CollectionSliceNotPossibleException');
 $this->showNamespaces();
 ?>
 
@@ -26,7 +26,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Field `<?= $field->getName() ?>`.
      *
-     * @var <?= $field->getPhpTypeOutput() ?>
+     * @var <?= $field->getPhpDocsTypeOutput() ?>
 
      */
     private $<?= $field->getName('camelCase') ?>;
@@ -45,19 +45,22 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(?string $database = null)
     {
 
         // Get model Instance.
         $this->model = <?= $this->model->getClass('modelClassName') ?>::getInstance();
+
+        // Set database if given.
+        $this->database = $database;
     }
 
     /**
      * Returns info if primary key for this record has been given.
      *
-     * @return bool
+     * @return boolean
      */
-    public function hasPrimaryKey()
+    public function hasPrimaryKey() : bool
     {
 
         if ($this-><?= $this->model->getPrimaryKeyField()->getName('camelCase') ?> === null) {
@@ -66,12 +69,31 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         return true;
     }
+
+    /**
+     * Resets primary key into null - like the record is not existing in DB.
+     *
+     * @return self
+     */
+    protected function resetPrimaryKey() : self
+    {
+
+        $this-><?= $this->model->getPrimaryKeyField()->getName('camelCase') ?> = null;
+
+        $noInSet = array_search('<?= $this->model->getPrimaryKeyField()->getName('camelCase') ?>', $this->setFields);
+
+        if (is_int($noInSet)) {
+            unset($this->setFields[$noInSet]);
+        }
+
+        return $this;
+    }
 <?php foreach ($this->model->getFields() as $field): ?>
 
     /**
      * Getter for `<?= $field->getName() ?>` field value.
      *
-     * @return <?= $field->getPhpTypeOutPut() ?>
+     * @return <?= $field->getPhpDocsTypeOutput() ?>
 
      */
     public function get<?= $field->getName('pascalCase') ?>() : <?= $field->getPhpTypeOutput() ?>
@@ -84,7 +106,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Core getter for `<?= $field->getName() ?>` field value.
      *
-     * @return <?= $field->getPhpTypeOutput() ?>
+     * @return <?= $field->getPhpDocsTypeOutput() ?>
 
      */
     public function getCore<?= $field->getName('pascalCase') ?>() : <?= $field->getPhpTypeOutput() ?>
@@ -94,12 +116,12 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 <?= $field->getterToPhp(); ?>
     }
 
-<?= $field->extraMethodsToPhp(); ?>
+<?= $field->extraMethodsToPhp($this->model); ?>
 
     /**
      * Setter for `<?= $field->getName() ?>` field value.
      *
-     * @param <?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?> Value to be set.
+     * @param <?= $field->getPhpDocsTypeInput() ?> $<?= $field->getName('camelCase') ?> Value to be set.
      *
      * @return <?= $this->model->getClass('instanceClassName') ?>
 
@@ -114,7 +136,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Core setter for `<?= $field->getName() ?>` field value.
      *
-     * @param <?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?> Value to be set.
+     * @param <?= $field->getPhpDocsTypeInput() ?> $<?= $field->getName('camelCase') ?> Value to be set.
      *
      * @return <?= $this->model->getClass('instanceClassName') ?>
 
@@ -138,15 +160,15 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
         $this-><?= $field->getName('camelCase') ?> = $<?= $field->getName('camelCase') ?>;
 
         // Note that was set.
-        $this->setFields[] = '<?= $field->getName() ?>';
+        $this->setFields[]     = '<?= $field->getName() ?>';
         $this->changedFields[] = '<?= $field->getName() ?>';
 
         return $this;
     }
 <?php endforeach; ?>
 <?php foreach ($this->model->getRelations() as $relation): ?>
-
 <?php if ($relation->getType() === 'hasOne'): ?>
+
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
@@ -172,7 +194,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
         // Get records with those pks.
         $child = new <?= $relation->getModelTo()->getClass('instanceClassName') ?>(...func_get_args());
 
-        // if we know that we need concrete one - read this one.
+        // If we know that we need this one - read this one.
         if ($this-><?= $relation->getFieldFrom()->getGetterName() ?>() !== null) {
             $child-><?= $relation->getModelTo()->getPrimaryKeyField()->getSetterName() ?>($this-><?= $relation->getFieldFrom()->getGetterName() ?>());
             $child->read();
@@ -204,8 +226,8 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         return $this;
     }
-
 <?php else: ?>
+
     /**
      * Returns child-Collection (zero or more children - for hasMany Relation type) in Relation.
      *
@@ -218,7 +240,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         // Create empty collection if there isn't any added.
         if ($this-><?= $relation->getName() ?> === null) {
-            $this-><?= $relation->getName() ?> = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>;
+            $this-><?= $relation->getName() ?> = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>();
             $this-><?= $relation->getName() ?>->getLogics()->addFromRelation($this->grabModel()->getRelationByName('<?= $relation->getName() ?>'));
         }
 
@@ -240,12 +262,13 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
         $children->getLogics()->addFromRelation($this->grabModel()->getRelationByName('<?= $relation->getName() ?>'));
 <?php endif; ?>
 
-        // if we know that we need concrete one - read this one.
+        // If we know that we need this one - read this one.
         if ($this-><?= $relation->getFieldFrom()->getGetterName() ?>() !== null) {
             $children->getLogics()->addRule(
                 '<?= $relation->getFieldTo()->getName() ?>',
                 $this-><?= $relation->getFieldFrom()->getGetterName() ?>()
             );
+            $children->getLogics()->addFromRelation($this->grabModel()->getRelationByName('<?= $relation->getName() ?>'));
             $children->read();
         }
 

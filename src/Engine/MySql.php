@@ -17,38 +17,11 @@ abstract class MySql extends Engine implements EngineInterface
 {
 
     /**
-     * Method for creating new records in database.
+     * Last insert id object if needed.
      *
-     * @since  v1.0
-     * @return void
+     * @var integer
      */
-    /*public function create() : void
-    {
-
-        // Call to create query final syntax..
-        $queryObject = new InsertQuery($this);
-
-        $this->fire($queryObject->toString());
-    }*/
-
-    /**
-     * Method for reading new records in database.
-     *
-     * @since  v1.0
-     * @return array
-     */
-    /*public function read() : array
-    {
-
-        // Call to create query final syntax.
-        $queryObject = new SelectQuery($this);
-
-        // Get results.
-        $result = $this->call($queryObject->toString());
-        $array  = $result->fetch_all(MYSQLI_ASSOC);
-
-        return $array;
-    }*/
+    protected $lastInsertId;
 
     /**
      * Method of calling query incl. waiting for response.
@@ -58,9 +31,9 @@ abstract class MySql extends Engine implements EngineInterface
      * @since  v1.0
      * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
      * @throws MethodFopException On mysqliQueryWrosyn.
-     * @return mysqli_result
+     * @return boolean|mysqli_result
      */
-    protected function engineCallQuery() : mysqli_result
+    protected function engineCallQuery()
     {
 
         // Lvd.
@@ -68,18 +41,21 @@ abstract class MySql extends Engine implements EngineInterface
 
         // Check connection.
         try {
-            $mysqli = Connection::get();
+            $mysqli = Connection::get($this->database);
         } catch (ClassFopException $e) {
             throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
         }
 
         // Log.
         if (substr(trim($query), 0, 7) !== 'SELECT ') {
-            Log::notice($query);
+            Log::get()->notice($query);
         }
 
         // Call query.
         $result = $mysqli->query($query);
+
+        // Save last insert_id.
+        $this->lastInsertId = (int) $mysqli->insert_id;
 
         // Throw when result is false.
         if ($result === false) {
@@ -117,16 +93,19 @@ abstract class MySql extends Engine implements EngineInterface
 
         // Check connection.
         try {
-            $mysqli = Connection::get();
+            $mysqli = Connection::get($this->database);
         } catch (ClassFopException $e) {
             throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
         }
 
         // Log.
-        Log::notice($query);
+        Log::get()->notice($query);
 
         // Call query.
         $result = $mysqli->multi_query($query);
+
+        // Save last insert_id.
+        $this->lastInsertId = (int) $mysqli->insert_id;
 
         // Throw when result is false.
         if ($result === false) {

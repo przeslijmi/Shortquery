@@ -34,6 +34,7 @@ abstract class Query extends MySql
      * @var Instance[]
      */
     private $instances = [];
+
     /**
      * Constructor.
      *
@@ -41,10 +42,11 @@ abstract class Query extends MySql
      *
      * @since v1.0
      */
-    public function __construct(Model $model)
+    public function __construct(Model $model, string $database)
     {
 
         $this->model = $model;
+        $this->database = $database;
     }
 
     /**

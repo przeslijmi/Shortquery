@@ -3,6 +3,7 @@
 namespace Przeslijmi\Shortquery\Items;
 
 use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
+use Przeslijmi\Sexceptions\Exceptions\TemporaryException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Items\LogicAnd;
@@ -27,12 +28,16 @@ abstract class LogicItem extends AnyItem
 
             if (is_array($arg) === true) {
                 $args[$id] = Rule::factory(...$arg);
+            } else {
+                throw new TemporaryException('You asked for strange logics...');
             }
 
             if (is_a($args[$id], 'Przeslijmi\Shortquery\Items\Rule') === true) {
                 $rules[] = $args[$id];
             } elseif (is_a($args[$id], 'Przeslijmi\Shortquery\Items\LogicItem') === true) {
                 $logics[] = $args[$id];
+            } else {
+                throw new TemporaryException('Creation of rules and logics failed...');
             }
         }
 

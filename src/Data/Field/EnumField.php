@@ -4,6 +4,10 @@ namespace Przeslijmi\Shortquery\Data\Field;
 
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\FieldInterface;
+use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDictDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
 /**
  * Field to use - enum.
@@ -14,14 +18,14 @@ class EnumField extends Field implements FieldInterface
     /**
      * Possible values in the Field.
      *
-     * @var array
+     * @var string[]
      */
     private $values = [];
 
     /**
      * Dictionaries for the Field.
      *
-     * @var array
+     * @var string[][]
      */
     private $dicts = [
         'main' => [],
@@ -30,7 +34,7 @@ class EnumField extends Field implements FieldInterface
     /**
      * Constructor.
      *
-     * @param string $name Name of Field.
+     * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
      *
      * @since v1.0
@@ -45,20 +49,23 @@ class EnumField extends Field implements FieldInterface
         $this->setType('EnumField');
         $this->setEngineType('enum');
         $this->setPhpType('string');
+        $this->setPhpDocsType('string');
     }
 
     /**
      * Setter for `values`.
      *
+     * @param string[] $values Values to use in set field.
+     *
      * @since  v1.0
      * @return self
      */
-    public function setValues() : self
+    public function setValues(string ...$values) : self
     {
 
         // Save.
-        $this->values = func_get_args();
-        $this->setMainDict(...func_get_args());
+        $this->values = $values;
+        $this->setMainDict(...$values);
 
         return $this;
     }
@@ -66,7 +73,8 @@ class EnumField extends Field implements FieldInterface
     /**
      * Getter for `values`.
      *
-     * @return array
+     * @since  v1.0
+     * @return string[]
      */
     public function getValues() : array
     {
@@ -74,53 +82,34 @@ class EnumField extends Field implements FieldInterface
         return $this->values;
     }
 
-    public function getDictValue(string $key, string $dictName = 'main') : string
-    {
-
-        // Lvd.
-        $id = array_search($key, $this->values);
-
-        return $this->dicts[$dictName][$id];
-    }
-
     /**
      * Setter for `mainDict`.
+     *
+     * @param string[] $values Values to use in this dict.
      *
      * @since  v1.0
      * @return self
      */
-    public function setMainDict() : self
+    public function setMainDict(string ...$values) : self
     {
 
         // Save.
-        $this->dicts['main'] = func_get_args();
+        $this->setDict('main', ...$values);
 
         return $this;
     }
 
     /**
-     * Getter for `mainDict`.
+     * Setter for any dict from `dicts`.
      *
-     * @return array
-     */
-    public function getMainDict() : array
-    {
-
-        return $this->dicts['main'];
-    }
-
-    /**
-     * Setter for `mainDict`.
+     * @param string   $dictName Name of the dictionary
+     * @param string[] $values   Values to use in this dict.
      *
      * @since  v1.0
      * @return self
      */
-    public function setDict() : self
+    public function setDict(string $dictName, string ...$values) : self
     {
-
-        // Lvd.
-        $dictName = func_get_arg(0);
-        $values   = array_slice(func_get_args(), 1);
 
         // Save.
         $this->dicts[$dictName] = $values;
@@ -129,20 +118,39 @@ class EnumField extends Field implements FieldInterface
     }
 
     /**
-     * Getter for any dict.
+     * Getter for `mainDict`.
      *
-     * @return array
+     * @since  v1.0
+     * @return string[]
      */
-    public function getDict(string $dictName = 'main') : array
+    public function getMainDict() : array
     {
 
-        return $this->dicts[$dictName];
+        return $this->getDict('main');
     }
 
     /**
      * Getter for any dict.
      *
+     * @since  v1.0
+     * @throws FieldDictDonoexException When dict with given name has not been found.
      * @return array
+     */
+    public function getDict(string $dictName = 'main') : array
+    {
+
+        // Throw if not found.
+        if (isset($this->dicts[$dictName]) === false) {
+            throw new FieldDictDonoexException($dictName, $this);
+        }
+
+        return $this->dicts[$dictName];
+    }
+
+    /**
+     * Getter for all dicts.
+     *
+     * @return string[][]
      */
     public function getDicts() : array
     {
@@ -151,30 +159,63 @@ class EnumField extends Field implements FieldInterface
     }
 
     /**
+     * Getter for given key from given dict.
+     *
+     * @param string $key      Key to look for (on of sent to `->setValues()`).
+     * @param string $dictName Which dictionary.
+     *
+     * @since  v1.0
+     * @throws FieldDictValueDonoexException When there is no given key in given dict.
+     * @return string
+     */
+    public function getDictValue(string $key, string $dictName = 'main') : string
+    {
+
+        // Get dict.
+        $dict = $this->getDict($dictName);
+
+        // Lvd.
+        $id = array_search($key, $this->values);
+
+        // Throw.
+        if (is_int($id) === false) {
+            throw new FieldDictValueDonoexException($dictName, $key, $this);
+        }
+
+        return $dict[$id];
+    }
+
+    /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param null|string $value Value to be checked.
+     * @param null|string $value  Value to be checked.
+     * @param boolean     $throws Optional, true. If set to false `throw` will be off.
      *
      * @since  v1.0
      * @return boolean
      */
-    public function isValueValid(?string $value) : bool
+    public function isValueValid(?string $value, bool $throws = true) : bool
     {
+
+        // Lvd.
+        $result = true;
 
         // If null - it is valid.
         if (is_null($value) === true) {
-            return true;
+            return $result;
         }
 
         // Checks.
         if (in_array($value, $this->values) === false) {
-            $hint  = 'EnumField inproper value `' . $value . '` not from possible values, ';
-            $hint .= 'ie. ' . implode(', ', $this->values) . '.';
-            die($hint);
-
+            $result = false;
         }
 
-        return true;
+        // Throw.
+        if ($result === false && $throws === true) {
+            throw new FieldValueInproperException($value, $this);
+        }
+
+        return $result;
     }
 
     /**
@@ -186,22 +227,29 @@ class EnumField extends Field implements FieldInterface
     public function toPhp() : string
     {
 
-        // Lvd.
-        $php = '';
+        // Result.
+        $php  = $this->ln(0, '', 1);
+        $php .= $this->ln(3, '( new EnumField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(4, '->setValues(' . $this->imp($this->getValues()) . ')');
 
-        $php .= $this->ln(0, '', 1);
-        $php .= $this->ln(3, '(new EnumField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . '))');
-        $php .= $this->ln(4, '->setValues(' . $this->csv($this->getValues()) . ')');
-
+        // Add all dicts.
         foreach ($this->getDicts() as $dictName => $values) {
-            $php .= $this->ln(4, '->setDict(\'' . $dictName . '\', ' . $this->csv($values) . ')');
+            $php .= $this->ln(4, '->setDict(\'' . $dictName . '\', ' . $this->imp($values) . ')');
         }
 
-        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')', 2);
+        // Finish.
+        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')', 1);
+        $php .= $this->ln(2, '', 0);
 
         return $php;
     }
 
+    /**
+     * Prepare PHP commands for getter.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function getterToPhp() : string
     {
 
@@ -209,30 +257,52 @@ class EnumField extends Field implements FieldInterface
         $gdfvA   = [];
         $gdfvA[] = '\'' . $this->getName() . '\'';
         $gdfvA[] = '( func_get_args()[0] ?? \'main\' )';
-        $gdfvA[] = '$this->' . $this->getName('camelCase') . '';
+        $gdfvA[] = $this->cc(true);
 
-        // Lvd.
-        $php  = '';
-        $php .= $this->ln(2, 'if (func_num_args() === 0) {');
-        $php .= $this->ln(3, 'return $this->' . $this->getName('camelCase') . ';');
+        // Result.
+        $php  = $this->ln(2, 'if (func_num_args() === 0) {');
+        $php .= $this->ln(3, 'return ' . $this->cc(true) . ';');
         $php .= $this->ln(2, '}', 2);
         $php .= $this->ln(2, 'return $this->grabDictFieldValue(' . implode(', ', $gdfvA) . ');', 1);
 
         return $php;
     }
 
+    /**
+     * Prepare PHP commands for comparer given value vs saved value.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function compareToPhp() : string
     {
 
-        $php  = '';
-        $php .= $this->ln(0, 'if ($this->' . $this->getName('camelCase') . ' === $' . $this->getName('camelCase') . ') {');
-
-        return $php;
+        return $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc() . ') {');
     }
 
-    public function extraMethodsToPhp() : string
+    /**
+     * Prepare PHP commands for additional, extra methods to put inside generated Field class.
+     *
+     * @param Model $model To use for PHP code.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function extraMethodsToPhp(Model $model) : string
     {
 
         return '';
+    }
+
+    /**
+     * Deliver hint for value correctness for this Field.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getProperValueHint() : string
+    {
+
+        return 'Only one value from defined is proper: ' . implode(', ', $this->values);
     }
 }

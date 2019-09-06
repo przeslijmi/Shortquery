@@ -4,6 +4,10 @@ namespace Przeslijmi\Shortquery\Data\Field;
 
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\FieldInterface;
+use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDefinitionWrosynException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
+use Przeslijmi\Sivalidator\RegEx;
 
 /**
  * Field to use - int.
@@ -21,7 +25,7 @@ class IntField extends Field implements FieldInterface
     /**
      * Constructor.
      *
-     * @param string $name Name of Field.
+     * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
      *
      * @since v1.0
@@ -37,6 +41,7 @@ class IntField extends Field implements FieldInterface
         $this->setType('IntField');
         $this->setEngineType('int');
         $this->setPhpType('int');
+        $this->setPhpDocsType('integer');
     }
 
     /**
@@ -45,6 +50,7 @@ class IntField extends Field implements FieldInterface
      * @param integer $maxLength Maximum length of the value in Field.
      *
      * @since  v1.0
+     * @throws FieldDefinitionWrosynException When max length is below 1 or above 11.
      * @return self
      */
     public function setMaxLength(int $maxLength) : self
@@ -52,12 +58,12 @@ class IntField extends Field implements FieldInterface
 
         // On too low.
         if ($maxLength < 1) {
-            die('siaofj49fjwadwfdsrefer');
+            throw new FieldDefinitionWrosynException('Max lenght can not be lower than 1.', $this);
         }
 
         // On too high.
         if ($maxLength > 11) {
-            die('siaofj49fjwadwerfrefer');
+            throw new FieldDefinitionWrosynException('Max lenght can not be greater than 11.', $this);
         }
 
         // Save.
@@ -69,6 +75,7 @@ class IntField extends Field implements FieldInterface
     /**
      * Getter for `maxLength`.
      *
+     * @since  v1.0
      * @return integer
      */
     public function getMaxLength() : int
@@ -80,25 +87,38 @@ class IntField extends Field implements FieldInterface
     /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param null|int $value Value to be checked.
+     * @param null|int $value  Value to be checked.
+     * @param boolean  $throws Optional, true. If set to false `throw` will be off.
      *
      * @since  v1.0
+     * @throws FieldValueInproperException When Field value is inproper.
      * @return boolean
      */
-    public function isValueValid(?int $value) : bool
+    public function isValueValid(?int $value, bool $throws = true) : bool
     {
+
+        // Lvd.
+        $result = true;
 
         // If null - it is valid.
         if (is_null($value) === true) {
-            return true;
+            return $result;
         }
 
-        // Checks.
-        if (mb_strlen((string) $value) > $this->maxLength) {
-            die('IntField inproper value too long ' . $value . ' (max length ' . $this->maxLength . ', name: ' . $this->getName() . ')');
+        // Checks syntax.
+        $result = RegEx::ifMatches((string) $value, '/^(\-)?([0-9])+$/', false);
+
+        // Checks max length.
+        if ($result === true && mb_strlen(preg_replace('/([^0-9])/', '', $value)) > $this->maxLength) {
+            $result = false;
         }
 
-        return true;
+        // Throw.
+        if ($result === false && $throws === true) {
+            throw new FieldValueInproperException($value, $this);
+        }
+
+        return $result;
     }
 
     /**
@@ -110,38 +130,63 @@ class IntField extends Field implements FieldInterface
     public function toPhp() : string
     {
 
-        // Lvd.
-        $indent = '    ';
-
         // Result.
-        $result  = PHP_EOL;
-        $result .= str_repeat($indent, 3) . '(new IntField(\'' . $this->getName() . '\', ';
-        $result .= var_export($this->isNotNull(), true) . '))' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setMaxLength(' . $this->getMaxLength() . ')' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setPk(' . var_export($this->isPrimaryKey(), true) . ')' . PHP_EOL;
-        $result .= str_repeat($indent, 2);
-
-        return $result;
-    }
-
-    public function getterToPhp() : string
-    {
-
-        return $this->ln(2, 'return $this->' . $this->getName('camelCase') . ';');
-    }
-
-    public function compareToPhp() : string
-    {
-
-        $php  = '';
-        $php .= 'if ($this->' . $this->getName('camelCase') . ' === $' . $this->getName('camelCase') . ') {';
+        $php  = $this->ln(0, '', 1);
+        $php .= $this->ln(3, '( new IntField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(4, '->setMaxLength(' . $this->getMaxLength() . ')');
+        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')');
+        $php .= $this->ln(2, '', 0);
 
         return $php;
     }
 
-    public function extraMethodsToPhp() : string
+    /**
+     * Prepare PHP commands for getter.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getterToPhp() : string
+    {
+
+        return $this->ln(2, 'return ' . $this->cc(true) . ';');
+    }
+
+    /**
+     * Prepare PHP commands for comparer given value vs saved value.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function compareToPhp() : string
+    {
+
+        return $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc() . ') {');
+    }
+
+    /**
+     * Prepare PHP commands for additional, extra methods to put inside generated Field class.
+     *
+     * @param Model $model To use for PHP code.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function extraMethodsToPhp(Model $model) : string
     {
 
         return '';
+    }
+
+    /**
+     * Deliver hint for value correctness for this Field.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getProperValueHint() : string
+    {
+
+        return 'It has to be an integer (positive or negative) number not longer than ' . $this->getMaxLength() . ' chars.';
     }
 }

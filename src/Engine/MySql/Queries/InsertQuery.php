@@ -76,8 +76,16 @@ class InsertQuery extends Query
 
         $this->engineCallQuery();
 
-        foreach ($this->getInstances() as $instance) {
+        // Mark instances added and put primary keys (if possible).
+        foreach ($this->getInstances() as $no => $instance) {
+
+            // Set added.
             $instance->defineIsAdded(true);
+
+            // Check if lastInsertId is present.
+            if (empty($this->lastInsertId) === false) {
+                $instance->definePkValue(( $this->lastInsertId + $no ));
+            }
         }
     }
 
@@ -86,6 +94,7 @@ class InsertQuery extends Query
 
         $this->engineFireQuery();
 
+        // Mark instances added.
         foreach ($this->getInstances() as $instance) {
             $instance->defineIsAdded(true);
         }

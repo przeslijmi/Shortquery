@@ -9,13 +9,4 @@ use <?= $this->model->getClass('namespaceCore') ?>\<?= $this->model->getClass('i
 class <?= $this->model->getClass('instanceClassName') ?> extends <?= $this->model->getClass('instanceCoreClassName') ?>
 
 {
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-
-        parent::__construct();
-    }
 }

@@ -2,12 +2,16 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
+use Przeslijmi\Sexceptions\Sexception;
 use Przeslijmi\Shortquery\Data\Collection\Logics;
 use Przeslijmi\Shortquery\Data\Collection\Tools;
 use Przeslijmi\Shortquery\Data\Model;
-use Przeslijmi\Shortquery\Exceptions\Records\CollectionSliceNotPossibleException;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeCreatedException;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeReadException;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
+use Throwable;
 
 /**
  * Parent for all Collection of Instances (records).
@@ -18,36 +22,57 @@ abstract class Collection extends Tools
     /**
      * Array of Records.
      *
-     * @var Instance[]
+     * @var   Instance[]
+     * @since v1.0
      */
     private $instances = [];
 
     /**
      * Logics Collection for Collection.
      *
-     * @var Logics
+     * @var   Logics
+     * @since v1.0
      */
     public $logics;
 
     /**
-     * Model which is used by this Collection.
+     * Model which is used by this Collection. Defined in *CollectionCore class.
      *
-     * @var Model
+     * @var   Model
+     * @since v1.0
      */
     protected $model;
 
+    /**
+     * Constructor.
+     *
+     * @since v1.0
+     */
     public function __construct()
     {
 
-        // Lvd.
-        $this->getLogics()->add(...LogicItem::factory(...func_get_args()));
+        // Create logics - if it was asked for.
+        try {
+            $this->getLogics()->add(...LogicItem::factory(...func_get_args()));
+        } catch (Throwable $thr) {
+            throw new CollectionCantBeCreatedException(
+                get_class($this),
+                func_get_args(),
+                $thr
+            );
+        }
     }
 
+    /**
+     * Magic method for clone - clean logics and instances.
+     *
+     * @since v1.0
+     */
     public function __clone()
     {
 
         // Reset instance.
-        $this->logics = null;
+        $this->logics    = null;
         $this->instances = [];
     }
 
@@ -83,8 +108,8 @@ abstract class Collection extends Tools
     /**
      * Getter for Instances.
      *
-     * @param null|int $sliceFrom   Optional. If only part of results if needed - slice from (starting from 0).
-     * @param null|int $sliceLength Optional. If only part of results if needed - slice length.
+     * @param null|integer $sliceFrom   Optional. If only part of results if needed - slice from (starting from 0).
+     * @param null|integer $sliceLength Optional. If only part of results if needed - slice length.
      *
      * @since  v1.0
      * @return Instance[]
@@ -110,17 +135,32 @@ abstract class Collection extends Tools
         return $this->instances;
     }
 
+    /**
+     * Returns one Instance starting from given position (negative start from end).
+     *
+     * @param integer $sliceFrom Optional. Which instance has it to be.
+     *
+     * @since  v1.0
+     * @return Instance
+     */
     public function getOne(?int $sliceFrom = 0) : Instance
     {
 
-        $slice = $this->get($sliceFrom, 1);
-
-        return $slice[0];
+        return $this->get($sliceFrom, 1)[0];
     }
 
+    /**
+     * Returns first instance with given value in Primary Key.
+     *
+     * @param string|integer $pkValue Value of primary key.
+     *
+     * @since  v1.0
+     * @return null|Instance
+     */
     public function getByPk($pkValue) : ?Instance
     {
 
+        // Look and return if found.
         foreach ($this->instances as $instance) {
             if ($instance->grabPkValue() === $pkValue) {
                 return $instance;
@@ -130,6 +170,12 @@ abstract class Collection extends Tools
         return null;
     }
 
+    /**
+     * Return array with two arrays with instances, where [0] is for added, [1] is for nonadded.
+     *
+     * @since  v1.0
+     * @return array
+     */
     public function getByAdded() : array
     {
 
@@ -140,17 +186,25 @@ abstract class Collection extends Tools
         // Test.
         foreach ($this->instances as $instance) {
 
+            // This goes to added.
             if ($instance->grabIsAdded() === true) {
                 $added[] = $instance;
                 continue;
             }
 
+            // This goes to nonadded.
             $notAdded[] = $instance;
         }
 
         return [ $added, $notAdded ];
     }
 
+    /**
+     * Return array with Instances that are set to be deleted.
+     *
+     * @since  v1.0
+     * @return Instance[]
+     */
     public function getByToBeDeleted() : array
     {
 
@@ -165,12 +219,6 @@ abstract class Collection extends Tools
         }
 
         return $result;
-    }
-
-    public function length() : int
-    {
-
-        return count($this->instances);
     }
 
     /**
@@ -206,6 +254,15 @@ abstract class Collection extends Tools
         return $result;
     }
 
+    /**
+     * Return array with Instances gruped in subarrays - which key's are desired field values.
+     *
+     * @param string  $fieldOrGetterName Name of the field or getter.
+     * @param boolean $isThisGetter      Optional, false. Set to true if 0nd param is getter already.
+     *
+     * @since  v1.0
+     * @return Instances[]
+     */
     public function getGroupedByField(string $fieldOrGetterName, bool $isThisGetter = false) : array
     {
 
@@ -238,6 +295,18 @@ abstract class Collection extends Tools
     }
 
     /**
+     * Return length of Collection.
+     *
+     * @since  v1.0
+     * @return integer
+     */
+    public function length() : int
+    {
+
+        return count($this->instances);
+    }
+
+    /**
      * Add one Instance to Collection.
      *
      * @param Instance|Instance[] $instance Instance or array of Instances to be put.
@@ -263,20 +332,41 @@ abstract class Collection extends Tools
         return $this;
     }
 
+    /**
+     * Put array record (not Instance) into Collection.
+     *
+     * @param array $record Array record to be put in.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function putRecord(array $record) : self
     {
 
+        // Lvd.
         $instanceClass = $this->getModel()->getClass('instanceClass');
+
+        // Put.
         $this->put(InstancesFactory::fromArray($instanceClass, $record));
 
         return $this;
     }
 
+    /**
+     * Put many array records (not Instances) into Collection.
+     *
+     * @param array $record Array records to be put in.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function putRecords(array $records) : self
     {
 
+        // Lvd.
         $instanceClass = $this->getModel()->getClass('instanceClass');
 
+        // Put for each.
         foreach ($records as $record) {
             $this->put(InstancesFactory::fromArray($instanceClass, $record));
         }
@@ -287,24 +377,38 @@ abstract class Collection extends Tools
     /**
      * Not sure what it does.
      *
-     * @param Collection $newCollection
-     * @param Relation   $relation
+     * @param Collection $children Children fitting to all parents (ie. Instances of `$this`).
+     * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
      *
      * @since  v1.0
      * @return self
      */
-    public function unpack(Collection $newCollection, Relation $relation) : self
+    public function unpack(Collection $children, Relation $relation) : self
     {
 
-        // Lvd.
+        // If this is Relation `hasMany` (ie. every parent can have more than one child).
         if ($relation->getType() === 'hasMany') {
-            return $this->unpackHasMany($newCollection, $relation);
+            return $this->unpackHasMany($children, $relation);
         }
 
-        return $this->unpackHasOne($newCollection, $relation);
+        // Or if this is Relation `hasOne` (ie. every parent can have at most one child).
+        return $this->unpackHasOne($children, $relation);
     }
 
-    public function unpackHasMany(Collection $newCollection, Relation $relation) : self
+    /**
+     * Adds to every Instance in this Collection child records (basing on Relation).
+     *
+     * For example - `$this` is a `Plane`. And `$children` are `Seats`. This methods
+     * receives Collection of all `Seats` from all `Planes` and checks to which `Seat`
+     * has to be unpacked (added) to which `Plane` in Collection.
+     *
+     * @param Collection $children Children fitting to all parents (ie. fitting to Instances of `$this`).
+     * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function unpackHasMany(Collection $children, Relation $relation) : self
     {
 
         // Lvd.
@@ -312,23 +416,36 @@ abstract class Collection extends Tools
         $fieldToGetter   = $relation->getFieldTo()->getGetterName();
         $adderMethodName = $relation->getAdderName();
 
-        // Get grouped old/current Collection.
-        $groupedOld = $this->getGroupedByField($fieldFrom);
+        // Get parents Collection splitted with joining field (most propabely ... parent primary key).
+        $parentsSplitted = $this->getGroupedByField($fieldFrom);
 
-        // Get grouped new Collection.
-        $newCollections = $newCollection->splitByField($relation->getFieldTo());
+        // Get children Collection splitted with joining field (most propabely ... parent primary key).
+        $childrens = $children->splitByField($relation->getFieldTo());
 
-        // For every Collection in new collections (children).
-        foreach ($newCollections as $keyTo => $newCollection) {
-            foreach ($groupedOld[$keyTo] as $oldInstance) {
-                $oldInstance->$adderMethodName($newCollection);
+        // Now put every Children to proper parent ... basig on joining fields.
+        foreach ($childrens as $keyTo => $children) {
+            foreach ($parentsSplitted[$keyTo] as $parentInstance) {
+                $parentInstance->$adderMethodName($children);
             }
         }
 
         return $this;
     }
 
-    public function unpackHasOne(Collection $newCollection, Relation $relation) : self
+    /**
+     * Adds to every Instance in this Collection at most one child records (basing on Relation).
+     *
+     * For example - `$this` is a `Plane`. And `$children` are `MainPilots`. This methods
+     * receives Collection of all `MainPilots` from all `Planes` and checks to which `MainPilot`
+     * has to be unpacked (added) to which `Plane` in Collection.
+     *
+     * @param Collection $children Children fitting to all parents (ie. fitting to Instances of `$this`).
+     * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function unpackHasOne(Collection $children, Relation $relation) : self
     {
 
         // Lvd.
@@ -336,23 +453,30 @@ abstract class Collection extends Tools
         $fieldToGetter   = $relation->getFieldTo()->getGetterName();
         $adderMethodName = $relation->getAdderName();
 
-        // Get grouped old/current Collection.
-        $groupedOld = $this->getGroupedByField($fieldFrom);
+        // Get parents Collection splitted with joining field (most propabely ... parent primary key).
+        $parentsSplitted = $this->getGroupedByField($fieldFrom);
 
-        // For every Record in new collection (children)
-        foreach ($newCollection->get() as $newInstance) {
+        // For every Children find what is it's Parent and connect.
+        foreach ($children->get() as $childInstance) {
 
             // Key of new Instance (key in child table).
-            $keyTo = $newInstance->$fieldToGetter();
+            $keyTo = $childInstance->$fieldToGetter();
 
-            foreach ($groupedOld[$keyTo] as $oldInstance) {
-                $oldInstance->$adderMethodName($newInstance);
+            // Put this child to every Parent needed.
+            foreach ($parentsSplitted[$keyTo] as $parentInstance) {
+                $parentInstance->$adderMethodName($childInstance);
             }
         }
 
         return $this;
     }
 
+    /**
+     * Deletes all Instances from this Collection.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function clear() : self
     {
 
@@ -361,50 +485,50 @@ abstract class Collection extends Tools
         return $this;
     }
 
-    public function clearNonAdded() : self
-    {
-
-        foreach ($this->instances as $id => $instance) {
-            if ($instance->grabIsAdded() === false) {
-                unset($this->instances[$id]);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * Gets Records from DB and puts them to Collection as Instances.
+     *
+     * @param null|integer $sliceFrom   Optional. If only part of results if needed - slice from (starting from 0).
+     * @param null|integer $sliceLength Optional. If only part of results if needed - slice length.
+     * @param string|array $orderBys     Optional. Field or fields to used for ordering.
      *
      * @since  v1.0
      * @return array Array of plain Records from db.
      */
-    public function read(?int $sliceFrom = null, ?int $sliceLength = null, $fieldOrFields = null) : self
+    public function read(?int $sliceFrom = null, ?int $sliceLength = null, $orderBys = '') : self
     {
 
-        // Create SELECT Query.
-        $select = $this->getModel()->newSelect();
-        $select->setLogicsSet($this->getLogics()->get());
+        try {
 
-        // Add LIMIT to Query.
-        if (is_null($sliceFrom) === false) {
-            $select->setLimit((int) $sliceFrom, (int) $sliceLength);
-        }
+            // Create SELECT Query.
+            $select = $this->getModel()->newSelect();
+            $select->setLogicsSet($this->getLogics()->get());
 
-        // Add ORDER to Query.
-        if ($fieldOrFields !== null) {
-
-            if (is_array($fieldOrFields) === false) {
-                $fieldOrFields = [ $fieldOrFields ];
+            // Add LIMIT to Query.
+            if (is_null($sliceFrom) === false) {
+                $select->setLimit((int) $sliceFrom, (int) $sliceLength);
             }
 
-            foreach ($fieldOrFields as $orderByField) {
-                $select->addField($orderByField, false, true);
-            }
-        }
+            // Add ORDER to Query.
+            if (empty($orderBys) === false) {
 
-        // Make reading.
-        $select->readIntoCollection($this);
+                // Wrap array around.
+                if (is_array($orderBys) === false) {
+                    $orderBys = [ $orderBys ];
+                }
+
+                // For each - add order field.
+                foreach ($orderBys as $orderBy) {
+                    $select->addField($orderBy, false, true);
+                }
+            }
+
+            // Make reading.
+            $select->readIntoCollection($this);
+
+        } catch (Throwable $thr) {
+            throw new CollectionCantBeReadException(get_class($this), $thr);
+        }
 
         return $this;
     }
@@ -415,27 +539,78 @@ abstract class Collection extends Tools
         return $this->read($sliceFrom, $sliceLength, $fieldOrFields);
     }
 
-    public function count($aggregationFields = []) : array
+    /**
+     * Counts how many records there are in this collection. Serves aggregation fields.
+     *
+     * ## Usage example.
+     *
+     * This will return array with one key `@@total` and integer number of records.
+     * ```
+     * $collection->count();
+     * ```
+     *
+     * This will return array with key `@@total` but also key for every unique value of pair
+     * of those two fields joined with backlash.
+     * ```
+     * $collection->count([ 'field1', 'field2' ]);
+     * ```
+     *
+     * This just changes backslash seprarator to dot separator.
+     * ```
+     * $collection->count([ 'field1', 'field2' ], '.');
+     * ```
+     *
+     * @param array  $aggregationFields Optional, empty. Fields that has to be used for aggregation.
+     * @param string $separator         Optional, backlash. Used to join aggregators values to create keys.
+     *
+     * @since  v1.0
+     * @return integer[]
+     */
+    public function count(array $aggregationFields = [], string $separator = '\\') : array
     {
 
+        // Lvd.
         $result = [
-            'all' => 0
+            '@@total' => 0
         ];
 
         // Create SELECT Query.
         $select = $this->getModel()->newSelect();
 
+        // Add agregation fields.
         foreach ($aggregationFields as $field) {
-            $select->addField($field, true, true);
+            $select->addField($field, true, true, true);
         }
+
+        // Add function and rest of logics.
         $select->addFunc('count', [])->setAlias('counter');
         $select->setLogicsSet($this->getLogics()->get());
 
-        return $select->read();
+        // Analyse results.
+        foreach ($select->read() as $record) {
+
+            // Amount for this group.
+            $counter = (int) $record['counter'];
+
+            // Find name of the group (summarized contents of GROUP BY columns).
+            unset($record['counter']);
+            $key = implode($separator, $record);
+
+            // If the key is empty - it means no aggregaiton columns where used - so adding this result
+            // among @@total result will be just a duplication.
+            if (empty($key) === false) {
+                $result[$key] = $counter;
+            }
+
+            // Sum up to @@total columns.
+            $result['@@total'] += $counter;
+        }
+
+        return $result;
     }
 
     /**
-     * Update existing Record.
+     * Calls engine to update existing records.
      *
      * @since  v1.0
      * @return self
@@ -463,7 +638,7 @@ abstract class Collection extends Tools
     }
 
     /**
-     * Calls engine to insert data.
+     * Calls engine to insert records.
      *
      * @since  v1.0
      * @return void
@@ -482,9 +657,15 @@ abstract class Collection extends Tools
         }
 
         // Fire Query.
-        $insert->fire();
+        $insert->call();
     }
 
+    /**
+     * Calls engine to delete records.
+     *
+     * @since  v1.0
+     * @return void
+     */
     public function delete(?array $differentSetOfInstances = null) : void
     {
 
@@ -503,9 +684,8 @@ abstract class Collection extends Tools
         $delete->fire();
     }
 
-
     /**
-     * Calls engine to insert or update data.
+     * Calls engine to insert, update or delete records.
      *
      * @since  v1.0
      * @return void
@@ -513,18 +693,23 @@ abstract class Collection extends Tools
     public function save() : void
     {
 
+        // Get what has to be added and what has to be updated.
         list($instancesAdded, $instancesNotAdded) = $this->getByAdded();
 
+        // Update.
         if (count($instancesAdded) > 0) {
             $this->update($instancesAdded);
         }
 
+        // Add.
         if (count($instancesNotAdded) > 0) {
             $this->create($instancesNotAdded);
         }
 
+        // Get what have to be deleted.
         $instancesToBeDeleted = $this->getByToBeDeleted();
 
+        // Delete.
         if (count($instancesToBeDeleted) > 0) {
             $this->delete($instancesToBeDeleted);
         }

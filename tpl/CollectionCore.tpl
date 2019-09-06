@@ -34,7 +34,6 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
         // Call parent (set additional logics).
         parent::__construct(...func_get_args());
     }
-
 <?php foreach ($this->model->getRelations() as $relation): ?>
 
     /**
@@ -56,7 +55,6 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
 
         // Get records with those pks.
         $toAdd = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>(...func_get_args());
-        // $toAdd->getLogics()->addRule('<?= $relation->getModelTo()->getPkField()->getName() ?>', $pks);
         $toAdd->getLogics()->addRule('<?= $relation->getFieldTo()->getName() ?>', $pks);
         $toAdd->read();
 

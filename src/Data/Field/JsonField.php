@@ -4,6 +4,7 @@ namespace Przeslijmi\Shortquery\Data\Field;
 
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\FieldInterface;
+use Przeslijmi\Shortquery\Data\Model;
 use stdClass;
 
 /**
@@ -15,7 +16,7 @@ class JsonField extends Field implements FieldInterface
     /**
      * Constructor.
      *
-     * @param string $name Name of Field.
+     * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
      *
      * @since v1.0
@@ -30,12 +31,13 @@ class JsonField extends Field implements FieldInterface
         $this->setType('JsonField');
         $this->setEngineType('json');
         $this->setPhpType('', 'stdClass');
+        $this->setPhpDocsType('string|stdClass', 'stdClass');
     }
 
     /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param string $value Value to be checked.
+     * @param ?stdClass $value Value to be checked.
      *
      * @since  v1.0
      * @return boolean
@@ -52,25 +54,32 @@ class JsonField extends Field implements FieldInterface
     }
 
     /**
+     * Convert string into stdClass.
      *
-     *
-     * @param string $value Value to be checked.
+     * @param string $value Value to be converted to stdClass.
      *
      * @since  v1.0
-     * @return boolean
+     * @return null|stdClass
      */
     public function setProperType($value) : ?stdClass
     {
 
-        if (is_a($value, 'stdClass') === true) {
-            return $value;
-        }
-
+        // Short way 1.
         if ($value === null) {
             return null;
         }
 
-        return json_decode($value);
+        // Short way 2.
+        if (is_a($value, 'stdClass') === true) {
+            return $value;
+        }
+
+        // Short way 3.
+        if (is_a(json_decode($value), 'stdClass')) {
+            return json_decode($value);
+        }
+
+        return (object) $value;
     }
 
     /**
@@ -82,37 +91,62 @@ class JsonField extends Field implements FieldInterface
     public function toPhp() : string
     {
 
-        // Lvd.
-        $indent = '    ';
-
         // Result.
-        $result  = PHP_EOL;
-        $result .= str_repeat($indent, 3) . '(new JsonField(\'' . $this->getName() . '\', ';
-        $result .= var_export($this->isNotNull(), true) . '))' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setPk(' . var_export($this->isPrimaryKey(), true) . ')' . PHP_EOL;
-        $result .= str_repeat($indent, 2);
-
-        return $result;
-    }
-
-    public function getterToPhp() : string
-    {
-
-        return $this->ln(2, 'return $this->' . $this->getName('camelCase') . ';');
-    }
-
-    public function compareToPhp() : string
-    {
-
-        $php  = '';
-        $php .= 'if ($this->' . $this->getName('camelCase') . ' == $' . $this->getName('camelCase') . ') {';
+        $php  = $this->ln(0, '', 1);
+        $php .= $this->ln(3, '( new JsonField(\'' . $this->getName() . '\', '.  $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')');
+        $php .= $this->ln(2, '', 0);
 
         return $php;
     }
 
-    public function extraMethodsToPhp() : string
+    /**
+     * Prepare PHP commands for getter.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getterToPhp() : string
+    {
+
+        return $this->ln(2, 'return ' . $this->cc(true) . ';');
+    }
+
+    /**
+     * Prepare PHP commands for comparer given value vs saved value.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function compareToPhp() : string
+    {
+
+        return $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc() . ') {');
+    }
+
+    /**
+     * Prepare PHP commands for additional, extra methods to put inside generated Field class.
+     *
+     * @param Model $model To use for PHP code.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function extraMethodsToPhp(Model $model) : string
     {
 
         return '';
+    }
+
+    /**
+     * Deliver hint for value correctness for this Field.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getProperValueHint() : string
+    {
+
+        return 'Has to be stdClass.';
     }
 }

@@ -2,31 +2,31 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
+use Throwable;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Data\Model;
 
 /**
- * Model engine name is empty.
+ * There are more than one Primary Key Fields in this Model.
  */
-class ModelEngineNameDonoexException extends ClassFopException
+class ModelPrimaryKeyFieldAlrexException extends ClassFopException
 {
 
     /**
      * Constructor.
      *
      * @param Model          $model Model that has the problem.
-     * @param Exception|null $cause Exception that caused the problem.
+     * @param Throwable|null $cause Throwable that caused the problem.
      *
      * @since v1.0
      */
-    public function __construct(Model $model, ?Exception $cause = null)
+    public function __construct(Model $model, ?Throwable $cause = null)
     {
 
-        $this->setCodeName('ModelEngineNameDonoexException');
         $this->addInfo('context', 'DefiningModel');
+        $this->addInfo('modelName', $model->getName());
         $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('hint', 'Model has no given engine name, use eg. `$model->setEngineName(\'mySql\')` to fix.');
+        $this->addInfo('hint', 'Model has no two or more Primary Key Fields. It is impossible in this version of Shoq?');
 
         if (is_null($cause) === false) {
             $this->setCause($cause);

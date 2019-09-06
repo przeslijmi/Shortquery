@@ -37,14 +37,14 @@ class HasOneRelation extends Relation
         $indent = '    ';
 
         // Result.
-        $result  = PHP_EOL;
-        $result .= str_repeat($indent, 3) . '(new HasOneRelation(\'' . $this->getName() . '\'))' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setFieldFrom(\'' . $this->getFieldFromAsName() . '\')' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setModelTo(\'' . $this->getModelToAsName() . '\')' . PHP_EOL;
-        $result .= str_repeat($indent, 4) . '->setFieldTo(\'' . $this->getFieldToAsName() . '\')' . PHP_EOL;
+        $result  = "\n";
+        $result .= str_repeat($indent, 3) . '( new HasOneRelation(\'' . $this->getName() . '\') )' . "\n";
+        $result .= str_repeat($indent, 4) . '->setFieldFrom(\'' . $this->getFieldFromAsName() . '\')' . "\n";
+        $result .= str_repeat($indent, 4) . '->setModelTo(\'' . $this->getModelToAsName() . '\')' . "\n";
+        $result .= str_repeat($indent, 4) . '->setFieldTo(\'' . $this->getFieldToAsName() . '\')' . "\n";
 
-        foreach ($this->getSyntax() as $syntaxLine) {
-            $result .= str_repeat($indent, 4) . $syntaxLine . PHP_EOL;
+        foreach ($this->getLogicsSyntax() as $syntaxLine) {
+            $result .= str_repeat($indent, 4) . $syntaxLine . "\n";
         }
 
         $result .= str_repeat($indent, 2);

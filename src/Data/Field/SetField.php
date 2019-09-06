@@ -4,6 +4,10 @@ namespace Przeslijmi\Shortquery\Data\Field;
 
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\FieldInterface;
+use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDictDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
 /**
  * Field to use - set.
@@ -14,14 +18,14 @@ class SetField extends Field implements FieldInterface
     /**
      * Possible values in the Field.
      *
-     * @var array
+     * @var string[]
      */
     private $values = [];
 
     /**
      * Dictionaries for the Field.
      *
-     * @var array
+     * @var string[][]
      */
     private $dicts = [
         'main' => [],
@@ -30,7 +34,7 @@ class SetField extends Field implements FieldInterface
     /**
      * Constructor.
      *
-     * @param string $name Name of Field.
+     * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
      *
      * @since v1.0
@@ -45,20 +49,23 @@ class SetField extends Field implements FieldInterface
         $this->setType('SetField');
         $this->setEngineType('set');
         $this->setPhpType('string');
+        $this->setPhpDocsType('string');
     }
 
     /**
      * Setter for `values`.
      *
+     * @param string[] $values Values to use in set field.
+     *
      * @since  v1.0
      * @return self
      */
-    public function setValues() : self
+    public function setValues(string ...$values) : self
     {
 
         // Save.
-        $this->values = func_get_args();
-        $this->setMainDict(...func_get_args());
+        $this->values = $values;
+        $this->setMainDict(...$values);
 
         return $this;
     }
@@ -66,7 +73,8 @@ class SetField extends Field implements FieldInterface
     /**
      * Getter for `values`.
      *
-     * @return array
+     * @since  v1.0
+     * @return string[]
      */
     public function getValues() : array
     {
@@ -74,53 +82,34 @@ class SetField extends Field implements FieldInterface
         return $this->values;
     }
 
-    public function getDictValue(string $key, string $dictName = 'main') : string
-    {
-
-        // Lvd.
-        $id = array_search($key, $this->values);
-
-        return $this->dicts[$dictName][$id];
-    }
-
     /**
      * Setter for `mainDict`.
+     *
+     * @param string[] $values Values to use in this dict.
      *
      * @since  v1.0
      * @return self
      */
-    public function setMainDict() : self
+    public function setMainDict(string ...$values) : self
     {
 
         // Save.
-        $this->dicts['main'] = func_get_args();
+        $this->setDict('main', ...$values);
 
         return $this;
     }
 
     /**
-     * Getter for `mainDict`.
+     * Setter for any dict from `dicts`.
      *
-     * @return array
-     */
-    public function getMainDict() : array
-    {
-
-        return $this->dicts['main'];
-    }
-
-    /**
-     * Setter for `mainDict`.
+     * @param string   $dictName Name of the dictionary
+     * @param string[] $values   Values to use in this dict.
      *
      * @since  v1.0
      * @return self
      */
-    public function setDict() : self
+    public function setDict(string $dictName, string ...$values) : self
     {
-
-        // Lvd.
-        $dictName = func_get_arg(0);
-        $values   = array_slice(func_get_args(), 1);
 
         // Save.
         $this->dicts[$dictName] = $values;
@@ -129,20 +118,39 @@ class SetField extends Field implements FieldInterface
     }
 
     /**
-     * Getter for any dict.
+     * Getter for `mainDict`.
      *
-     * @return array
+     * @since  v1.0
+     * @return string[]
      */
-    public function getDict(string $dictName = 'main') : array
+    public function getMainDict() : array
     {
 
-        return $this->dicts[$dictName];
+        return $this->getDict('main');
     }
 
     /**
      * Getter for any dict.
      *
+     * @since  v1.0
+     * @throws FieldDictDonoexException When dict with given name has not been found.
      * @return array
+     */
+    public function getDict(string $dictName = 'main') : array
+    {
+
+        // Throw if not found.
+        if (isset($this->dicts[$dictName]) === false) {
+            throw new FieldDictDonoexException($dictName, $this);
+        }
+
+        return $this->dicts[$dictName];
+    }
+
+    /**
+     * Getter for all dicts.
+     *
+     * @return string[][]
      */
     public function getDicts() : array
     {
@@ -151,32 +159,76 @@ class SetField extends Field implements FieldInterface
     }
 
     /**
+     * Getter for given key from given dict.
+     *
+     * @param string $keys     Keys to look for (on of sent to `->setValues()`) - comma separated.
+     * @param string $dictName Which dictionary.
+     *
+     * @since  v1.0
+     * @throws FieldDictValueDonoexException When there is no given key in given dict.
+     * @return string
+     */
+    public function getDictValue(string $keys, string $dictName = 'main') : string
+    {
+
+        // Lvd.
+        $result = [];
+
+        // Get dict.
+        $dict = $this->getDict($dictName);
+
+        // Look for every key.
+        foreach (explode(',', $keys) as $key) {
+
+            // Lvd.
+            $id = array_search($key, $this->values);
+
+            // Throw.
+            if (is_int($id) === false) {
+                throw new FieldDictValueDonoexException($dictName, $key, $this);
+            }
+
+            // Add.
+            $result[] = $dict[$id];
+        }
+
+        return implode(',', $result);
+    }
+
+    /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param null|string $value Value to be checked.
+     * @param null|string $value  Value to be checked.
+     * @param boolean     $throws Optional, true. If set to false `throw` will be off.
      *
      * @since  v1.0
      * @return boolean
      */
-    public function isValueValid(?string $value) : bool
+    public function isValueValid(?string $value, bool $throws = true) : bool
     {
+
+        // Lvd.
+        $result = true;
 
         // If null - it is valid.
         if (is_null($value) === true) {
-            return true;
+            return $result;
         }
 
+        // Check values.
         foreach (explode(',', $value) as $oneValue) {
             if (in_array($oneValue, $this->values) === false) {
-                $hint  = 'SetField inproper value `' . $oneValue . '` not from possible values, ';
-                $hint .= 'ie. ' . implode(', ', $this->values) . '.';
-                die($hint);
+                $result = false;
+                break;
             }
         }
 
-        // Checks.
+        // Throw.
+        if ($result === false && $throws === true) {
+            throw new FieldValueInproperException($value, $this);
+        }
 
-        return true;
+        return $result;
     }
 
     /**
@@ -188,22 +240,29 @@ class SetField extends Field implements FieldInterface
     public function toPhp() : string
     {
 
-        // Lvd.
-        $php = '';
+        // Result.
+        $php  = $this->ln(0, '', 1);
+        $php .= $this->ln(3, '( new SetField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(4, '->setValues(' . $this->imp($this->getValues()) . ')');
 
-        $php .= $this->ln(0, '', 1);
-        $php .= $this->ln(3, '(new SetField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . '))');
-        $php .= $this->ln(4, '->setValues(' . $this->csv($this->getValues()) . ')');
-
+        // Add all dicts.
         foreach ($this->getDicts() as $dictName => $values) {
-            $php .= $this->ln(4, '->setDict(\'' . $dictName . '\', ' . $this->csv($values) . ')');
+            $php .= $this->ln(4, '->setDict(\'' . $dictName . '\', ' . $this->imp($values) . ')');
         }
 
-        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')', 2);
+        // Finish.
+        $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')', 1);
+        $php .= $this->ln(2, '', 0);
 
         return $php;
     }
 
+    /**
+     * Prepare PHP commands for getter.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function getterToPhp() : string
     {
 
@@ -211,55 +270,78 @@ class SetField extends Field implements FieldInterface
         $gdfvA   = [];
         $gdfvA[] = '\'' . $this->getName() . '\'';
         $gdfvA[] = '( func_get_args()[0] ?? \'main\' )';
-        $gdfvA[] = '$this->' . $this->getName('camelCase') . '';
+        $gdfvA[] = $this->cc(true);;
 
-        // Lvd.
-        $php  = '';
-        $php .= $this->ln(2, 'if (func_num_args() === 0) {');
-        $php .= $this->ln(3, 'return $this->' . $this->getName('camelCase') . ';');
+        // Result.
+        $php  = $this->ln(2, 'if (func_num_args() === 0) {');
+        $php .= $this->ln(3, 'return ' . $this->cc(true) . ';');
         $php .= $this->ln(2, '}', 2);
         $php .= $this->ln(2, 'return $this->grabMultiDictFieldValue(' . implode(', ', $gdfvA) . ');', 1);
 
         return $php;
     }
 
+    /**
+     * Prepare PHP commands for comparer given value vs saved value.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function compareToPhp() : string
     {
 
-        $cc  = $this->getName('camelCase');
-
-        $php  = '';
-        $php .= $this->ln(0, 'if (');
-        $php .= $this->ln(3, 'is_null($' . $cc . ') === is_null($this->' . $cc . ')');
-        $php .= $this->ln(3, '&& count(array_diff((array) $' . $cc . ', (array) $this->' . $cc . ')) === 0');
-        $php .= $this->ln(3, '&& count(array_diff((array) $this->' . $cc . ', (array) $' . $cc . ')) === 0');
+        $php  = $this->ln(0, 'if (is_null($' . $this->cc() . ') === is_null(' . $this->cc(true) . ')');
+        $php .= $this->ln(3, '&& count(array_diff((array) $' . $this->cc() . ', (array) ' . $this->cc(true) . ')) === 0');
+        $php .= $this->ln(3, '&& count(array_diff((array) ' . $this->cc(true) . ', (array) $' . $this->cc() . ')) === 0');
         $php .= $this->ln(2, ') {');
 
         return $php;
     }
 
-    public function extraMethodsToPhp() : string
+    /**
+     * Prepare PHP commands for additional, extra methods to put inside generated Field class.
+     *
+     * @param Model $model To use for PHP code.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function extraMethodsToPhp(Model $model) : string
     {
 
-        $cc  = $this->getName('camelCase');
+        // Lvd.
         $pc  = $this->getName('pascalCase');
         $get = $this->getGetterName();
         $set = $this->getSetterName();
 
-        $php = '';
-
-        $php .= $this->ln(1, 'public function addTo' . $pc . '(string $toAdd)');
+        // Result for adder.
+        $php  = $this->ln(1, '/**');
+        $php .= $this->ln(1, ' * Adds given value to set.');
+        $php .= $this->ln(1, ' *');
+        $php .= $this->ln(1, ' * @param string $toBeAdded String value to be added.');
+        $php .= $this->ln(1, ' *');
+        $php .= $this->ln(1, ' * @return ' . $model->getClass('instanceClassName') . '');
+        $php .= $this->ln(1, ' */');
+        $php .= $this->ln(1, 'public function addTo' . $pc . '(string $toBeAdded) : ' . $model->getClass('instanceClassName'));
         $php .= $this->ln(1, '{', 2);
         $php .= $this->ln(2, '$value = array_merge(');
-        $php .= $this->ln(3, 'explode(\',\', $toAdd),');
+        $php .= $this->ln(3, 'explode(\',\', $toBeAdded),');
         $php .= $this->ln(3, 'explode(\',\', $this->' . $get . '())');
         $php .= $this->ln(2, ');', 2);
         $php .= $this->ln(2, '$value = array_unique($value);', 2);
         $php .= $this->ln(2, '$value = implode(\',\', $value);', 2);
-        $php .= $this->ln(2, 'return $this->' . $set . '( ( empty($value) === true ) ? null : $value );', 2);
+        $php .= $this->ln(2, 'return $this->' . $set . '(( empty($value) === true ) ? null : $value);', 1);
         $php .= $this->ln(1, '}', 2);
 
-        $php .= $this->ln(1, 'public function deleteFrom' . $pc . '(string $toBeDeleted)');
+        // Result for deleter.
+        $php .= $this->ln(1, '/**');
+        $php .= $this->ln(1, ' * Deletes given value from set.');
+        $php .= $this->ln(1, ' *');
+        $php .= $this->ln(1, ' * @param string $toBeDeleted String value to be deleted.');
+        $php .= $this->ln(1, ' *');
+        $php .= $this->ln(1, ' * @return ' . $model->getClass('instanceClassName') . '');
+        $php .= $this->ln(1, ' */');
+        $php .= $this->ln(1, 'public function deleteFrom' . $pc . '(string $toBeDeleted) : ' . $model->getClass('instanceClassName'));
         $php .= $this->ln(1, '{', 2);
         $php .= $this->ln(2, '$value = explode(\',\', $this->' . $get . '());', 2);
         $php .= $this->ln(2, 'foreach (explode(\',\', $toBeDeleted) as $toDelete) {', 2);
@@ -269,9 +351,21 @@ class SetField extends Field implements FieldInterface
         $php .= $this->ln(3, '}');
         $php .= $this->ln(2, '}', 2);
         $php .= $this->ln(2, '$value = implode(\',\', $value);', 2);
-        $php .= $this->ln(2, 'return $this->' . $set . '( ( empty($value) === true ) ? null : $value );', 2);
+        $php .= $this->ln(2, 'return $this->' . $set . '(( empty($value) === true ) ? null : $value);', 1);
         $php .= $this->ln(1, '}', 2);
 
         return $php;
+    }
+
+    /**
+     * Deliver hint for value correctness for this Field.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getProperValueHint() : string
+    {
+
+        return 'Only one value from defined is proper: ' . implode(', ', $this->values) . ', or their mix.';
     }
 }

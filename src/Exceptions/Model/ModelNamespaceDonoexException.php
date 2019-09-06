@@ -23,7 +23,6 @@ class ModelNamespaceDonoexException extends ClassFopException
     public function __construct(Model $model, ?Exception $cause = null)
     {
 
-        $this->setCodeName('ModelNamespaceDonoexException');
         $this->addInfo('context', 'DefiningModel');
         $this->addInfo('modelName', $model->getName());
         $this->addInfo('modelClass', get_class($model));

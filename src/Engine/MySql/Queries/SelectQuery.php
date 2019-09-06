@@ -353,9 +353,9 @@ class SelectQuery extends Query
         $result[] = $this->selectSectionToString();
         $result[] = $this->fromSectionToString();
         $result[] = $this->logicsSectionToString();
-        $result[] = $this->limitSectionToString();
         $result[] = $this->groupBySectionToString();
         $result[] = $this->orderBySectionToString();
+        $result[] = $this->limitSectionToString();
 
         // Delete empty sections.
         foreach ($result as $i => $section) {

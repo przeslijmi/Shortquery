@@ -27,12 +27,7 @@ class Model extends PhpFile
 
         // Add PHP beginning.
         $this->contents = $this->getFirstLinePhp() . $this->contents;
-        $this->contents = trim($this->contents) . PHP_EOL;
-
-        // Throw.
-        if ($success === false) {
-            throw new ClassFopException('includingTemplateForShortQueryCreator');
-        }
+        $this->contents = trim($this->contents) . "\n";
 
         return $this;
     }

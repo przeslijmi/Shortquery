@@ -9,13 +9,4 @@ use <?= $this->model->getClass('namespaceCore') ?>\<?= $this->model->getClass('c
 class <?= $this->model->getClass('collectionClassName') ?> extends <?= $this->model->getClass('collectionCoreClassName') ?>
 
 {
-
-    /**
-     * Constructor.
-     */
-    public function __construct()
-    {
-
-        parent::__construct(...func_get_args());
-    }
 }

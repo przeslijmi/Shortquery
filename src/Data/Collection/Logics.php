@@ -2,14 +2,17 @@
 
 namespace Przeslijmi\Shortquery\Data\Collection;
 
-use Exception;
 use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Relation;
+use Przeslijmi\Shortquery\Exceptions\Items\RuleFactoryFailedException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicFactoryFailedException;
+use Przeslijmi\Shortquery\Items\ContentItem;
 use Przeslijmi\Shortquery\Items\LogicAnd;
 use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Items\LogicOr;
 use Przeslijmi\Shortquery\Items\Rule;
+use Throwable;
 
 /**
  * Subclass for Collection object - contains logics.
@@ -29,7 +32,7 @@ class Logics
      *
      * @var LogicItem[]
      */
-    public $logics = [];
+    private $logics = [];
 
     /**
      * Constructor.
@@ -45,7 +48,7 @@ class Logics
     }
 
     /**
-     * Getter for array of all logics.
+     * Getter for array of all Logics.
      *
      * @since  v1.0
      * @return LogicItem[]
@@ -56,16 +59,33 @@ class Logics
         return $this->logics;
     }
 
+    /**
+     * Counts how many Logics are in Collection.
+     *
+     * @since  v1.0
+     * @return integer
+     */
     public function length() : int
     {
 
         return count($this->logics);
     }
 
-    public function add() : self
+    /**
+     * Adds Logic to Collection.
+     *
+     * @param LogicItem ...$logicItems Array of LogicItems.
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function add(LogicItem ...$logicItems) : self
     {
 
-        foreach (func_get_args() as $logicItem) {
+        // Work.
+        foreach ($logicItems as $logicItem) {
+
+            // Finally add.
             $this->logics[] = $logicItem;
         }
 
@@ -82,16 +102,18 @@ class Logics
     public function addRule() : self
     {
 
+        // Try to create Rule out of fucn arguments.
         try {
             $rule = Rule::factory(...func_get_args());
-        } catch (Exception $e) {
-            throw ( new MethodFopException('creationOfRuleFailed', $e) )
-                ->addInfos(func_get_args(), 'ruleArgs');
+        } catch (Throwable $thr) {
+            throw new RuleFactoryFailedException(func_get_args(), $thr);
         }
 
+        // Create new AND Logic for this rule.
         $logic = new LogicAnd($rule);
         $logic->setCollectionParent($this->collection);
 
+        // Add this rule to Logic.
         $this->logics[] = $logic;
 
         return $this;
@@ -102,23 +124,15 @@ class Logics
      *
      * @since  v1.0
      * @return self
-     * @throws MethodFopException When creation of Rule have failed.
      */
     public function addRuleEq() : self
     {
 
-        try {
-            $ruleArgs = [ func_get_arg(0), 'eq', func_get_arg(1) ];
-            $rule     = Rule::factory(...$ruleArgs);
-        } catch (Sexception $e) {
-            throw ( new MethodFopException('creationOfRuleFailed', $e) )
-                ->addInfos($ruleArgs, 'ruleArgs');
-        }
-
-        $logic = new LogicAnd($rule);
-        $logic->setCollectionParent($this->collection);
-
-        $this->logics[] = $logic;
+        $this->addRule(
+            ( func_get_args()[0] ?? null ),
+            'eq',
+            ( func_get_args()[1] ?? null )
+        );
 
         return $this;
     }
@@ -128,23 +142,15 @@ class Logics
      *
      * @since  v1.0
      * @return self
-     * @throws MethodFopException When creation of Rule have failed.
      */
     public function addRuleNeq() : self
     {
 
-        try {
-            $ruleArgs = [ func_get_arg(0), 'neq', func_get_arg(1) ];
-            $rule     = Rule::factory(...$ruleArgs);
-        } catch (Sexception $e) {
-            throw ( new MethodFopException('creationOfRuleFailed', $e) )
-                ->addInfos($ruleArgs, 'ruleArgs');
-        }
-
-        $logic = new LogicAnd($rule);
-        $logic->setCollectionParent($this->collection);
-
-        $this->logics[] = $logic;
+        $this->addRule(
+            ( func_get_args()[0] ?? null ),
+            'neq',
+            ( func_get_args()[1] ?? null )
+        );
 
         return $this;
     }
@@ -160,18 +166,39 @@ class Logics
     public function addLogicOr(array ...$rulesDefinitions) : self
     {
 
+        // Lvd.
+        $rules = [];
+
+        // Create Rules.
         foreach ($rulesDefinitions as $ruleDefinition) {
-            $rules[] = Rule::factory(...$ruleDefinition);
+            try {
+                $rules[] = Rule::factory(...$ruleDefinition);
+            } catch (Throwable $thr) {
+                throw new RuleFactoryFailedException($ruleDefinition, $thr);
+            }
         }
 
-        $logic = new LogicOr(...$rules);
-        $logic->setCollectionParent($this->collection);
+        // Create logic OR from given set of Rules.
+        try {
+            $logic = new LogicOr(...$rules);
+            $logic->setCollectionParent($this->collection);
+        } catch (Throwable $thr) {
+            throw new LogicFactoryFailedException($rules, $thr);
+        }
 
         $this->logics[] = $logic;
 
         return $this;
     }
 
+    /**
+     * Transfer logics from Relation.
+     *
+     * @param Relation $relation Relation between to tables.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function addFromRelation(Relation $relation) : self
     {
 

@@ -2,8 +2,11 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
+use Throwable;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Items\Rule;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueUnaccesibleException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueUnaccesibleException;
 
 /**
  * Parent for all items in all models.
@@ -12,6 +15,8 @@ use Przeslijmi\Shortquery\Items\Rule;
  */
 abstract class Instance
 {
+
+    protected $database;
 
     /**
      * If this Instance is already in Engine.
@@ -69,34 +74,93 @@ abstract class Instance
         return $this->grabModel()->getFieldByName($fieldName);
     }
 
+    /**
+     * Getter for Field value.
+     *
+     * @param string $fieldName Name of Field.
+     *
+     * @since  v1.0
+     * @throws FieldValueUnaccesibleException When field is not present.
+     * @return mixed
+     */
     public function grabFieldValue(string $fieldName)
     {
 
-        $getter = $this->grabField($fieldName)->getGetterName();
+        // Lvd.
+        $result = null;
 
-        return $this->$getter();
+        // Work.
+        try {
+            $getter = $this->grabField($fieldName)->getGetterName();
+            $result = $this->$getter();
+        } catch (Throwable $thr) {
+            throw new FieldValueUnaccesibleException($fieldName, $this, $thr);
+        }
+
+        return $result;
     }
 
+    /**
+     * Getter for field dictionary one value (for set end enum fields).
+     *
+     * @param string $fieldName Name of field.
+     * @param string $dictName  Dictionary name (use `main` as standard).
+     * @param string $value     Dictionary value.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function grabDictFieldValue(string $fieldName, string $dictName, string $value) : string
     {
 
-        $field = $this->grabField($fieldName);
+        // Lvd.
+        $result = '';
 
-        return $field->getDictValue($value, $dictName);
+        // Work.
+        try {
+            $result = $this->grabField($fieldName)->getDictValue($value, $dictName);
+        } catch (Throwable $thr) {
+            throw new FieldDictValueUnaccesibleException($fieldName, $dictName, $value, $this, $thr);
+        }
+
+        return $result;
     }
 
+    /**
+     * Getter for field dictionary many values (sent as comma separated list) (for set end enum fields).
+     *
+     * @param string $fieldName Name of field.
+     * @param string $dictName  Dictionary name (use `main` as standard).
+     * @param string $value     Dictionary values separated with comma.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function grabMultiDictFieldValue(string $fieldName, string $dictName, string $value) : string
     {
 
-        $field = $this->grabField($fieldName);
+        // Lvd.
+        $result  = '';
+        $results = [];
 
-        $result = [];
+        // Work.
+        try {
 
-        foreach (explode(',', $value) as $oneValue) {
-            $result[] = str_replace(',', '\,', $field->getDictValue($oneValue, $dictName));
+            // Get field.
+            $field = $this->grabField($fieldName);
+
+            // Fill up values.
+            foreach (explode(',', $value) as $oneValue) {
+                $results[] = str_replace(',', '\,', $field->getDictValue($oneValue, $dictName));
+            }
+
+            // Impolode.
+            $result = implode(',', $results);
+        } catch (Throwable $thr) {
+            throw new FieldDictValueUnaccesibleException($fieldName, $dictName, $value, $this, $thr);
         }
 
-        return implode(',', $result);
+        return $result;
     }
 
     /**
@@ -109,6 +173,10 @@ abstract class Instance
      */
     public function defineIsAdded(bool $isAdded) : self
     {
+
+        if ($isAdded === false) {
+            $this->resetPrimaryKey();
+        }
 
         $this->isAdded = $isAdded;
 
@@ -128,9 +196,9 @@ abstract class Instance
     }
 
     /**
-     * Setter for if this Instance is to be deleted in Engine.
+     * Setter for if this Instance in Collection is to be deleted.
      *
-     * @param boolean $isToBeDeleted If this Instance is to be deleted in Engine.
+     * @param boolean $isToBeDeleted If this Instance in Collection is to be deleted.
      *
      * @since  v1.0
      * @return self
@@ -144,7 +212,7 @@ abstract class Instance
     }
 
     /**
-     * Getter for if this Instance is already in Engine.
+     * Getter for if this Instance inside Collection is decided to be deleted.
      *
      * @since  v1.0
      * @return boolean
@@ -155,18 +223,43 @@ abstract class Instance
         return $this->isToBeDeleted;
     }
 
+    /**
+     * Setter to add info that there were no changes in this instance (so `save()` will ignore).
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function defineNothingChanged() : self
     {
 
+        // Make array with changed fields empty.
         $this->changedFields = [];
 
         return $this;
     }
 
+    /**
+     * Return info if any field in this Instance has been changed.
+     *
+     * @since  v1.0
+     * @return boolean
+     */
     public function grabHaveAnythingChanged() : bool
     {
 
         return ( count($this->changedFields) > 0 );
+    }
+
+    /**
+     * Getter for Primary Key field.
+     *
+     * @since  v1.0
+     * @return Field
+     */
+    public function grabPkField() : Field
+    {
+
+        return $this->grabModel()->getPkField();
     }
 
     /**
@@ -196,6 +289,22 @@ abstract class Instance
     }
 
     /**
+     * Setter for Primary Key value.
+     *
+     * @param mixed $value Primary key value.
+     *
+     * @since  v1.0
+     * @return mixed
+     */
+    public function definePkValue($value)
+    {
+
+        $pkSetter = $this->grabModel()->getPkField()->getSetterName();
+
+        return $this->$pkSetter($value);
+    }
+
+    /**
      * Read into this Instance current values of fields from Engine.
      *
      * @since  v1.0
@@ -205,7 +314,7 @@ abstract class Instance
     {
 
         // Create SELECT query.
-        $select = $this->grabModel()->newSelect();
+        $select = $this->grabModel()->newSelect($this->database);
 
         // Find logics.
         $logics = [];
@@ -232,6 +341,7 @@ abstract class Instance
     /**
      * Create record.
      *
+     * @since  v1.0
      * @return self
      */
     public function create() : self
@@ -255,11 +365,20 @@ abstract class Instance
         return $this;
     }
 
+    /**
+     * Create record if it not exists - otherwise try to read.
+     *
+     * @since  v1.0
+     * @return self
+     */
     public function createIfNotExists() : self
     {
 
+        // Try to read.
         $this->read();
 
+        // This is call to Entity own method. If PK is defined in this record after reading
+        // than yeah - this record exists.
         if ($this->hasPrimaryKey() === false) {
             $this->create();
         }
@@ -308,21 +427,60 @@ abstract class Instance
         return $this->create();
     }
 
+    /**
+     * Save record (no matter if update or creation are needed)..
+     *
+     * @since  v1.0
+     * @return self
+     */
+    public function delete() : self
+    {
+
+        // If this is not added - it can't be deleted.
+        if ($this->grabIsAdded() === false) {
+            return $this;
+        }
+
+        // Create DELETE query.
+        $delete = $this->grabModel()->newDelete();
+
+        // Add logics.
+        $delete->setLogicsSet([ Rule::factoryWrapped($this->grabPkName(), $this->grabPkValue()) ]);
+
+        // Add this Instance.
+        $delete->setInstance($this);
+
+        // Fire query.
+        $delete->fire();
+
+        // Set that this record is not added.
+        $this->defineIsAdded(false);
+
+        return $this;
+    }
+
+    /**
+     * Converts this item into string - showing all fields and its values.
+     *
+     * @since  v1.0
+     * @return string
+     */
     public function toString() : string
     {
 
+        // Lvd.
         $result = '';
 
-        foreach ($this->grabModel()->getFields() as $field) {
+        // Go thru all fields.
+        foreach ($this->setFields as $fieldName) {
 
+            // Lvd.
+            $field      = $this->grabField($fieldName);
             $getterName = $field->getGetterName();
-            $value      = $this->$getterName();
+            $value      = ( $this->$getterName() ?? 'NULL' );
 
-            if ($value === null) {
-                $value = 'NULL';
-            }
-
-            $result .= $field->getName() . ': ' . $value . PHP_EOL;
+            // Compose.
+            $result .= $field->getName() . ': ' . $value . "\n";
         }
 
         return $result;

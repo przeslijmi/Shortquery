@@ -2,15 +2,16 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
-use Exception;
+use Throwable;
 use Przeslijmi\Shortquery\Engine;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\Relation;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameWrosynException;
-use Przeslijmi\Shortquery\Exceptions\Model\ModelEngineNameDonoexException;
-use Przeslijmi\Shortquery\Exceptions\Model\ModelEngineNameOtosetException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelDatabaseDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelDatabaseNameOtosetException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelEngineDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelFieldDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelFieldNameAlrexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelInstanceClassNameDonoexException;
@@ -19,12 +20,13 @@ use Przeslijmi\Shortquery\Exceptions\Model\ModelNameDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNamespaceDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNamespaceWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNameWrosynException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelQueryCreationFailedException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelPrimaryKeyFieldDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelPrimaryKeyFieldAlrexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelRelationNameAlrexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelRelationDonoexException;
 use Przeslijmi\Sivalidator\RegEx;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\UpdateQuery;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\InsertQuery;
-use Przeslijmi\Shortquery\Engine\MySql\Queries\DeleteQuery;
+use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 
 /**
  * Child class of Collection containing Model related information.
@@ -40,11 +42,11 @@ class Model
     private $name;
 
     /**
-     * Name of the engine of the Model (eg. MySql).
+     * Name of databases in witch Model is present (eg. mysql/localhost/user/password/port).
      *
-     * @var string
+     * @var string[]
      */
-    private $engine;
+    private $databases = [];
 
     /**
      * Namespace of instance class (without instance class itself) (eg. Vendor/App/Models).
@@ -96,8 +98,8 @@ class Model
         // If name is proper.
         try {
             RegEx::ifMatches($name, '/^([a-zA-Z_])+([a-zA-Z0-9_])*$/');
-        } catch (Exception $exception) {
-            throw new ModelNameWrosynException($name, $this, $exception);
+        } catch (Throwable $thr) {
+            throw new ModelNameWrosynException($name, $this, $thr);
         }
 
         // Save.
@@ -125,92 +127,228 @@ class Model
     }
 
     /**
-     * Setter for engine name.
+     * Setter for database name.
      *
-     * @param string $engine Engine name.
+     * @param string $database Engine name.
      *
      * @since  v1.0
-     * @throws ModelEngineNameOtosetException When Model egnine name is wrong.
+     * @throws ModelDatabaseNameOtosetException When Model database name is wrong.
      * @return self
      */
-    public function setEngine(string $engine) : self
+    public function setDatabases(string $database) : self
     {
 
-        // If engine is proper.
-        if ($engine !== 'mySql') {
-            throw new ModelEngineNameOtosetException($engine, $this);
+        // If any database is not proper.
+        foreach (func_get_args() as $database) {
+            if (isset(PRZESLIJMI_SHORTQUERY_DATABASES[$database]) === false) {
+                throw new ModelDatabaseNameOtosetException($database, $this);
+            }
         }
 
         // Save.
-        $this->engine = $engine;
+        $this->databases = func_get_args();
 
         return $this;
+    }
+
+    /**
+     * Getter for databases.
+     *
+     * @since  v1.0
+     * @return string[]
+     */
+    public function getDatabases() : array
+    {
+
+        return $this->databases;
+    }
+
+    /**
+     * Getter for databases as string (format: `'database1', 'database2'`).
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getDatabasesAsString() : string
+    {
+
+        return '\'' . implode('\', \'', $this->databases) . '\'';
+    }
+
+    /**
+     * Getter for databases.
+     *
+     * @since  v1.0
+     * @throws ModelDatabaseDonoexException When no database is defined for this model.
+     * @return string
+     */
+    public function getDatabase(string $database = null) : string
+    {
+
+        // Check if given database is accepted.
+        if ($database !== null && in_array($database, $this->databases) === true) {
+            return $database;
+        }
+
+        // Find which database.
+        if ($database === null && isset($this->databases[0]) === true) {
+            return $this->databases[0];
+        }
+
+        throw new ModelDatabaseDonoexException($this);
     }
 
     /**
      * Getter for engine name.
      *
      * @since  v1.0
-     * @throws ModelEngineNameDonoexException When engine name is empty (null).
+     * @throws ModelEngineDonoexException   When there is no engine for this database.
      * @return string
      */
-    public function getEngine() : string
+    public function getEngine(?string $database = null) : string
     {
 
-        // Throw on null.
-        if (is_null($this->engine) === true) {
-            throw new ModelEngineNameDonoexException($this);
+        // Lvd.
+        $engine = '';
+
+        // Get result.
+        try {
+
+            // Get database.
+            $database = PRZESLIJMI_SHORTQUERY_DATABASES[$this->getDatabase($database)];
+
+            // Get engine.
+            $engine = $database['engine'];
+
+        } catch (Throwable $thr) {
+            throw new ModelEngineDonoexException($this, $thr);
         }
 
-        return $this->engine;
+        return $engine;
     }
 
     /**
      * Returns Select Query object for this model.
      *
+     * @param string $database Opt., null. To which database of this model you want a query?
+     *
      * @since  v1.0
      * @return SelectQuery
      */
-    public function newSelect()
+    public function newSelect(?string $database = null) : Engine
     {
 
-        return new SelectQuery($this);
+        // Lvd.
+        $query = null;
+
+        try {
+
+            // Lvd.
+            $database   = $this->getDatabase($database);
+            $engine     = PRZESLIJMI_SHORTQUERY_ENGINES[$this->getEngine($database)];
+            $queryClass = $engine['readQuery'];
+
+            // Create query.
+            $query = new $queryClass($this, $database);
+
+        } catch (Throwable $thr) {
+            throw new ModelQueryCreationFailedException($this, 'SELECT', $thr);
+        }
+
+        return $query;
     }
 
     /**
      * Returns Update Query object for this model.
      *
+     * @param string $database Opt., null. To which database of this model you want a query?
+     *
      * @since  v1.0
      * @return UpdateQuery
      */
-    public function newUpdate()
+    public function newUpdate(?string $database = null) : Engine
     {
 
-        return new UpdateQuery($this);
+        // Lvd.
+        $query = null;
+
+        try {
+
+            // Lvd.
+            $database   = $this->getDatabase($database);
+            $engine     = PRZESLIJMI_SHORTQUERY_ENGINES[$this->getEngine($database)];
+            $queryClass = $engine['updateQuery'];
+
+            // Create query.
+            $query = new $queryClass($this, $database);
+
+        } catch (Throwable $thr) {
+            throw new ModelQueryCreationFailedException($this, 'UPDATE', $thr);
+        }
+
+        return $query;
     }
 
     /**
      * Returns Insert Query object for this model.
      *
+     * @param string $database Opt., null. To which database of this model you want a query?
+     *
      * @since  v1.0
      * @return InsertQuery
      */
-    public function newInsert()
+    public function newInsert(?string $database = null) : Engine
     {
 
-        return new InsertQuery($this);
+        // Lvd.
+        $query = null;
+
+        try {
+
+            // Lvd.
+            $database   = $this->getDatabase($database);
+            $engine     = PRZESLIJMI_SHORTQUERY_ENGINES[$this->getEngine($database)];
+            $queryClass = $engine['createQuery'];
+
+            // Create query.
+            $query = new $queryClass($this, $database);
+
+        } catch (Throwable $thr) {
+            throw new ModelQueryCreationFailedException($this, 'INSERT', $thr);
+        }
+
+        return $query;
     }
 
     /**
      * Returns Delete Query object for this model.
      *
+     * @param string $database Opt., null. To which database of this model you want a query?
+     *
      * @since  v1.0
      * @return InsertQuery
      */
-    public function newDelete()
+    public function newDelete(?string $database = null) : Engine
     {
 
-        return new DeleteQuery($this);
+        // Lvd.
+        $query = null;
+
+        try {
+
+            // Lvd.
+            $database   = $this->getDatabase($database);
+            $engine     = PRZESLIJMI_SHORTQUERY_ENGINES[$this->getEngine($database)];
+            $queryClass = $engine['deleteQuery'];
+
+            // Create query.
+            $query = new $queryClass($this, $database);
+
+        } catch (Throwable $thr) {
+            throw new ModelQueryCreationFailedException($this, 'DELETE', $thr);
+        }
+
+        return $query;
     }
 
     /**
@@ -231,8 +369,8 @@ class Model
         // If namespace is proper.
         try {
             RegEx::ifMatches($namespace, '/^(([A-Z])+([a-zA-Z0-9_])*(\\\\){1}){3,}$/');
-        } catch (Exception $exception) {
-            throw new ModelNamespaceWrosynException($namespace, $this, $exception);
+        } catch (Throwable $thr) {
+            throw new ModelNamespaceWrosynException($namespace, $this, $thr);
         }
 
         // Add last slash.
@@ -259,7 +397,7 @@ class Model
 
         // Throw on null.
         if (is_null($this->namespace) === true) {
-            throw new ModelNamespaceDonoexException();
+            throw new ModelNamespaceDonoexException($this);
         }
 
         // If only slice of namespace is needed.
@@ -275,7 +413,7 @@ class Model
     }
 
     /**
-     * Setter for instance class name..
+     * Setter for instance class name.
      *
      * @param string $instanceClassName Instance class name.
      *
@@ -289,8 +427,8 @@ class Model
         // If namespace is proper.
         try {
             RegEx::ifMatches($instanceClassName, '/^([A-Z])+([a-zA-Z0-9_])*$/');
-        } catch (Exception $exception) {
-            throw new ModelInstanceClassNameWrosynException($instanceClassName, $this, $exception);
+        } catch (Throwable $thr) {
+            throw new ModelInstanceClassNameWrosynException($instanceClassName, $this, $thr);
         }
 
         // Save.
@@ -317,15 +455,6 @@ class Model
         return $this->instanceClassName;
     }
 
-    public function getNewInstance()
-    {
-
-        // Throw on null.
-        $name = $this->namespace . '\\' . $this->instanceClassName;
-
-        return new $name();
-    }
-
     /**
      * Setter for collection class name..
      *
@@ -341,8 +470,8 @@ class Model
         // If namespace is proper.
         try {
             RegEx::ifMatches($collectionClassName, '/^([A-Z])+([a-zA-Z0-9_])*$/');
-        } catch (Exception $exception) {
-            throw new ModelCollectionClassNameWrosynException($collectionClassName, $this, $exception);
+        } catch (Throwable $thr) {
+            throw new ModelCollectionClassNameWrosynException($collectionClassName, $this, $thr);
         }
 
         // Save.
@@ -448,7 +577,7 @@ class Model
     }
 
     /**
-     * Adds Field for the model.
+     * Adds Field for model.
      *
      * @param Field $field Field object.
      *
@@ -508,8 +637,11 @@ class Model
     /**
      * Returns Field that is a primary key Field for this model.
      *
+     * @todo Make better test for duplicating primary key or accept that there can be more then one.
+     *
      * @since  v1.0
-     * @throws ModelPrimaryKeyFieldDonoexException WHere there is no Primary Key in this Model.
+     * @throws ModelPrimaryKeyFieldAlrexException  When there are more than one Primary Keys in this Model.
+     * @throws ModelPrimaryKeyFieldDonoexException When there is no Primary Key in this Model.
      * @return Field
      */
     public function getPrimaryKeyField() : Field
@@ -524,11 +656,12 @@ class Model
                 if (is_null($result) === true) {
                     $result = $field;
                 } else {
-                    throw new \Exception('There are more then one pk\'s in model!!!');
+                    throw new ModelPrimaryKeyFieldAlrexException($this);
                 }
             }
         }
 
+        // Found Field - return.
         if (is_null($result) === false) {
             return $result;
         }
@@ -620,10 +753,36 @@ class Model
             );
 
             // Save part.
-            $result[] = 'set' . implode('', $propNameExploded);
+            $result[] = 'set' . implode('', $fieldNameExploded);
         }
 
         return $result;
+    }
+
+    /**
+     * Adds relation for model.
+     *
+     * @param Relation $relation Relation object.
+     *
+     * @since  v1.0
+     * @throws ModelRelationNameAlrexException When trying to add next relation with the same name.
+     * @return self
+     */
+    public function addRelation(Relation $relation) : self
+    {
+
+        // Check and throw.
+        if (isset($this->relations[$relation->getName()]) === true) {
+            throw new ModelRelationNameAlrexException($relation->getName(), $this);
+        }
+
+        // Add Field.
+        $this->relations[$relation->getName()] = $relation;
+
+        // Inform Field about Model in which it resides.
+        $relation->setModelFrom($this->getClass('modelClass'));
+
+        return $this;
     }
 
     /**
@@ -644,14 +803,15 @@ class Model
      * @param string $name Name of relation.
      *
      * @since  v1.0
-     * @throws KeyDonoexException On relationDoesNotExists.
+     * @throws ModelRelationDonoexException If relation does not exists.
      * @return Relation.
      */
     public function getRelationByName(string $name) : Relation
     {
 
+        // Check if Relation exists.
         if (isset($this->relations[$name]) === false) {
-            throw new KeyDonoexException('relationDoesNotExists', $this->getRelationsNames(), $name);
+            throw new ModelRelationDonoexException($name, $this);
         }
 
         return $this->relations[$name];
@@ -670,25 +830,31 @@ class Model
     }
 
     /**
-     * Adds relation for the model.
-     *
-     * @param Relation $relation Relation object.
+     * Creates and return new instance of this model.
      *
      * @since  v1.0
-     * @throws KeyAlrexException On relationWithThisNameAlreadyExists.
-     * @return self
+     * @throws ModelInstanceCreationFailedException When failed to create instance.
+     * @return object
      */
-    public function addRelation(Relation $relation) : self
+    public function getNewInstance() : object
     {
 
-        if (isset($this->relations[$relation->getName()]) === true) {
-            throw new KeyAlrexException('relationWithThisNameAlreadyExists', $relation->getName());
+        // Lvd.
+        $instance = null;
+
+        // Work.
+        try {
+
+            // Lvd.
+            $name = $this->namespace . '\\' . $this->instanceClassName;
+
+            // Create.
+            $instance = new $name();
+
+        } catch (Throwable $thr) {
+            throw new ModelInstanceCreationFailedException($this, $thr);
         }
 
-        $this->relations[$relation->getName()] = $relation;
-
-        $relation->setModelFrom($this->getClass('modelClass'));
-
-        return $this;
+        return $instance;
     }
 }

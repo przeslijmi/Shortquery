@@ -2,6 +2,8 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
+use Przeslijmi\Shortquery\Data\Model;
+
 /**
  * Field in model object.
  */
@@ -35,4 +37,38 @@ interface FieldInterface
      * @return string
      */
     public function toPhp() : string;
+
+    /**
+     * Prepare PHP commands for getter.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getterToPhp() : string;
+
+    /**
+     * Prepare PHP commands for comparer given value vs saved value.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function compareToPhp() : string;
+
+    /**
+     * Prepare PHP commands for additional, extra methods to put inside generated Field class.
+     *
+     * @param Model $model To use for PHP code.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function extraMethodsToPhp(Model $model) : string;
+
+    /**
+     * Deliver hint for value correctness for this Field.
+     *
+     * @since  v1.0
+     * @return string
+     */
+    public function getProperValueHint() : string;
 }

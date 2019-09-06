@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Exceptions\Records;
+namespace Przeslijmi\Shortquery\Exceptions\Data;
 
 use Exception;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
