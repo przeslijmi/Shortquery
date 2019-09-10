@@ -11,5 +11,4 @@ There are three (plus one) ways to use Shoq as PDO.
 ## Shoq as direct query generator
 
 ```php
-
-
+```
