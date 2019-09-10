@@ -92,8 +92,9 @@ class SelectQuery extends Query
     public function addFields(...$fields) : self
     {
 
+        // Add every field.
         foreach ($fields as $field) {
-            $this->select[] = Field::factory($field);
+            $this->addField($field, true);
         }
 
         return $this;
@@ -179,7 +180,7 @@ class SelectQuery extends Query
     /**
      * Adder for Val ContentItems.
      *
-     * @param Val[] ...$vals Array of variables from which Val can be created.
+     * @param string[]|Val[] ...$vals Array of variables from which Val can be created.
      *
      * @since  v1.0
      * @return void
@@ -188,10 +189,34 @@ class SelectQuery extends Query
     {
 
         foreach ($vals as $val) {
-            $this->select[] = Val::factory($val);
+            if (is_array($val)) {
+                $this->select[] = Val::factory($val[0], $val[1]);
+            } else {
+                $this->select[] = Val::factory($val);
+            }
         }
 
         return $this;
+    }
+
+    /**
+     * Adder for one Val.
+     *
+     * @param string|Val $val Val to be added.
+     *
+     * @since  v1.0
+     * @return Val
+     */
+    public function addVal($val) : Val
+    {
+
+        // Lvd.
+        $val = Val::factory($val);
+
+        // Add to select.
+        $this->select[] = $val;
+
+        return $val;
     }
 
     public function addRelation(string $name) : self
@@ -311,7 +336,7 @@ class SelectQuery extends Query
 
         // For every Content Item.
         foreach ($this->groupBy as $contentItem) {
-            $result[] = ToString::toString($contentItem);
+            $result[] = ToString::toString($contentItem, 'group');
         }
 
         return 'GROUP BY ' . implode(', ', $result);
@@ -330,7 +355,7 @@ class SelectQuery extends Query
 
         // For every Content Item.
         foreach ($this->orderBy as $contentItem) {
-            $result[] = ToString::toString($contentItem);
+            $result[] = ToString::toString($contentItem, 'order');
         }
 
         return 'ORDER BY ' . implode(', ', $result);

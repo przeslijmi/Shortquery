@@ -25,16 +25,26 @@ class CompToString
     private $comp;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
-     * @param Comp $comp Comp element to be converted to string.
+     * @param Comp   $comp    Comp element to be converted to string.
+     * @param string $context Name of context.
      *
      * @since v1.0
      */
-    public function __construct(Comp $comp)
+    public function __construct(Comp $comp, string $context = '')
     {
 
-        $this->comp = $comp;
+        $this->comp    = $comp;
+        $this->context = $context;
     }
 
     /**

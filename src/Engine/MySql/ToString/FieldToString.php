@@ -25,16 +25,26 @@ class FieldToString
     private $field;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
-     * @param Field $field Field element to be converted to string.
+     * @param Field  $field   Field element to be converted to string.
+     * @param string $context Name of context.
      *
      * @since v1.0
      */
-    public function __construct(Field $field)
+    public function __construct(Field $field, string $context = '')
     {
 
-        $this->field = $field;
+        $this->field   = $field;
+        $this->context = $context;
     }
 
     /**

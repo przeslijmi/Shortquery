@@ -29,16 +29,26 @@ class LogicToString
     private $logicItem;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
      * @param LogicItem $logicItem LogicItem element to be converted to string.
+     * @param string    $context   Name of context.
      *
      * @since v1.0
      */
-    public function __construct(LogicItem $logicItem)
+    public function __construct(LogicItem $logicItem, string $context = '')
     {
 
         $this->logicItem = $logicItem;
+        $this->context   = $context;
     }
 
     /**

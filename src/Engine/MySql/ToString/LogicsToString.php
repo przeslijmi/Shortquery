@@ -31,14 +31,23 @@ class LogicsToString
     private $logics;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
-     * @param LogicItem[] $logics Collection of LogicItem elements to be converted to string.
+     * @param LogicItem[] $logics  Collection of LogicItem elements to be converted to string.
+     * @param string      $context Name of context.
      *
      * @since  v1.0
      * @throws ParamWrotypeException On mysqlEngineConvLogicsToString.
      */
-    public function __construct(array $logics)
+    public function __construct(array $logics, string $context = '')
     {
 
         try {
@@ -52,7 +61,8 @@ class LogicsToString
             );
         }
 
-        $this->logics = $logics;
+        $this->logics  = $logics;
+        $this->context = $context;
     }
 
     /**

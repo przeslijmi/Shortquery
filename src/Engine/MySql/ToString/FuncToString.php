@@ -41,9 +41,18 @@ class FuncToString
      */
     private $func;
 
+    /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
     const SERVED_FUNCS = [
         'between' => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncBetweenToString',
         'count'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncCountToString',
+        'concat'  => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncConcatToString',
         'in'      => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInToString',
         'inset'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInSetToString',
         'min'     => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncMinToString',
@@ -53,14 +62,16 @@ class FuncToString
     /**
      * Constructor.
      *
-     * @param Func $func Func element to be converted to string.
+     * @param Func   $func    Func element to be converted to string.
+     * @param string $context Name of context.
      *
      * @since v1.0
      */
-    public function __construct(Func $func)
+    public function __construct(Func $func, string $context = '')
     {
 
-        $this->func = $func;
+        $this->func    = $func;
+        $this->context = $context;
     }
 
     /**
@@ -85,10 +96,10 @@ class FuncToString
             }
 
             $childClassName = self::SERVED_FUNCS[$this->func->getName()];
-            $child          = new $childClassName($this->func);
+            $child          = new $childClassName($this->func, $this->context);
             $result         = $child->toString();
 
-            if ($this->func->getAlias() !== '') {
+            if (empty($this->func->getAlias()) === false && in_array($this->context, [ 'group', 'order' ]) === false) {
                 $result .= ' AS `' . $this->func->getAlias() . '`';
             }
 

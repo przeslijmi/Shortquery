@@ -42,11 +42,11 @@ abstract class Query extends MySql
      *
      * @since v1.0
      */
-    public function __construct(Model $model, string $database)
+    public function __construct(Model $model, ?string $database = null)
     {
 
-        $this->model = $model;
-        $this->database = $database;
+        $this->model    = $model;
+        $this->database = ( $database ?? $model->getDatabase() );
     }
 
     /**

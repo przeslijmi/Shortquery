@@ -8,6 +8,8 @@ use Przeslijmi\Shortquery\Engine\MySql\ToString\FieldToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\IntValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\NullValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\TrueValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValToString;
 use Przeslijmi\Shortquery\Items\ContentItem;
@@ -34,16 +36,25 @@ class FuncToStringParent
     protected $onlyForCompMethods = [];
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
      * @param Func $func Func to be converted to string.
      *
      * @since v1.0
      */
-    public function __construct(Func $func)
+    public function __construct(Func $func, string $context)
     {
 
-        $this->func = $func;
+        $this->func    = $func;
+        $this->context = $context;
     }
 
     /**
@@ -135,27 +146,35 @@ class FuncToStringParent
 
         switch ($isA) {
             case 'Przeslijmi\Shortquery\Items\Val':
-                $result = ( new ValToString($item) )->toString();
+                $result = ( new ValToString($item, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\IntVal':
-                $result = ( new IntValToString($item) )->toString();
+                $result = ( new IntValToString($item, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\NullVal':
-                $result = ( new NullValToString($item) )->toString();
+                $result = ( new NullValToString($this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Vals':
-                $result = ( new ValsToString($item) )->toString();
+                $result = ( new ValsToString($item, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Func':
-                $result = ( new FuncToString($item) )->toString();
+                $result = ( new FuncToString($item, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Field':
-                $result = ( new FieldToString($item) )->toString();
+                $result = ( new FieldToString($item, $this->context) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\TrueVal':
+                $result = ( new TrueValToString($this->context) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\FalseVal':
+                $result = ( new FalseValToString($this->context) )->toString();
             break;
 
             default:

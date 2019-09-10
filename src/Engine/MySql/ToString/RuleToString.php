@@ -25,16 +25,26 @@ class RuleToString
     private $rule;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
-     * @param Rule $rule Rule element to be converted to string.
+     * @param Rule   $rule    Rule element to be converted to string.
+     * @param string $context Name of context.
      *
      * @since v1.0
      */
-    public function __construct(Rule $rule)
+    public function __construct(Rule $rule, string $context = '')
     {
 
-        $this->rule = $rule;
+        $this->rule    = $rule;
+        $this->context = $context;
     }
 
     /**
@@ -58,31 +68,35 @@ class RuleToString
 
         switch ($leftIs) {
             case 'Przeslijmi\Shortquery\Items\Field':
-                $left = ( new FieldToString($left) )->toString();
+                $left = ( new FieldToString($left, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Val':
-                $left = ( new ValToString($left) )->toString();
+                $left = ( new ValToString($left, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\IntVal':
-                $left = ( new IntValToString($left) )->toString();
+                $left = ( new IntValToString($left, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\NullVal':
-                $left = ( new NullValToString($left) )->toString();
+                $left = ( new NullValToString($this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Vals':
-                $left = ( new ValsToString($left) )->toString();
+                $left = ( new ValsToString($left, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Func':
-                $left = ( new FuncToString($left) )->toString();
+                $left = ( new FuncToString($left, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\TrueVal':
-                $left = ( new TrueValToString($left) )->toString();
+                $left = ( new TrueValToString($this->context) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\FalseVal':
+                $left = ( new FalseValToString($this->context) )->toString();
             break;
 
             default:
@@ -92,31 +106,35 @@ class RuleToString
 
         switch ($rightIs) {
             case 'Przeslijmi\Shortquery\Items\Field':
-                $right = ( new FieldToString($right) )->toString();
+                $right = ( new FieldToString($right, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Val':
-                $right = ( new ValToString($right) )->toString();
+                $right = ( new ValToString($right, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\IntVal':
-                $right = ( new IntValToString($right) )->toString();
+                $right = ( new IntValToString($right, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\NullVal':
-                $right = ( new NullValToString($right) )->toString();
+                $right = ( new NullValToString($this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Vals':
-                $right = ( new ValsToString($right) )->toString();
+                $right = ( new ValsToString($right, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\Func':
-                $right = ( new FuncToString($right) )->toString();
+                $right = ( new FuncToString($right, $this->context) )->toString();
             break;
 
             case 'Przeslijmi\Shortquery\Items\TrueVal':
-                $right = ( new TrueValToString($right) )->toString();
+                $right = ( new TrueValToString($this->context) )->toString();
+            break;
+
+            case 'Przeslijmi\Shortquery\Items\FalseVal':
+                $right = ( new TrueValToString($this->context) )->toString();
             break;
 
             default:

@@ -25,16 +25,26 @@ class ValsToString
     private $vals;
 
     /**
+     * Context name - where are you going to use result of this `FieldToString` class?
+     *
+     * @var   string
+     * @since v1.0
+     */
+    private $context;
+
+    /**
      * Constructor.
      *
-     * @param Vals $vals Vals element to be converted to string.
+     * @param Vals   $vals    Vals element to be converted to string.
+     * @param string $context Name of context.
      *
      * @since v1.0
      */
-    public function __construct(Vals $vals)
+    public function __construct(Vals $vals, string $context = '')
     {
 
-        $this->vals = $vals;
+        $this->vals    = $vals;
+        $this->context = $context;
     }
 
     /**

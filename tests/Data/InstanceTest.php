@@ -7,6 +7,7 @@ use Przeslijmi\Shortquery\ForTests\Models\Girl;
 use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldValueUnaccesibleException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueUnaccesibleException;
+use Przeslijmi\Shortquery\Data\Field;
 
 /**
  * Methods for testing Items of Shortquery class.
@@ -47,6 +48,7 @@ final class InstanceTest extends TestCase
 
         // Tests.
         $this->assertEquals(1, $girl->getPk());
+        $this->assertInstanceOf('Przeslijmi\Shortquery\Data\Field', $girl->grabPkField());
         $this->assertEquals(1, $girl->grabPkValue());
         $this->assertEquals(1, $girl->grabFieldValue('pk'));
         $this->assertEquals('pinterest,facebook', $girl->grabMultiDictFieldValue('webs', 'main', 'pt,fb'));

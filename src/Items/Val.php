@@ -16,6 +16,26 @@ class Val extends ContentItem
     private $value;
 
     /**
+     * Factory method.
+     *
+     * @param string $value String.
+     *
+     * @since  v1.0
+     * @return Val
+     */
+    public static function factory(string $value, ?string $alias = null) : Val
+    {
+
+        $val = new self($value);
+
+        if ($alias !== null) {
+            $val->setAlias($alias);
+        }
+
+        return $val;
+    }
+
+    /**
      * Constructor.
      *
      * @param string $value String.

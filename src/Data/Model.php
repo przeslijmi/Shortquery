@@ -841,19 +841,10 @@ class Model
 
         // Lvd.
         $instance = null;
+        $name     = $this->namespace . '\\' . $this->instanceClassName;
 
-        // Work.
-        try {
-
-            // Lvd.
-            $name = $this->namespace . '\\' . $this->instanceClassName;
-
-            // Create.
-            $instance = new $name();
-
-        } catch (Throwable $thr) {
-            throw new ModelInstanceCreationFailedException($this, $thr);
-        }
+        // Create.
+        $instance = new $name();
 
         return $instance;
     }
