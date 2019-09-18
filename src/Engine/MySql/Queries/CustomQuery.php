@@ -18,10 +18,17 @@ class CustomQuery extends Query
      */
     private $query;
 
-    public function __construct()
+    /**
+     * Constructor.
+     *
+     * @param string $database Name of database (see: PRZESLIJMI_SHORTQUERY_DATABASES).
+     *
+     * @since v1.0
+     */
+    public function __construct(string $database)
     {
 
-        parent::__construct(new Model('nonExisting'));
+        parent::__construct(new Model('nonExisting'), $database);
     }
 
     /**
