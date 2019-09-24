@@ -324,10 +324,14 @@ class SetField extends Field implements FieldInterface
         $php .= $this->ln(1, ' */');
         $php .= $this->ln(1, 'public function addTo' . $pc . '(string $toBeAdded) : ' . $model->getClass('instanceClassName'));
         $php .= $this->ln(1, '{', 2);
-        $php .= $this->ln(2, '$value = array_merge(');
-        $php .= $this->ln(3, 'explode(\',\', $toBeAdded),');
-        $php .= $this->ln(3, 'explode(\',\', $this->' . $get . '())');
-        $php .= $this->ln(2, ');', 2);
+        $php .= $this->ln(2, 'if (empty($this->' . $get . '()) === true) {');
+        $php .= $this->ln(3, '$value = explode(\',\', $toBeAdded);');
+        $php .= $this->ln(2, '} else {');
+        $php .= $this->ln(3, '$value = array_merge(');
+        $php .= $this->ln(4, 'explode(\',\', $toBeAdded),');
+        $php .= $this->ln(4, 'explode(\',\', $this->' . $get . '())');
+        $php .= $this->ln(3, ');');
+        $php .= $this->ln(2, '}', 2);
         $php .= $this->ln(2, '$value = array_unique($value);', 2);
         $php .= $this->ln(2, '$value = implode(\',\', $value);', 2);
         $php .= $this->ln(2, 'return $this->' . $set . '(( empty($value) === true ) ? null : $value);', 1);
