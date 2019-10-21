@@ -63,12 +63,26 @@ class CustomQuery extends Query
     public function call()
     {
 
-        $this->engineCallQuery();
+        return $this->engineCallQuery();
     }
 
     public function fire()
     {
 
         $this->engineFireQuery();
+    }
+
+    public function read()
+    {
+
+        $array = [];
+        $result = $this->call();
+
+        // Go through every record and put it into final array.
+        while (( $record = $result->fetch_assoc() ) !== null) {
+            $array[] = $record;
+        }
+
+        return $array;
     }
 }
