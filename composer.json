@@ -1,5 +1,23 @@
 {
-    "name": "przeslijmi/shortquery",
-    "version": "v0.4.1",
-    "type": "library"
+  "name": "przeslijmi/shortquery",
+  "description": "PHP library working as database connector.",
+  "version": "v0.4.2",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Karol Nowakowski",
+      "email": "przeslijmi@gmail.com"
+    }
+  ],
+  "require": {
+    "php" : "^7.3",
+    "przeslijmi/sexceptions": "~1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Przeslijmi\\Shortquery\\": "src/",
+      "Przeslijmi\\Sexceptions\\": "../../przeslijmi/sexceptions/src/"
+    }
+  }
 }

@@ -1,0 +1,990 @@
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\CacheByPk.php
+------------------------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 2 LINES
+------------------------------------------------------------------------------------
+ 139 | ERROR | [x] There must be no blank line following an inline comment
+ 181 | ERROR | [ ] Implicit true comparisons prohibited; use === TRUE instead
+------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Creator\PhpFile.php
+------------------------------------------------------------------------------------------
+FOUND 7 ERRORS AFFECTING 3 LINES
+------------------------------------------------------------------------------------------
+ 106 | ERROR | Missing @throws tag in function comment
+ 166 | ERROR | Missing doc comment for function addUse()
+ 166 | ERROR | Missing doc comment for function addUse()
+ 166 | ERROR | Missing doc comment for function addUse()
+ 174 | ERROR | Missing doc comment for function showNamespaces()
+ 174 | ERROR | Missing doc comment for function showNamespaces()
+ 174 | ERROR | Missing doc comment for function showNamespaces()
+------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Creator.php
+--------------------------------------------------------------------------------------------
+FOUND 9 ERRORS AFFECTING 6 LINES
+--------------------------------------------------------------------------------------------
+  39 | ERROR | Missing @throws tag in function comment
+ 124 | ERROR | Comment missing for @throws tag in function comment
+ 124 | ERROR | Comment missing for @throws tag in function comment
+ 125 | ERROR | Comment missing for @throws tag in function comment
+ 125 | ERROR | Comment missing for @throws tag in function comment
+ 126 | ERROR | Comment missing for @throws tag in function comment
+ 126 | ERROR | Comment missing for @throws tag in function comment
+ 128 | ERROR | Expected 2 @throws tag(s) in function comment; 3 found
+ 132 | ERROR | Inline comments must end in full-stops, exclamation marks, or question marks
+--------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Collection\Logics.php
+-------------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 2 LINES
+-------------------------------------------------------------------------------------------------
+ 101 | ERROR | Missing @throws tag for "RuleFactoryFailedException" exception
+ 165 | ERROR | Missing @throws tag in function comment
+-------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Collection\Tools.php
+--------------------------------------------------------------------------------------------------------------
+FOUND 9 ERRORS AFFECTING 4 LINES
+--------------------------------------------------------------------------------------------------------------
+  51 | ERROR | [x] End comment for long condition not found; expected "//end foreach"
+ 146 | ERROR | [ ] Doc comment for parameter "...$collections" missing
+ 146 | ERROR | [ ] Doc comment for parameter "...$collections" missing
+ 146 | ERROR | [ ] Doc comment for parameter "...$collections" missing
+ 149 | ERROR | [ ] Doc comment for parameter $sollections does not match actual variable name ...$collections
+ 149 | ERROR | [ ] Doc comment for parameter $sollections does not match actual variable name ...$collections
+ 149 | ERROR | [ ] Doc comment for parameter $sollections does not match actual variable name ...$collections
+ 154 | ERROR | [ ] Expected type hint "array"; found "Collection" for $sollections
+ 154 | ERROR | [ ] Expected type hint "array"; found "Collection" for $sollections
+--------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Collection.php
+----------------------------------------------------------------------------------------------------------------
+FOUND 34 ERRORS AFFECTING 14 LINES
+----------------------------------------------------------------------------------------------------------------
+  50 | ERROR | [ ] Missing @throws tag in function comment
+  70 | ERROR | [ ] Missing @return tag in function comment
+  70 | ERROR | [ ] Missing @return tag in function comment
+  70 | ERROR | [ ] Missing @return tag in function comment
+ 116 | ERROR | [ ] Missing @throws tag in function comment
+ 309 | ERROR | [ ] Doc comment for parameter "$instanceOrInstances" missing
+ 309 | ERROR | [ ] Doc comment for parameter "$instanceOrInstances" missing
+ 309 | ERROR | [ ] Doc comment for parameter "$instanceOrInstances" missing
+ 312 | ERROR | [ ] Doc comment for parameter $instance does not match actual variable name $instanceOrInstances
+ 312 | ERROR | [ ] Doc comment for parameter $instance does not match actual variable name $instanceOrInstances
+ 312 | ERROR | [ ] Doc comment for parameter $instance does not match actual variable name $instanceOrInstances
+ 355 | ERROR | [ ] Doc comment for parameter "$records" missing
+ 355 | ERROR | [ ] Doc comment for parameter "$records" missing
+ 355 | ERROR | [ ] Doc comment for parameter "$records" missing
+ 358 | ERROR | [ ] Doc comment for parameter $record does not match actual variable name $records
+ 358 | ERROR | [ ] Doc comment for parameter $record does not match actual variable name $records
+ 358 | ERROR | [ ] Doc comment for parameter $record does not match actual variable name $records
+ 493 | ERROR | [x] Expected 4 spaces after parameter name; 5 found
+ 493 | ERROR | [x] Expected 4 spaces after parameter name; 5 found
+ 493 | ERROR | [x] Expected 4 spaces after parameter name; 5 found
+ 497 | ERROR | [ ] Missing @throws tag in function comment
+ 531 | ERROR | [x] End comment for long condition not found; expected "//end try"
+ 536 | ERROR | [ ] Missing doc comment for function readOrderedBy()
+ 536 | ERROR | [ ] Missing doc comment for function readOrderedBy()
+ 536 | ERROR | [ ] Missing doc comment for function readOrderedBy()
+ 612 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 612 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 612 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 640 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 640 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 640 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 663 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 663 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+ 663 | ERROR | [ ] Doc comment for parameter "$differentSetOfInstances" missing
+----------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 4 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\DateField.php
+---------------------------------------------------------------------------------------------------------------
+FOUND 3 ERRORS AND 6 WARNINGS AFFECTING 7 LINES
+---------------------------------------------------------------------------------------------------------------
+  57 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 7 spaces but found 1 space
+  58 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 4 spaces but found 1 space
+  59 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 4 spaces but found 1 space
+  60 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 4 spaces but found 1 space
+  63 | WARNING | [ ] This comment is 38% valid code; is this commented out code?
+  96 | ERROR   | [ ] Inline comments must start with a capital letter
+  96 | ERROR   | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+  96 | ERROR   | [x] Comments may not appear after statements
+ 129 | WARNING | [ ] Line exceeds 120 characters; contains 128 characters
+---------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 5 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+---------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\DecimalField.php
+--------------------------------------------------------------------------------------------------
+FOUND 21 ERRORS AND 3 WARNINGS AFFECTING 8 LINES
+--------------------------------------------------------------------------------------------------
+  57 | ERROR   | [x] Expected 5 spaces after parameter type; 1 found
+  57 | ERROR   | [x] Expected 6 spaces after parameter name; 5 found
+  57 | ERROR   | [x] Expected 5 spaces after parameter type; 1 found
+  57 | ERROR   | [x] Expected 6 spaces after parameter name; 5 found
+  57 | ERROR   | [x] Expected 5 spaces after parameter type; 1 found
+  57 | ERROR   | [x] Expected 6 spaces after parameter name; 5 found
+  59 | ERROR   | [ ] Parameter tags must be grouped together in a doc comment
+  59 | ERROR   | [x] Expected "integer|integer" but found "int|integer" for parameter type
+  59 | ERROR   | [ ] Parameter comment must start with a capital letter
+  59 | ERROR   | [ ] Parameter comment must end with a full stop
+  59 | ERROR   | [x] Expected "integer|integer" but found "int|integer" for parameter type
+  59 | ERROR   | [ ] Parameter comment must start with a capital letter
+  59 | ERROR   | [ ] Parameter comment must end with a full stop
+  60 | ERROR   | [ ] Missing @return tag in function comment
+  60 | ERROR   | [ ] Missing @return tag in function comment
+  60 | ERROR   | [ ] Missing @return tag in function comment
+  74 | ERROR   | [ ] Superfluous parameter comment
+  74 | ERROR   | [ ] Superfluous parameter comment
+  74 | ERROR   | [ ] Superfluous parameter comment
+ 118 | WARNING | [ ] Line exceeds 120 characters; contains 196 characters
+ 154 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+ 154 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+ 208 | WARNING | [ ] Line exceeds 120 characters; contains 122 characters
+ 267 | WARNING | [ ] Line exceeds 120 characters; contains 174 characters
+--------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 10 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\EnumField.php
+------------------------------------------------------------------------------------------------
+FOUND 30 ERRORS AFFECTING 12 LINES
+------------------------------------------------------------------------------------------------
+  55 | ERROR | Doc comment for parameter "...$values" missing
+  55 | ERROR | Doc comment for parameter "...$values" missing
+  55 | ERROR | Doc comment for parameter "...$values" missing
+  58 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  58 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  58 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  63 | ERROR | Expected type hint "array"; found "string" for $values
+  63 | ERROR | Expected type hint "array"; found "string" for $values
+  85 | ERROR | Doc comment for parameter "...$values" missing
+  85 | ERROR | Doc comment for parameter "...$values" missing
+  85 | ERROR | Doc comment for parameter "...$values" missing
+  88 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  88 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  88 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+  93 | ERROR | Expected type hint "array"; found "string" for $values
+  93 | ERROR | Expected type hint "array"; found "string" for $values
+ 102 | ERROR | Doc comment for parameter "...$values" missing
+ 102 | ERROR | Doc comment for parameter "...$values" missing
+ 102 | ERROR | Doc comment for parameter "...$values" missing
+ 105 | ERROR | Parameter comment must end with a full stop
+ 105 | ERROR | Parameter comment must end with a full stop
+ 106 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+ 106 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+ 106 | ERROR | Doc comment for parameter $values does not match actual variable name ...$values
+ 111 | ERROR | Expected type hint "array"; found "string" for $values
+ 111 | ERROR | Expected type hint "array"; found "string" for $values
+ 132 | ERROR | Doc comment for parameter "$dictName" missing
+ 132 | ERROR | Doc comment for parameter "$dictName" missing
+ 132 | ERROR | Doc comment for parameter "$dictName" missing
+ 196 | ERROR | Missing @throws tag in function comment
+------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\IntField.php
+----------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AND 1 WARNING AFFECTING 2 LINES
+----------------------------------------------------------------------------------------------
+  90 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+  90 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+ 190 | WARNING | [ ] Line exceeds 120 characters; contains 124 characters
+----------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+----------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\JsonField.php
+-----------------------------------------------------------------------------------------------
+FOUND 7 ERRORS AFFECTING 4 LINES
+-----------------------------------------------------------------------------------------------
+ 40 | ERROR | [x] Expected "stdClass" but found "?stdClass" for parameter type
+ 40 | ERROR | [x] Expected "stdClass" but found "?stdClass" for parameter type
+ 64 | ERROR | [ ] Type hint "string" missing for $value
+ 64 | ERROR | [ ] Type hint "string" missing for $value
+ 78 | ERROR | [ ] Implicit true comparisons prohibited; use === TRUE instead
+ 96 | ERROR | [x] Expected at least 1 space before "."; 0 found
+ 96 | ERROR | [x] Concat operator must be surrounded by a single space
+-----------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 4 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-----------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\SetField.php
+------------------------------------------------------------------------------------------------------
+FOUND 31 ERRORS AND 5 WARNINGS AFFECTING 17 LINES
+------------------------------------------------------------------------------------------------------
+  55 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  55 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  55 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  58 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  58 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  58 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  63 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+  63 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+  85 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  85 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  85 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+  88 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  88 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  88 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+  93 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+  93 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+ 102 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+ 102 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+ 102 | ERROR   | [ ] Doc comment for parameter "...$values" missing
+ 105 | ERROR   | [ ] Parameter comment must end with a full stop
+ 105 | ERROR   | [ ] Parameter comment must end with a full stop
+ 106 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+ 106 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+ 106 | ERROR   | [ ] Doc comment for parameter $values does not match actual variable name ...$values
+ 111 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+ 111 | ERROR   | [ ] Expected type hint "array"; found "string" for $values
+ 132 | ERROR   | [ ] Doc comment for parameter "$dictName" missing
+ 132 | ERROR   | [ ] Doc comment for parameter "$dictName" missing
+ 132 | ERROR   | [ ] Doc comment for parameter "$dictName" missing
+ 206 | ERROR   | [ ] Missing @throws tag in function comment
+ 273 | WARNING | [x] Empty PHP statement detected: superfluous semi-colon.
+ 273 | ERROR   | [x] Each PHP statement must be on a line by itself
+ 294 | WARNING | [ ] Line exceeds 120 characters; contains 122 characters
+ 295 | WARNING | [ ] Line exceeds 120 characters; contains 122 characters
+ 325 | WARNING | [ ] Line exceeds 120 characters; contains 127 characters
+ 348 | WARNING | [ ] Line exceeds 120 characters; contains 134 characters
+------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field\VarCharField.php
+--------------------------------------------------------------------------------------------------
+FOUND 3 ERRORS AND 1 WARNING AFFECTING 3 LINES
+--------------------------------------------------------------------------------------------------
+   9 | ERROR   | [x] There must be one blank line after the last USE statement; 2 found;
+  90 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+  90 | ERROR   | [x] Expected "null|integer" but found "null|int" for parameter type
+ 132 | WARNING | [ ] Line exceeds 120 characters; contains 122 characters
+--------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 3 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Field.php
+--------------------------------------------------------------------------------------------------------
+FOUND 18 ERRORS AFFECTING 8 LINES
+--------------------------------------------------------------------------------------------------------
+  63 | ERROR | [ ] Doc comment is empty
+  65 | ERROR | [ ] Missing @var tag in member variable comment
+  67 | ERROR | [x] Expected 1 blank line(s) before member var; 0 found
+  67 | ERROR | [ ] Missing member variable doc comment
+  69 | ERROR | [ ] Doc comment is empty
+  71 | ERROR | [ ] Missing @var tag in member variable comment
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeInput" missing
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeOutput" missing
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeInput" missing
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeOutput" missing
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeInput" missing
+ 312 | ERROR | [ ] Doc comment for parameter "$phpTypeOutput" missing
+ 315 | ERROR | [ ] Doc comment for parameter $phpType does not match actual variable name $phpTypeInput
+ 315 | ERROR | [ ] Doc comment for parameter $phpType does not match actual variable name $phpTypeInput
+ 315 | ERROR | [ ] Doc comment for parameter $phpType does not match actual variable name $phpTypeInput
+ 333 | ERROR | [ ] Missing doc comment for function setPhpDocsType()
+ 333 | ERROR | [ ] Missing doc comment for function setPhpDocsType()
+ 333 | ERROR | [ ] Missing doc comment for function setPhpDocsType()
+--------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\FieldInterface.php
+----------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AND 1 WARNING AFFECTING 1 LINE
+----------------------------------------------------------------------------------------------
+ 31 | WARNING | This comment is 54% valid code; is this commented out code?
+ 31 | ERROR   | Inline comments must start with a capital letter
+ 31 | ERROR   | Inline comments must end in full-stops, exclamation marks, or question marks
+----------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Instance.php
+----------------------------------------------------------------------------------------
+FOUND 7 ERRORS AFFECTING 7 LINES
+----------------------------------------------------------------------------------------
+  19 | ERROR | Missing member variable doc comment
+  35 | ERROR | Doc comment is empty
+  37 | ERROR | Missing @var tag in member variable comment
+  40 | ERROR | Doc comment is empty
+  42 | ERROR | Missing @var tag in member variable comment
+ 112 | ERROR | Missing @throws tag in function comment
+ 138 | ERROR | Missing @throws tag in function comment
+----------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Model.php
+-------------------------------------------------------------------------------------
+FOUND 19 ERRORS AND 1 WARNING AFFECTING 12 LINES
+-------------------------------------------------------------------------------------
+ 178 | ERROR   | Doc comment for parameter "$database" missing
+ 178 | ERROR   | Doc comment for parameter "$database" missing
+ 178 | ERROR   | Doc comment for parameter "$database" missing
+ 201 | ERROR   | Doc comment for parameter "$database" missing
+ 201 | ERROR   | Doc comment for parameter "$database" missing
+ 201 | ERROR   | Doc comment for parameter "$database" missing
+ 233 | ERROR   | Parameter comment must end with a full stop
+ 233 | ERROR   | Parameter comment must end with a full stop
+ 237 | ERROR   | Missing @throws tag in function comment
+ 264 | ERROR   | Parameter comment must end with a full stop
+ 264 | ERROR   | Parameter comment must end with a full stop
+ 268 | ERROR   | Missing @throws tag in function comment
+ 295 | ERROR   | Parameter comment must end with a full stop
+ 295 | ERROR   | Parameter comment must end with a full stop
+ 299 | ERROR   | Missing @throws tag in function comment
+ 326 | ERROR   | Parameter comment must end with a full stop
+ 326 | ERROR   | Parameter comment must end with a full stop
+ 330 | ERROR   | Missing @throws tag in function comment
+ 523 | ERROR   | Missing @throws tag in function comment
+ 640 | WARNING | Comment refers to a TODO task
+-------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Relation.php
+----------------------------------------------------------------------------------------
+FOUND 3 ERRORS AFFECTING 3 LINES
+----------------------------------------------------------------------------------------
+ 81 | ERROR | Missing @var tag in member variable comment
+ 84 | ERROR | Doc comment is empty
+ 86 | ERROR | Missing @var tag in member variable comment
+----------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Queries\CustomQuery.php
+--------------------------------------------------------------------------------------------------------------
+FOUND 9 ERRORS AND 1 WARNING AFFECTING 4 LINES
+--------------------------------------------------------------------------------------------------------------
+ 63 | ERROR   | [ ] Missing doc comment for function call()
+ 63 | ERROR   | [ ] Missing doc comment for function call()
+ 63 | ERROR   | [ ] Missing doc comment for function call()
+ 69 | ERROR   | [ ] Missing doc comment for function fire()
+ 69 | ERROR   | [ ] Missing doc comment for function fire()
+ 69 | ERROR   | [ ] Missing doc comment for function fire()
+ 75 | ERROR   | [ ] Missing doc comment for function read()
+ 75 | ERROR   | [ ] Missing doc comment for function read()
+ 75 | ERROR   | [ ] Missing doc comment for function read()
+ 78 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 2 spaces but found 1 space
+--------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Queries\DeleteQuery.php
+-----------------------------------------------------------------------------------------------------------
+FOUND 7 ERRORS AFFECTING 3 LINES
+-----------------------------------------------------------------------------------------------------------
+ 17 | ERROR | Missing member variable doc comment
+ 58 | ERROR | Missing doc comment for function call()
+ 58 | ERROR | Missing doc comment for function call()
+ 58 | ERROR | Missing doc comment for function call()
+ 64 | ERROR | Missing doc comment for function fire()
+ 64 | ERROR | Missing doc comment for function fire()
+ 64 | ERROR | Missing doc comment for function fire()
+-----------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Queries\InsertQuery.php
+-----------------------------------------------------------------------------------------------------------
+FOUND 13 ERRORS AFFECTING 5 LINES
+-----------------------------------------------------------------------------------------------------------
+  15 | ERROR | Missing member variable doc comment
+  74 | ERROR | Missing doc comment for function call()
+  74 | ERROR | Missing doc comment for function call()
+  74 | ERROR | Missing doc comment for function call()
+  92 | ERROR | Missing doc comment for function fire()
+  92 | ERROR | Missing doc comment for function fire()
+  92 | ERROR | Missing doc comment for function fire()
+ 103 | ERROR | Missing doc comment for function setAddedPk()
+ 103 | ERROR | Missing doc comment for function setAddedPk()
+ 103 | ERROR | Missing doc comment for function setAddedPk()
+ 109 | ERROR | Missing doc comment for function getAddedPk()
+ 109 | ERROR | Missing doc comment for function getAddedPk()
+ 109 | ERROR | Missing doc comment for function getAddedPk()
+-----------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Queries\SelectQuery.php
+---------------------------------------------------------------------------------------------------------------
+FOUND 67 ERRORS AND 4 WARNINGS AFFECTING 28 LINES
+---------------------------------------------------------------------------------------------------------------
+  37 | ERROR   | [x] The open comment tag must be the only content on the line
+  37 | ERROR   | [x] Doc comment short description must be on the first line
+  37 | ERROR   | [ ] Doc comment short description must start with a capital letter
+  90 | ERROR   | [ ] Function return type is void, but function contains return statement
+  90 | ERROR   | [ ] Function return type is void, but function contains return statement
+  92 | ERROR   | [ ] Type hint "array" missing for ...$fields
+  92 | ERROR   | [ ] Type hint "array" missing for ...$fields
+ 103 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 103 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 103 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 108 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toOrderBy
+ 108 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toOrderBy
+ 108 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toOrderBy
+ 111 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 111 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 113 | ERROR   | [ ] Type hint "Field" missing for $field
+ 113 | ERROR   | [ ] Type hint "Field" missing for $field
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcName" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcItems" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcName" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcItems" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcName" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$funcItems" missing
+ 141 | ERROR   | [ ] Doc comment for parameter "$toOrderBy" missing
+ 144 | ERROR   | [ ] Doc comment for parameter $func does not match actual variable name $funcName
+ 144 | ERROR   | [ ] Doc comment for parameter $func does not match actual variable name $funcName
+ 144 | ERROR   | [ ] Doc comment for parameter $func does not match actual variable name $funcName
+ 145 | ERROR   | [ ] Doc comment for parameter $toSelect does not match actual variable name $funcItems
+ 145 | ERROR   | [ ] Doc comment for parameter $toSelect does not match actual variable name $funcItems
+ 145 | ERROR   | [ ] Doc comment for parameter $toSelect does not match actual variable name $funcItems
+ 146 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toSelect
+ 146 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toSelect
+ 146 | ERROR   | [ ] Doc comment for parameter $toGroupBy does not match actual variable name $toSelect
+ 149 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 149 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 151 | ERROR   | [ ] Expected type hint "Func"; found "string" for $func
+ 151 | ERROR   | [ ] Expected type hint "bool"; found "array" for $toSelect
+ 151 | ERROR   | [ ] Expected type hint "Func"; found "string" for $func
+ 151 | ERROR   | [ ] Expected type hint "bool"; found "array" for $toSelect
+ 186 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 186 | ERROR   | [ ] Function return type is void, but function contains return statement
+ 192 | ERROR   | [ ] Implicit true comparisons prohibited; use === TRUE instead
+ 222 | ERROR   | [ ] Missing doc comment for function addRelation()
+ 222 | ERROR   | [ ] Missing doc comment for function addRelation()
+ 222 | ERROR   | [ ] Missing doc comment for function addRelation()
+ 265 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 3 spaces but found 1 space
+ 345 | ERROR   | [ ] Missing doc comment for function orderBySectionToString()
+ 345 | ERROR   | [ ] Missing doc comment for function orderBySectionToString()
+ 345 | ERROR   | [ ] Missing doc comment for function orderBySectionToString()
+ 392 | WARNING | [ ] This comment is 58% valid code; is this commented out code?
+ 392 | ERROR   | [ ] Inline comments must start with a capital letter
+ 393 | ERROR   | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+ 393 | ERROR   | [x] There must be no blank line following an inline comment
+ 421 | ERROR   | [ ] Missing doc comment for function readBy()
+ 421 | ERROR   | [ ] Missing doc comment for function readBy()
+ 421 | ERROR   | [ ] Missing doc comment for function readBy()
+ 462 | WARNING | [ ] This comment is 67% valid code; is this commented out code?
+ 462 | ERROR   | [ ] Inline comments must start with a capital letter
+ 462 | ERROR   | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+ 463 | WARNING | [ ] Empty return statement not required here
+ 484 | ERROR   | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+ 491 | ERROR   | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+ 516 | ERROR   | [x] End comment for long condition not found; expected "//end while"
+ 524 | ERROR   | [ ] Missing doc comment for function call()
+ 524 | ERROR   | [ ] Missing doc comment for function call()
+ 524 | ERROR   | [ ] Missing doc comment for function call()
+ 532 | ERROR   | [ ] Missing doc comment for function fire()
+ 532 | ERROR   | [ ] Missing doc comment for function fire()
+ 532 | ERROR   | [ ] Missing doc comment for function fire()
+---------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 5 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+---------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Queries\UpdateQuery.php
+-----------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+-----------------------------------------------------------------------------------------------------------
+ 75 | ERROR | Missing doc comment for function call()
+ 75 | ERROR | Missing doc comment for function call()
+ 75 | ERROR | Missing doc comment for function call()
+ 81 | ERROR | Missing doc comment for function fire()
+ 81 | ERROR | Missing doc comment for function fire()
+ 81 | ERROR | Missing doc comment for function fire()
+-----------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\Query.php
+---------------------------------------------------------------------------------------------
+FOUND 14 ERRORS AND 1 WARNING AFFECTING 6 LINES
+---------------------------------------------------------------------------------------------
+  14 | ERROR   | Missing doc comment for class Query
+  14 | ERROR   | Missing doc comment for class Query
+  38 | ERROR   | Doc comment for parameter "$database" missing
+  38 | ERROR   | Doc comment for parameter "$database" missing
+  38 | ERROR   | Doc comment for parameter "$database" missing
+  80 | ERROR   | Missing doc comment for function addLogics()
+  80 | ERROR   | Missing doc comment for function addLogics()
+  80 | ERROR   | Missing doc comment for function addLogics()
+  88 | ERROR   | Missing doc comment for function addRule()
+  88 | ERROR   | Missing doc comment for function addRule()
+  88 | ERROR   | Missing doc comment for function addRule()
+ 204 | ERROR   | Missing doc comment for function valueify()
+ 204 | ERROR   | Missing doc comment for function valueify()
+ 204 | ERROR   | Missing doc comment for function valueify()
+ 224 | WARNING | Comment refers to a TODO task "make throw instead of this"
+---------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\CompToString.php
+-------------------------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 2 LINES
+-------------------------------------------------------------------------------------------------------------
+ 64 | ERROR | [ ] All SWITCH statements must contain a DEFAULT case
+ 84 | ERROR | [x] End comment for long condition not found; expected "//end switch"
+-------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\FuncToString\FuncConcatToString.php
+--------------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+--------------------------------------------------------------------------------------------------------------------------------
+ 14 | WARNING | Comment refers to a TODO task
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\FuncToString\FuncCountToString.php
+-------------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-------------------------------------------------------------------------------------------------------------------------------
+ 14 | WARNING | Comment refers to a TODO task
+-------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\FuncToString\FuncToStringParent.php
+--------------------------------------------------------------------------------------------------------------------------------
+FOUND 4 ERRORS AND 2 WARNINGS AFFECTING 4 LINES
+--------------------------------------------------------------------------------------------------------------------------------
+  46 | ERROR   | [ ] Doc comment for parameter "$context" missing
+  46 | ERROR   | [ ] Doc comment for parameter "$context" missing
+  46 | ERROR   | [ ] Doc comment for parameter "$context" missing
+ 114 | WARNING | [ ] Comment refers to a TODO task
+ 140 | WARNING | [ ] Function's cyclomatic complexity (11) exceeds 10; consider refactoring the function
+ 183 | ERROR   | [x] End comment for long condition not found; expected "//end switch"
+--------------------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\FuncToString.php
+-------------------------------------------------------------------------------------------------------------
+FOUND 1 ERROR AFFECTING 1 LINE
+-------------------------------------------------------------------------------------------------------------
+ 109 | ERROR | [x] End comment for long condition not found; expected "//end try"
+-------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString\RuleToString.php
+-------------------------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 2 LINES
+-------------------------------------------------------------------------------------------------------------
+ 105 | ERROR | [x] End comment for long condition not found; expected "//end switch"
+ 143 | ERROR | [x] End comment for long condition not found; expected "//end switch"
+-------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString.php
+-------------------------------------------------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 4 LINES
+-------------------------------------------------------------------------------------------------------------------------------------------------
+  1 | ERROR | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for
+    |       |     getTokensAsString() must exist in the token stack
+ 20 | ERROR | [ ] Missing doc comment for class ToString
+ 20 | ERROR | [ ] Missing doc comment for class ToString
+ 23 | ERROR | [ ] PHP4 style constructors are not allowed; use "__construct()" instead
+ 23 | ERROR | [ ] Missing doc comment for function toString()
+ 79 | ERROR | [x] Expected 1 blank line at end of file; 2 found
+-------------------------------------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql.php
+---------------------------------------------------------------------------------------
+FOUND 8 ERRORS AFFECTING 3 LINES
+---------------------------------------------------------------------------------------
+ 29 | ERROR | Superfluous parameter comment
+ 29 | ERROR | Superfluous parameter comment
+ 29 | ERROR | Superfluous parameter comment
+ 58 | ERROR | Variable "insert_id" is not in valid camel caps format
+ 58 | ERROR | Variable "insert_id" is not in valid camel caps format
+ 74 | ERROR | Superfluous parameter comment
+ 74 | ERROR | Superfluous parameter comment
+ 74 | ERROR | Superfluous parameter comment
+---------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Creator\ConfigurationIncompleteException.php
+------------------------------------------------------------------------------------------------------------------------------
+FOUND 4 ERRORS AFFECTING 2 LINES
+------------------------------------------------------------------------------------------------------------------------------
+ 17 | ERROR | [x] Expected 1 spaces after parameter name; 5 found
+ 17 | ERROR | [x] Expected 1 spaces after parameter name; 5 found
+ 17 | ERROR | [x] Expected 1 spaces after parameter name; 5 found
+ 24 | ERROR | [ ] Inline comments must end in full-stops, exclamation marks, or question marks
+------------------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 3 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Data\CollectionCantBeCreatedException.php
+---------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+---------------------------------------------------------------------------------------------------------------------------
+ 30 | WARNING | The use of function print_r() is discouraged
+---------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Data\CollectionCantBeReadException.php
+------------------------------------------------------------------------------------------------------------------------
+FOUND 8 ERRORS AFFECTING 3 LINES
+------------------------------------------------------------------------------------------------------------------------
+ 18 | ERROR | Doc comment for parameter $params does not match actual variable name $cause
+ 18 | ERROR | Doc comment for parameter $params does not match actual variable name $cause
+ 18 | ERROR | Doc comment for parameter $params does not match actual variable name $cause
+ 19 | ERROR | Superfluous parameter comment
+ 19 | ERROR | Superfluous parameter comment
+ 19 | ERROR | Superfluous parameter comment
+ 25 | ERROR | Expected type hint "array"; found "?Throwable" for $params
+ 25 | ERROR | Expected type hint "array"; found "?Throwable" for $params
+------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Data\CollectionSliceNotPossibleException.php
+------------------------------------------------------------------------------------------------------------------------------
+FOUND 9 ERRORS AFFECTING 2 LINES
+------------------------------------------------------------------------------------------------------------------------------
+ 15 | ERROR | Doc comment for parameter "$sliceFrom" missing
+ 15 | ERROR | Doc comment for parameter "$sliceLength" missing
+ 15 | ERROR | Doc comment for parameter "$sliceFrom" missing
+ 15 | ERROR | Doc comment for parameter "$sliceLength" missing
+ 15 | ERROR | Doc comment for parameter "$sliceFrom" missing
+ 15 | ERROR | Doc comment for parameter "$sliceLength" missing
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $sliceFrom
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $sliceFrom
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $sliceFrom
+------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Data\RecordAlreadyTakenOutFromCacheByPk.php
+-----------------------------------------------------------------------------------------------------------------------------
+FOUND 16 ERRORS AFFECTING 4 LINES
+-----------------------------------------------------------------------------------------------------------------------------
+ 15 | ERROR | Doc comment for parameter "$pkValue" missing
+ 15 | ERROR | Doc comment for parameter "$cacheByPk" missing
+ 15 | ERROR | Doc comment for parameter "$pkValue" missing
+ 15 | ERROR | Doc comment for parameter "$cacheByPk" missing
+ 15 | ERROR | Doc comment for parameter "$pkValue" missing
+ 15 | ERROR | Doc comment for parameter "$cacheByPk" missing
+ 18 | ERROR | Doc comment for parameter $className does not match actual variable name $pkValue
+ 18 | ERROR | Doc comment for parameter $className does not match actual variable name $pkValue
+ 18 | ERROR | Doc comment for parameter $className does not match actual variable name $pkValue
+ 19 | ERROR | Doc comment for parameter $params does not match actual variable name $cacheByPk
+ 19 | ERROR | Doc comment for parameter $params does not match actual variable name $cacheByPk
+ 19 | ERROR | Doc comment for parameter $params does not match actual variable name $cacheByPk
+ 26 | ERROR | Type hint "string" missing for $className
+ 26 | ERROR | Expected type hint "array"; found "CacheByPk" for $params
+ 26 | ERROR | Type hint "string" missing for $className
+ 26 | ERROR | Expected type hint "array"; found "CacheByPk" for $params
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Items\FieldDictDonoexException.php
+--------------------------------------------------------------------------------------------------------------------
+FOUND 2 ERRORS AFFECTING 1 LINE
+--------------------------------------------------------------------------------------------------------------------
+ 26 | ERROR | [x] Opening brace should be on a new line
+ 26 | ERROR | [x] Opening brace should be on a new line
+--------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Items\LogicFactoryFailedException.php
+-----------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+-----------------------------------------------------------------------------------------------------------------------
+ 29 | WARNING | The use of function print_r() is discouraged
+-----------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Items\RuleFactoryFailedException.php
+----------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+----------------------------------------------------------------------------------------------------------------------
+ 29 | WARNING | The use of function print_r() is discouraged
+----------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelDatabaseDonoexException.php
+------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+------------------------------------------------------------------------------------------------------------------------
+ 28 | WARNING | Line exceeds 120 characters; contains 182 characters
+------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelEngineDonoexException.php
+----------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+----------------------------------------------------------------------------------------------------------------------
+ 28 | WARNING | Line exceeds 120 characters; contains 162 characters
+----------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelInstanceClassNameDonoexException.php
+---------------------------------------------------------------------------------------------------------------------------------
+FOUND 1 ERROR AFFECTING 1 LINE
+---------------------------------------------------------------------------------------------------------------------------------
+ 30 | ERROR | Inline comments must end in full-stops, exclamation marks, or question marks
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelInstanceCreationFailedException.php
+--------------------------------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+--------------------------------------------------------------------------------------------------------------------------------
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+--------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelPrimaryKeyFieldAlrexException.php
+------------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+------------------------------------------------------------------------------------------------------------------------------
+ 29 | WARNING | Line exceeds 120 characters; contains 121 characters
+------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelQueryCreationFailedException.php
+-----------------------------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+-----------------------------------------------------------------------------------------------------------------------------
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 15 | ERROR | Doc comment for parameter "$queryType" missing
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+ 19 | ERROR | Doc comment for parameter $cause does not match actual variable name $queryType
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\ModelRelationDonoexException.php
+------------------------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+------------------------------------------------------------------------------------------------------------------------
+ 19 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+ 19 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+ 19 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+ 20 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+ 20 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+ 20 | ERROR | [x] Expected 8 spaces after parameter name; 5 found
+------------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 6 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\RelationFailedToCreateRule.php
+----------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+----------------------------------------------------------------------------------------------------------------------
+ 31 | WARNING | The use of function print_r() is discouraged
+----------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\RelationFieldFromIsCorrupted.php
+------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+------------------------------------------------------------------------------------------------------------------------
+ 29 | WARNING | Line exceeds 120 characters; contains 121 characters
+------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\RelationModelFromIsCorrupted.php
+------------------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+------------------------------------------------------------------------------------------------------------------------
+ 29 | WARNING | Line exceeds 120 characters; contains 121 characters
+------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Exceptions\Model\RelationNameWrosynException.php
+-----------------------------------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+-----------------------------------------------------------------------------------------------------------------------
+ 15 | ERROR | Doc comment for parameter "$model" missing
+ 15 | ERROR | Doc comment for parameter "$model" missing
+ 15 | ERROR | Doc comment for parameter "$model" missing
+ 19 | ERROR | Doc comment for parameter $relation does not match actual variable name $model
+ 19 | ERROR | Doc comment for parameter $relation does not match actual variable name $model
+ 19 | ERROR | Doc comment for parameter $relation does not match actual variable name $model
+-----------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\CreatorStarter.php
+-------------------------------------------------------------------------------------------------------------------------------------------------
+FOUND 7 ERRORS AND 1 WARNING AFFECTING 5 LINES
+-------------------------------------------------------------------------------------------------------------------------------------------------
+  1 | ERROR   | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for
+    |         |     getTokensAsString() must exist in the token stack
+ 17 | ERROR   | [ ] Missing doc comment for class CreatorStarter
+ 17 | ERROR   | [ ] Missing doc comment for class CreatorStarter
+ 20 | ERROR   | [ ] Missing member variable doc comment
+ 21 | ERROR   | [x] Expected 1 blank line(s) before member var; 0 found
+ 21 | ERROR   | [ ] Missing member variable doc comment
+ 21 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 4 spaces but found 1 space
+ 23 | ERROR   | [ ] Missing doc comment for function setOverwriteNonCore()
+-------------------------------------------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\Models\Core\CarCore.php
+-------------------------------------------------------------------------------------------------------
+FOUND 4 ERRORS AFFECTING 2 LINES
+-------------------------------------------------------------------------------------------------------
+  63 | ERROR | Doc comment for parameter "$database" missing
+  63 | ERROR | Doc comment for parameter "$database" missing
+  63 | ERROR | Doc comment for parameter "$database" missing
+ 103 | ERROR | Implicit true comparisons prohibited; use === TRUE instead
+-------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\Models\Core\GirlCore.php
+--------------------------------------------------------------------------------------------------------
+FOUND 4 ERRORS AFFECTING 2 LINES
+--------------------------------------------------------------------------------------------------------
+ 56 | ERROR | Doc comment for parameter "$database" missing
+ 56 | ERROR | Doc comment for parameter "$database" missing
+ 56 | ERROR | Doc comment for parameter "$database" missing
+ 96 | ERROR | Implicit true comparisons prohibited; use === TRUE instead
+--------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\Models\Core\ThingCore.php
+---------------------------------------------------------------------------------------------------------
+FOUND 4 ERRORS AFFECTING 2 LINES
+---------------------------------------------------------------------------------------------------------
+ 33 | ERROR | Doc comment for parameter "$database" missing
+ 33 | ERROR | Doc comment for parameter "$database" missing
+ 33 | ERROR | Doc comment for parameter "$database" missing
+ 73 | ERROR | Implicit true comparisons prohibited; use === TRUE instead
+---------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\Comp.php
+-------------------------------------------------------------------------------------
+FOUND 5 ERRORS AFFECTING 3 LINES
+-------------------------------------------------------------------------------------
+ 76 | ERROR | Doc comment for parameter "$method" missing
+ 76 | ERROR | Doc comment for parameter "$method" missing
+ 76 | ERROR | Doc comment for parameter "$method" missing
+ 77 | ERROR | Doc comment short description must start with a capital letter
+ 81 | ERROR | Missing @throws tag in function comment
+-------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\ContentItem.php
+--------------------------------------------------------------------------------------------
+FOUND 6 ERRORS AFFECTING 2 LINES
+--------------------------------------------------------------------------------------------
+ 101 | ERROR | Missing doc comment for function setAlias()
+ 101 | ERROR | Missing doc comment for function setAlias()
+ 101 | ERROR | Missing doc comment for function setAlias()
+ 109 | ERROR | Missing doc comment for function getAlias()
+ 109 | ERROR | Missing doc comment for function getAlias()
+ 109 | ERROR | Missing doc comment for function getAlias()
+--------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\Field.php
+----------------------------------------------------------------------------------------------------
+FOUND 9 ERRORS AND 2 WARNINGS AFFECTING 3 LINES
+----------------------------------------------------------------------------------------------------
+ 10 | WARNING | Comment refers to a TODO task
+ 10 | WARNING | @todo tag is not allowed in class comment
+ 56 | ERROR   | Doc comment for parameter "$field" missing
+ 56 | ERROR   | Doc comment for parameter "$table" missing
+ 56 | ERROR   | Doc comment for parameter "$field" missing
+ 56 | ERROR   | Doc comment for parameter "$table" missing
+ 56 | ERROR   | Doc comment for parameter "$field" missing
+ 56 | ERROR   | Doc comment for parameter "$table" missing
+ 59 | ERROR   | Doc comment for parameter $tableAndField does not match actual variable name $field
+ 59 | ERROR   | Doc comment for parameter $tableAndField does not match actual variable name $field
+ 59 | ERROR   | Doc comment for parameter $tableAndField does not match actual variable name $field
+----------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\Func.php
+-------------------------------------------------------------------------------------
+FOUND 2 ERRORS AND 5 WARNINGS AFFECTING 5 LINES
+-------------------------------------------------------------------------------------
+ 13 | WARNING | [ ] Comment refers to a TODO task
+ 13 | WARNING | [ ] @todo tag is not allowed in class comment
+ 38 | WARNING | [ ] Comment refers to a TODO task
+ 84 | WARNING | [ ] This comment is 67% valid code; is this commented out code?
+ 84 | ERROR   | [x] Block comment text must start on a new line
+ 94 | WARNING | [ ] This comment is 64% valid code; is this commented out code?
+ 96 | ERROR   | [x] There must be no blank line following an inline comment
+-------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+-------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\LogicItem.php
+------------------------------------------------------------------------------------------
+FOUND 3 ERRORS AFFECTING 1 LINE
+------------------------------------------------------------------------------------------
+ 19 | ERROR | Missing doc comment for function factory()
+ 19 | ERROR | Missing doc comment for function factory()
+ 19 | ERROR | Missing doc comment for function factory()
+------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\Rule.php
+--------------------------------------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 3 WARNINGS AFFECTING 3 LINES
+--------------------------------------------------------------------------------------------------------------
+ 59 | WARNING | [ ] Function's cyclomatic complexity (14) exceeds 10; consider refactoring the function
+ 64 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 2 spaces but found 1 space
+ 83 | WARNING | [ ] Comment refers to a TODO task "Add throw wrotype (as below) here"
+--------------------------------------------------------------------------------------------------------------
+PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
+--------------------------------------------------------------------------------------------------------------
+
+
+FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Items\Val.php
+------------------------------------------------------------------------------------
+FOUND 3 ERRORS AFFECTING 1 LINE
+------------------------------------------------------------------------------------
+ 18 | ERROR | Doc comment for parameter "$alias" missing
+ 18 | ERROR | Doc comment for parameter "$alias" missing
+ 18 | ERROR | Doc comment for parameter "$alias" missing
+------------------------------------------------------------------------------------
+
+
