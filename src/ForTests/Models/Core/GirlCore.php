@@ -264,10 +264,14 @@ class GirlCore extends Instance
     public function addToWebs(string $toBeAdded) : Girl
     {
 
-        $value = array_merge(
-            explode(',', $toBeAdded),
-            explode(',', $this->getWebs())
-        );
+        if (empty($this->getWebs()) === true) {
+            $value = explode(',', $toBeAdded);
+        } else {
+            $value = array_merge(
+                explode(',', $toBeAdded),
+                explode(',', $this->getWebs())
+            );
+        }
 
         $value = array_unique($value);
 

@@ -323,15 +323,12 @@ FOUND 2 ERRORS AND 1 WARNING AFFECTING 1 LINE
 
 FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Data\Instance.php
 ----------------------------------------------------------------------------------------
-FOUND 7 ERRORS AFFECTING 7 LINES
+FOUND 4 ERRORS AFFECTING 4 LINES
 ----------------------------------------------------------------------------------------
   19 | ERROR | Missing member variable doc comment
-  35 | ERROR | Doc comment is empty
-  37 | ERROR | Missing @var tag in member variable comment
-  40 | ERROR | Doc comment is empty
-  42 | ERROR | Missing @var tag in member variable comment
- 112 | ERROR | Missing @throws tag in function comment
- 138 | ERROR | Missing @throws tag in function comment
+  35 | ERROR | Missing short description in doc comment
+ 115 | ERROR | Missing @throws tag in function comment
+ 141 | ERROR | Missing @throws tag in function comment
 ----------------------------------------------------------------------------------------
 
 
@@ -604,19 +601,18 @@ PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
 
 
 FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql\ToString.php
--------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 FOUND 6 ERRORS AFFECTING 4 LINES
--------------------------------------------------------------------------------------------------------------------------------------------------
-  1 | ERROR | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for
-    |       |     getTokensAsString() must exist in the token stack
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1 | ERROR | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for getTokensAsString() must exist in the token stack
  20 | ERROR | [ ] Missing doc comment for class ToString
  20 | ERROR | [ ] Missing doc comment for class ToString
  23 | ERROR | [ ] PHP4 style constructors are not allowed; use "__construct()" instead
  23 | ERROR | [ ] Missing doc comment for function toString()
  79 | ERROR | [x] Expected 1 blank line at end of file; 2 found
--------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 PHPCBF CAN FIX THE 1 MARKED SNIFF VIOLATIONS AUTOMATICALLY
--------------------------------------------------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\Engine\MySql.php
@@ -847,11 +843,10 @@ FOUND 6 ERRORS AFFECTING 2 LINES
 
 
 FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\CreatorStarter.php
--------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 FOUND 7 ERRORS AND 1 WARNING AFFECTING 5 LINES
--------------------------------------------------------------------------------------------------------------------------------------------------
-  1 | ERROR   | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for
-    |         |     getTokensAsString() must exist in the token stack
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1 | ERROR   | [ ] An error occurred during processing; checking has been aborted. The error message was: The $start position for getTokensAsString() must exist in the token stack
  17 | ERROR   | [ ] Missing doc comment for class CreatorStarter
  17 | ERROR   | [ ] Missing doc comment for class CreatorStarter
  20 | ERROR   | [ ] Missing member variable doc comment
@@ -859,9 +854,9 @@ FOUND 7 ERRORS AND 1 WARNING AFFECTING 5 LINES
  21 | ERROR   | [ ] Missing member variable doc comment
  21 | WARNING | [x] Equals sign not aligned with surrounding assignments; expected 4 spaces but found 1 space
  23 | ERROR   | [ ] Missing doc comment for function setOverwriteNonCore()
--------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 PHPCBF CAN FIX THE 2 MARKED SNIFF VIOLATIONS AUTOMATICALLY
--------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 FILE: C:\Dev\php\ws-stolem-dev\stolem\vendor\przeslijmi\shortquery\src\ForTests\Models\Core\CarCore.php

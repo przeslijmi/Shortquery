@@ -18,7 +18,8 @@ class Val extends ContentItem
     /**
      * Factory method.
      *
-     * @param string $value String.
+     * @param string      $value String.
+     * @param null}string $alias Optional. Name of alias to use with this Item.
      *
      * @since  v1.0
      * @return Val

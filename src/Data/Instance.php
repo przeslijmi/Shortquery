@@ -34,11 +34,14 @@ abstract class Instance
 
     /**
      *
+     * @var string[]
      */
     protected $setFields = [];
 
     /**
+     * List of changed fields.
      *
+     * @var string[]
      */
     protected $changedFields = [];
 
@@ -248,6 +251,18 @@ abstract class Instance
     {
 
         return ( count($this->changedFields) > 0 );
+    }
+
+    /**
+     * Return list of fields that has been changed in this Instance.
+     *
+     * @since  v1.0
+     * @return string[]
+     */
+    public function grabChangedFieldsNames() : array
+    {
+
+        return $this->changedFields;
     }
 
     /**
