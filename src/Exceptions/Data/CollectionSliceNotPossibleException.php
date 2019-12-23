@@ -36,7 +36,6 @@ class CollectionSliceNotPossibleException extends ClassFopException
         $hint .= ', and user asked for slice starting from ' . $sliceFrom . ' with a length of ' . $sliceLength . '.';
 
         // Define.
-        $this->setCodeName('CollectionSliceNotPossibleException');
         $this->addInfo('context', 'slicingCollection');
         $this->addInfo('modelName', $collection->getModel()->getName());
         $this->addInfo('sliceFrom', (string) ( (int) $sliceFrom ));

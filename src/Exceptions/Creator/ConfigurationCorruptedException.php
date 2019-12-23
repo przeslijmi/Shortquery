@@ -26,7 +26,6 @@ class ConfigurationCorruptedException extends ClassFopException
         $hint .= 'File is locked for read or has corrupted contents.';
 
         // Define.
-        $this->setCodeName('Creator\ConfigurationCorruptedException');
         $this->addInfo('context', 'CreatorHasNoConfigurationToStartWork');
         $this->addInfo('hint', $hint);
 

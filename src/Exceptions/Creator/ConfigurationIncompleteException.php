@@ -36,8 +36,7 @@ class ConfigurationIncompleteException extends ClassFopException
         $hint .= PHP_EOL;
         $hint .= 'At least one from above is missing or has wrong type.';
 
-        // Set.
-        $this->setCodeName('Creator\ConfigurationIncompleteException');
+        // Define.
         $this->addInfo('context', 'CreatorHasNoConfigurationToStartWork');
         $this->addInfo('hint', $hint);
 

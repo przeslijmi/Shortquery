@@ -123,7 +123,7 @@ class JsonField extends Field implements FieldInterface
 
         // Result.
         $php  = $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc());
-        $php .= $this->ln(1, '|| json_encode(' . $this->cc(true) . ') === json_encode(' . $this->cc() . ')) {');
+        $php .= $this->ln(3, '|| json_encode(' . $this->cc(true) . ') === json_encode($' . $this->cc() . ')) {');
 
         return $php;
     }
