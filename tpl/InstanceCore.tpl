@@ -163,6 +163,12 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
         $this->setFields[]     = '<?= $field->getName() ?>';
         $this->changedFields[] = '<?= $field->getName() ?>';
 
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['<?= $field->getName() ?>']) === false) {
+            $this->fieldsValuesHistory['<?= $field->getName() ?>'] = [];
+        }
+        $this->fieldsValuesHistory['<?= $field->getName() ?>'][] = $<?= $field->getName('camelCase') ?>;
+
         return $this;
     }
 <?php endforeach; ?>

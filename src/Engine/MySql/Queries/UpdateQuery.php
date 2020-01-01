@@ -21,7 +21,6 @@ class UpdateQuery extends Query
     public function toString()
     {
 
-
         // Lvd.
         $queries = [];
         $model   = $this->getModel();
@@ -41,7 +40,7 @@ class UpdateQuery extends Query
             foreach ($fields as $field) {
 
                 // Ignore PK fields - do not change them.
-                if ($field->isPrimaryKey() === true) {
+                if ($field->isPrimaryKey() === true && $instance->grabPkFieldHasChanged() === false) {
                     continue;
                 }
 
@@ -54,9 +53,14 @@ class UpdateQuery extends Query
             }
 
             // Get Primary Key.
-            $pkField  = $model->getPrimaryKeyField()->getName();
-            $pkGetter = $model->getPrimaryKeyField()->getGetterName();
-            $pkValue  = $instance->$pkGetter();
+            $pkField = $model->getPrimaryKeyField()->getName();
+
+            // Get Primary Key value.
+            if ($instance->grabPkFieldHasChanged() === false) {
+                $pkValue = $instance->grabPkValue();
+            } else {
+                $pkValue = $instance->grabPkPreviousValue();
+            }
 
             // Create query.
             $query  = 'UPDATE ';

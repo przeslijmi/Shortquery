@@ -46,6 +46,13 @@ abstract class Instance
     protected $changedFields = [];
 
     /**
+     * List of changed fields.
+     *
+     * @var string[]
+     */
+    protected $fieldsValuesHistory = [];
+
+    /**
      * Link to Model of which this Instance is.
      *
      * @var Model
@@ -253,6 +260,12 @@ abstract class Instance
         return ( count($this->changedFields) > 0 );
     }
 
+    public function grabPkFieldHasChanged() : bool
+    {
+
+        return in_array($this->grabPkName(), $this->grabChangedFieldsNames());
+    }
+
     /**
      * Return list of fields that has been changed in this Instance.
      *
@@ -302,6 +315,13 @@ abstract class Instance
 
         return $this->$pkGetter();
     }
+
+    public function grabPkPreviousValue()
+    {
+
+        return $this->fieldsValuesHistory[$this->grabPkName()][0];
+    }
+
 
     /**
      * Setter for Primary Key value.

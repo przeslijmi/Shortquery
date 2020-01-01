@@ -4,12 +4,12 @@ namespace Przeslijmi\Shortquery\Exceptions\Data;
 
 use Throwable;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\CacheByPk;
+use Przeslijmi\Shortquery\CacheByKey;
 
 /**
- * Record was already taken out from CacheByPk instance.
+ * Record was already taken out from CacheByKey instance.
  */
-class RecordAlreadyTakenOutFromCacheByPk extends ClassFopException
+class RecordAlreadyTakenOutFromCacheByKey extends ClassFopException
 {
 
     /**
@@ -23,14 +23,14 @@ class RecordAlreadyTakenOutFromCacheByPk extends ClassFopException
      *
      * phpcs:disable Generic.Files.LineLength
      */
-    public function __construct($pkValue, CacheByPk $cacheByPk, ?Throwable $cause = null)
+    public function __construct($keyValue, CacheByKey $cacheByKey, ?Throwable $cause = null)
     {
 
         // Define.
-        $this->addInfo('pkValue', (string) $pkValue);
-        $this->addInfo('model', get_class($cacheByPk->getModel()));
-        $this->addInfo('modelName', $cacheByPk->getModel()->getName());
-        $this->addInfo('hint', 'Primary key has been already taken from this cache. If you want to get from cache more than one - use `get()`, not `getOnce()` method.');
+        $this->addInfo('keyValue', (string) $keyValue);
+        $this->addInfo('model', get_class($cacheByKey->getModel()));
+        $this->addInfo('modelName', $cacheByKey->getModel()->getName());
+        $this->addInfo('hint', 'Key has been already taken from this cache. If you want to get from cache more than one - use `get()`, not `getOnce()` method.');
 
         if (is_null($cause) === false) {
             $this->setCause($cause);
