@@ -73,20 +73,20 @@ class CacheByKey
     /**
      * Constructor.
      *
-     * @param string      $model     Name of model class to create cache on.
-     * @param null|string $fieldName Name of field to use other field than pk.
+     * @param string            $model            Name of model class to create cache on.
+     * @param null|string|array $fieldNameOrNames Optional. Name of field/fields to use if other than field pk.
      *
      * @since v1.0
      */
-    public function __construct(string $model, ?string $fieldName)
+    public function __construct(string $model, ?string $fieldNameOrNames = null)
     {
 
         // Save model.
         $this->model = new $model();
 
         // Save field name - if cache is to use other field than pk..
-        if ($fieldName !== null) {
-            $this->fieldOtherThanPk = $fieldName;
+        if ($fieldNameOrNames !== null) {
+            $this->fieldOtherThanPk = $fieldNameOrNames;
         }
 
         // Create select to limit results.
@@ -185,6 +185,8 @@ class CacheByKey
         }
 
         // If data was not present - create empty instance with this key value.
+        // Setter of key field will be used only if non-array key was given.
+        $setter = null;
 
         // Find setter.
         if ($this->fieldOtherThanPk === null) {
@@ -195,7 +197,9 @@ class CacheByKey
         }
 
         // Set key value.
-        $instance->$setter($keyValue);
+        if ($setter !== null) {
+            $instance->$setter($keyValue);
+        }
 
         // Mark that it was used already.
         $this->usedKeys[] = $keyValue;
