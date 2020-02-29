@@ -18,8 +18,13 @@ class Shoq
     const COMPARISON_METHODS = [
         'eq',  // Equal.
         'neq', // Not equal.
-        'leq', // Lower or equal.
-        'is',  // IS.
-        'nis', // NOT IS.
+        'gt',  // Greater than.
+        'geq', // Greater or equal.
+        'leq', // Less or equal.
+        'lt',  // Less then.
+        'is',  // Is.
+        'nis', // Not is.
+        'lk',  // Like.
+        'nlk', // Not like.
     ];
 }

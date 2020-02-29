@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine;
-use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
+use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByPk;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 
 /**

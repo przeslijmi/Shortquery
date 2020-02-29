@@ -108,6 +108,8 @@ class Rule extends AnyItem
                 $right = new NullVal();
             } elseif ($right === true) {
                 $right = new TrueVal();
+            } elseif (is_string($right) === true && substr($right, 0, 1) === '`' && substr($right, -1) === '`') {
+                $right = Field::factory($right);
             } else {
                 $right = new Val($right);
             }

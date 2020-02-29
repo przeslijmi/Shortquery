@@ -178,10 +178,10 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
-     * @return <?= $relation->getModelTo()->getClass('instanceClassName') ?>
+     * @return <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>
 
      */
-    public function <?= $relation->getGetterName() ?>() : <?= $relation->getModelTo()->getClass('instanceClassName') ?>
+    public function <?= $relation->getGetterName() ?>() : <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>
 
     {
 
@@ -189,7 +189,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     }
 
     /**
-     * Call to add children (<?= $relation->getModelTo()->getClass('instanceClassName') ?>) to this Instance.
+     * Call to add children (<?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>) to this Instance.
      *
      * @since  v1.0
      * @return self
@@ -198,7 +198,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     {
 
         // Get records with those pks.
-        $child = new <?= $relation->getModelTo()->getClass('instanceClassName') ?>(...func_get_args());
+        $child = new <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this-><?= $relation->getFieldFrom()->getGetterName() ?>() !== null) {
@@ -215,16 +215,16 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Adds one child-Instance to Relation Collection.
      *
-     * @param <?= $relation->getModelTo()->getClass('instanceClassName') ?> $instance One child-Instance of child for Relation.
+     * @param <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?> $instance One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function <?= $relation->getAdderName() ?>(<?= $relation->getModelTo()->getClass('instanceClassName') ?> $instance) : self
+    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?> $instance) : self
     {
 
         // If there is no Collection created - create one.
         if (is_null($this-><?= $relation->getName() ?>) === true) {
-            $this-><?= $relation->getName() ?> = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>();
+            $this-><?= $relation->getName() ?> = new <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>();
         }
 
         // Put this Instance to this Collection.
@@ -240,13 +240,13 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $relation->getModelTo()->getClass('collectionClassName') ?>
 
      */
-    public function <?= $relation->getGetterName() ?>() : <?= $relation->getModelTo()->getClass('collectionClassName') ?>
+    public function <?= $relation->getGetterName() ?>() : <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>
 
     {
 
         // Create empty collection if there isn't any added.
         if ($this-><?= $relation->getName() ?> === null) {
-            $this-><?= $relation->getName() ?> = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>();
+            $this-><?= $relation->getName() ?> = new <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>();
             $this-><?= $relation->getName() ?>->getLogics()->addFromRelation($this->grabModel()->getRelationByName('<?= $relation->getName() ?>'));
         }
 
@@ -263,7 +263,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     {
 
         // Get records with those pks.
-        $children = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>(...func_get_args());
+        $children = new <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>(...func_get_args());
 <?php if ($relation->hasLogics() === true): ?>
         $children->getLogics()->addFromRelation($this->grabModel()->getRelationByName('<?= $relation->getName() ?>'));
 <?php endif; ?>
@@ -291,7 +291,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return self
      */
-    public function <?= $relation->getAdderName() ?>(<?= $relation->getModelTo()->getClass('collectionClassName') ?> $collection) : self
+    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?> $collection) : self
     {
 
         // Put this Instance to this Collection.

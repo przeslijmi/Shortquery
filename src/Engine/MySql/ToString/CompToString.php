@@ -70,8 +70,20 @@ class CompToString
                 $result = '!=';
             break;
 
+            case 'gt':
+                $result = '>';
+            break;
+
+            case 'geq':
+                $result = '>=';
+            break;
+
             case 'leq':
                 $result = '<=';
+            break;
+
+            case 'lt':
+                $result = '<';
             break;
 
             case 'is':
@@ -80,6 +92,14 @@ class CompToString
 
             case 'nis':
                 $result = ' IS NOT ';
+            break;
+
+            case 'lk':
+                $result = ' LIKE ';
+            break;
+
+            case 'nlk':
+                $result = ' NOT LIKE ';
             break;
         }
 

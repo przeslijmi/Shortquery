@@ -54,7 +54,7 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
         }
 
         // Get records with those pks.
-        $toAdd = new <?= $relation->getModelTo()->getClass('collectionClassName') ?>(...func_get_args());
+        $toAdd = new <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>(...func_get_args());
         $toAdd->getLogics()->addRule('<?= $relation->getFieldTo()->getName() ?>', $pks);
         $toAdd->read();
 

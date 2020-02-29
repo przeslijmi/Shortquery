@@ -168,6 +168,12 @@ class CarCore extends Instance
         $this->setFields[]     = 'pk';
         $this->changedFields[] = 'pk';
 
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['pk']) === false) {
+            $this->fieldsValuesHistory['pk'] = [];
+        }
+        $this->fieldsValuesHistory['pk'][] = $pk;
+
         return $this;
     }
 
@@ -231,6 +237,12 @@ class CarCore extends Instance
         // Note that was set.
         $this->setFields[]     = 'owner_girl';
         $this->changedFields[] = 'owner_girl';
+
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['owner_girl']) === false) {
+            $this->fieldsValuesHistory['owner_girl'] = [];
+        }
+        $this->fieldsValuesHistory['owner_girl'][] = $ownerGirl;
 
         return $this;
     }
@@ -300,6 +312,12 @@ class CarCore extends Instance
         $this->setFields[]     = 'is_fast';
         $this->changedFields[] = 'is_fast';
 
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['is_fast']) === false) {
+            $this->fieldsValuesHistory['is_fast'] = [];
+        }
+        $this->fieldsValuesHistory['is_fast'][] = $isFast;
+
         return $this;
     }
 
@@ -363,6 +381,12 @@ class CarCore extends Instance
         // Note that was set.
         $this->setFields[]     = 'name';
         $this->changedFields[] = 'name';
+
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['name']) === false) {
+            $this->fieldsValuesHistory['name'] = [];
+        }
+        $this->fieldsValuesHistory['name'][] = $name;
 
         return $this;
     }

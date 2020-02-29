@@ -50,7 +50,7 @@ abstract class PhpFile
      *
      * @var string[]
      */
-    protected $namespaces;
+    protected $namespaces = [];
 
     /**
      * Constructor.
@@ -166,7 +166,23 @@ abstract class PhpFile
     protected function addUse(string $namespace) : self
     {
 
-        $this->namespaces[$namespace] = $namespace;
+        // Find class name for this namespace.
+        $className = substr($namespace, (strrpos($namespace, '\\') + 1));
+        $aliasName = $className;
+
+        // Find if this class name is not taken and if so - change alias.
+        foreach ($this->namespaces as $namespaceInfo) {
+            if ($namespaceInfo['className'] === $className) {
+                $aliasName = $className . rand(1000, 9999);
+            }
+        }
+
+        // Save namespace.
+        $this->namespaces[$namespace] = [
+            'namespace' => $namespace,
+            'className' => $className,
+            'aliasName' => $aliasName,
+        ];
 
         return $this;
     }
@@ -178,13 +194,23 @@ abstract class PhpFile
         $result = '';
 
         // Unique and sort.
-        sort($this->namespaces);
+        ksort($this->namespaces);
 
         // Fill up.
         foreach ($this->namespaces as $namespace) {
-            $result .= 'use ' . $namespace . ';' . "\n";
+
+            $addAlias = ( $namespace['aliasName'] !== $namespace['className'] ? ' as ' . $namespace['aliasName'] : '' );
+
+            $result .= 'use ' . $namespace['namespace'] . $addAlias . ';' . "\n";
         }
 
         echo $result;
+    }
+
+    protected function getClassName(string $namespace) : string
+    {
+
+
+        return $this->namespaces[$namespace]['aliasName'];
     }
 }

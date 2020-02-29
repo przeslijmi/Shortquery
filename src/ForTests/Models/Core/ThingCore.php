@@ -138,6 +138,12 @@ class ThingCore extends Instance
         $this->setFields[]     = 'pk';
         $this->changedFields[] = 'pk';
 
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['pk']) === false) {
+            $this->fieldsValuesHistory['pk'] = [];
+        }
+        $this->fieldsValuesHistory['pk'][] = $pk;
+
         return $this;
     }
 
@@ -201,6 +207,12 @@ class ThingCore extends Instance
         // Note that was set.
         $this->setFields[]     = 'name';
         $this->changedFields[] = 'name';
+
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['name']) === false) {
+            $this->fieldsValuesHistory['name'] = [];
+        }
+        $this->fieldsValuesHistory['name'][] = $name;
 
         return $this;
     }

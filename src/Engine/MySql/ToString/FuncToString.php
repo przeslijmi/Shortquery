@@ -50,13 +50,15 @@ class FuncToString
     private $context;
 
     const SERVED_FUNCS = [
-        'between' => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncBetweenToString',
-        'count'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncCountToString',
-        'concat'  => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncConcatToString',
-        'in'      => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInToString',
-        'inset'   => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInSetToString',
-        'min'     => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncMinToString',
-        'sum'     => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncSumToString',
+        'between'      => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncBetweenToString',
+        'concat'       => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncConcatToString',
+        'count'        => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncCountToString',
+        'localfunc'    => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncLocalToString',
+        'datediffdays' => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncDateDiffDaysToString',
+        'in'           => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInToString',
+        'inset'        => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInSetToString',
+        'min'          => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncMinToString',
+        'sum'          => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncSumToString',
     ];
 
     /**
