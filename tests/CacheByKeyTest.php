@@ -3,15 +3,15 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\CacheByPk;
-use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByPk;
+use Przeslijmi\Shortquery\CacheByKey;
+use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
 use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 
 /**
- * Methods for testing CacheByPk tool.
+ * Methods for testing CacheByKey tool.
  */
-final class CacheByPkTest extends TestCase
+final class CacheByKeyTest extends TestCase
 {
 
     /**
@@ -23,7 +23,7 @@ final class CacheByPkTest extends TestCase
     {
 
         $md = new CreatorStarter();
-        $md->run('schemaForTesting.php');
+        $md->run('resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }
@@ -39,7 +39,7 @@ final class CacheByPkTest extends TestCase
     {
 
         // Create cache.
-        $cache = new CacheByPk('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
         $cache->prepare();
 
         // Test.
@@ -48,9 +48,9 @@ final class CacheByPkTest extends TestCase
         $this->assertInstanceOf('Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery', $cache->getSelect());
 
         // Count, take out one, count again.
-        $firstCount = count($cache->getNonUsedPks());
+        $firstCount = count($cache->getNonTakenOutKeys());
         $cache->getOnce(1);
-        $secondCount = count($cache->getNonUsedPks());
+        $secondCount = count($cache->getNonTakenOutKeys());
 
         // Should be less by one piece.
         $this->assertEquals(( $firstCount - 1 ), $secondCount);
@@ -67,7 +67,7 @@ final class CacheByPkTest extends TestCase
     {
 
         // Create cache.
-        $cache = new CacheByPk('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
         $cache->prepare();
 
         // Test.
@@ -84,10 +84,10 @@ final class CacheByPkTest extends TestCase
     public function testIfTakingOutTwiceThrows() : void
     {
 
-        $this->expectException(RecordAlreadyTakenOutFromCacheByPk::class);
+        $this->expectException(RecordAlreadyTakenOutFromCacheByKey::class);
 
         // Create cache.
-        $cache = new CacheByPk('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
         $cache->prepare();
 
         // Take out twice the same record.

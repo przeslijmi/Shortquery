@@ -123,6 +123,8 @@ abstract class PhpFile
 
         // Define possible URIs.
         $possibleUris = [
+            'tpl/' . $name . '.local.tpl',
+            'tpl/' . $name . '.tpl',
             'vendor/przeslijmi/shortquery/tpl/' . $name . '.local.tpl',
             'vendor/przeslijmi/shortquery/tpl/' . $name . '.tpl',
         ];

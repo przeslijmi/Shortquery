@@ -26,7 +26,7 @@ final class CreatorTest extends TestCase
     {
 
         $md = new CreatorStarter();
-        $md->run('schemaForTesting.php');
+        $md->run('resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }
@@ -44,7 +44,7 @@ final class CreatorTest extends TestCase
         $md = new CreatorStarter();
         $md->setOverwriteCore(false);
         $md->setOverwriteNonCore(false);
-        $md->run('schemaForTesting.php');
+        $md->run('resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }

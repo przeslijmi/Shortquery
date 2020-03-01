@@ -35,7 +35,7 @@ final class RelationTest extends TestCase
 
         // Call to create local DB PHP files.
         $md = new CreatorStarter();
-        $md->run('schemaForTesting.php');
+        $md->run('resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }

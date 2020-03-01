@@ -39,12 +39,11 @@ class CreatorStarter
     public function run(string $schemaFileName)
     {
 
-        $schemaDir  = rtrim(str_replace('/', '\\', __DIR__), '\\');
-        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '\\'));
-        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '\\'));
-        $schemaDir .= '\\config\\';
+        $schemaDir  = rtrim(str_replace('\\', '/', __DIR__), '/');
+        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '/'));
+        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '/'));
 
-        $schemaUri = $schemaDir . $schemaFileName;
+        $schemaUri = $schemaDir . '/' . $schemaFileName;
 
         $creator = new Creator();
         $creator->getParams()->setOperation('create');

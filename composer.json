@@ -10,14 +10,44 @@
       "email": "przeslijmi@gmail.com"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/przeslijmi/sexceptions"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/przeslijmi/cliapp"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/przeslijmi/silogger"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/przeslijmi/sivalidator"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/przeslijmi/sihdd"
+    }
+  ],
   "require": {
     "php" : "^7.3",
-    "przeslijmi/sexceptions": "~1.0"
+    "przeslijmi/sexceptions": ">0",
+    "przeslijmi/cliapp": ">0",
+    "przeslijmi/silogger": ">0",
+    "przeslijmi/sivalidator": ">0",
+    "przeslijmi/sihdd": ">0"
   },
   "autoload": {
     "psr-4": {
       "Przeslijmi\\Shortquery\\": "src/",
-      "Przeslijmi\\Sexceptions\\": "../../przeslijmi/sexceptions/src/"
+      "Przeslijmi\\Sexceptions\\": "vendor/przeslijmi/sexceptions/src/",
+      "Przeslijmi\\CliApp\\": "vendor/przeslijmi/cliapp/src/",
+      "Przeslijmi\\Silogger\\": "vendor/przeslijmi/silogger/src/",
+      "Przeslijmi\\Sivalidator\\": "vendor/przeslijmi/sivalidator/src/",
+      "Przeslijmi\\SiHDD\\": "vendor/przeslijmi/sihdd/src/"
     }
   }
 }

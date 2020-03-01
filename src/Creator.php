@@ -142,6 +142,7 @@ class Creator extends CliApp
         // Check if source dir exists.
         if (file_exists($schemaUri) === false) {
             $hint = 'Creator has to take schema from a file given as param -su (--schemaUri). File is missing.';
+            var_dump($schemaUri);
             throw (new FileDonoexException('shortqueryModelsCreatorSchemaUri', $schemaUri))
                 ->addInfo('hint', $hint);
         }

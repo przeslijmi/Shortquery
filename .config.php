@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+use Przeslijmi\Silogger\Silogger;
+
 define('PRZESLIJMI_SHORTQUERY_ENGINES', [
   'mySql' => [
     'class'       => 'Przeslijmi\Shortquery\Engine\MySql',
@@ -25,3 +27,13 @@ define('PRZESLIJMI_SHORTQUERY_DATABASES', [
   ],
 
 ]);
+
+Silogger::declare(
+  'default',
+  [
+    'cli' => [
+      'levels' => [
+      ]
+    ]
+  ]
+);

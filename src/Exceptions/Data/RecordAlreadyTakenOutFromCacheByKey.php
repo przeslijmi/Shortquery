@@ -9,7 +9,7 @@ use Przeslijmi\Shortquery\CacheByKey;
 /**
  * Record was already taken out from CacheByKey instance.
  */
-class RecordAlreadyTakenOutFromCacheByPk extends ClassFopException
+class RecordAlreadyTakenOutFromCacheByKey extends ClassFopException
 {
 
     /**

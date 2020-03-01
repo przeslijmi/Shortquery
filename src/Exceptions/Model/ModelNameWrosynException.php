@@ -2,7 +2,7 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
+use Throwable;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Data\Model;
 
@@ -17,11 +17,11 @@ class ModelNameWrosynException extends ClassFopException
      *
      * @param string         $name  Given wrong name.
      * @param Model          $model Model that has the problem.
-     * @param Exception|null $cause Exception that caused the problem.
+     * @param Throwable|null $cause Throwable that caused the problem.
      *
      * @since v1.0
      */
-    public function __construct(string $name, Model $model, ?Exception $cause = null)
+    public function __construct(string $name, Model $model, ?Throwable $cause = null)
     {
 
         $this->setCodeName('ModelNameWrosynException');

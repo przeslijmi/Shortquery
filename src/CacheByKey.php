@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine;
-use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByPk;
+use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 
 /**
@@ -216,7 +216,7 @@ class CacheByKey
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
      * @since  v1.0
-     * @throws RecordAlreadyTakenOutFromCacheByPk If this record was already taken before.
+     * @throws RecordAlreadyTakenOutFromCacheByKey If this record was already taken before.
      * @return Instance
      */
     public function getOnce($keyValue) : Instance
@@ -251,7 +251,7 @@ class CacheByKey
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
      * @since  v1.0
-     * @throws RecordAlreadyTakenOutFromCacheByPk If this record was already taken before.
+     * @throws RecordAlreadyTakenOutFromCacheByKey If this record was already taken before.
      * @return self
      */
     public function markTakenOut($keyValue) : self
@@ -259,7 +259,7 @@ class CacheByKey
 
         // Throw if already taken.
         if (in_array($keyValue, $this->takenOutKeys)) {
-            throw new RecordAlreadyTakenOutFromCacheByPk($keyValue, $this);
+            throw new RecordAlreadyTakenOutFromCacheByKey($keyValue, $this);
         }
 
         // Mark that it was used and takenout already.

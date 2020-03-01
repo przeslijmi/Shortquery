@@ -24,7 +24,7 @@ final class InstanceTest extends TestCase
     {
 
         $md = new CreatorStarter();
-        $md->run('schemaForTesting.php');
+        $md->run('resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }
