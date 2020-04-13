@@ -19,8 +19,8 @@ define('PRZESLIJMI_SHORTQUERY_DATABASES', [
     'engine'   => 'mySql',
     'auth'   => [
       'url'  => '127.0.0.1',
-      'user' => 'shippable@localhost',
-      'pass' => 'password!',
+      'user' => 'shippable',
+      'pass' => 'password',
       'db'   => 'shoq_test',
       'port' => 3306,
     ],
