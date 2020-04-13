@@ -11,7 +11,7 @@ env:
 
 before_script:
   - mysql -e "CREATE USER shippable@localhost IDENTIFIED BY 'password'; GRANT ALL ON *.* TO shippable@localhost; FLUSH PRIVILEGES;"
-  - mysql -e "CREATE DATABASE `shoq_test`;"
+  - mysql -u shippable@localhost -ppassword -e "CREATE DATABASE `shoq_test`;"
   - mysql -u shippable@localhost -ppassword shoq_test < resources/testMysql.sql
   - cp "resources/configSpecimen.php" ".config.php"
   - composer config -g github-oauth.github.com $GH_TOKEN
