@@ -5,7 +5,7 @@ SET NAMES utf8mb4 ;
 -- Table structure for table `cars`
 --
 DROP TABLE IF EXISTS `cars`;
- SET character_set_client = utf8mb4 ;
+SET character_set_client = utf8mb4 ;
 CREATE TABLE `cars` (
   `pk` int(11) NOT NULL AUTO_INCREMENT,
   `owner_girl` int(11) DEFAULT NULL,
@@ -13,7 +13,6 @@ CREATE TABLE `cars` (
   `name` varchar(45) COLLATE utf8mb4_polish_ci DEFAULT NULL,
   PRIMARY KEY (`pk`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `cars`
