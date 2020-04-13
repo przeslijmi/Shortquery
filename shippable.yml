@@ -9,13 +9,10 @@ services:
 env:
   - secure: QvnODZjoI31bFKlr3+mpfdNPi4aDmwKugYMNld7wrTO+kHgJAp0l1Zt9PygXj4z7wLz8kmzPSfyqhDcSv78l5hPVFbkHIG7h/sJcXQYS8uOedeoBNHX5p/EwvbkY4eYAUz1eR0EvgcaTRfXzXiUDAWF4pMutetafEsfKDX8rr8lkZk4PgS2nOgArAJaMKV6otwQCodFIr7Te5WzIhiW6uWvWKrPMhBJpzYe8ruuw2KuQcO/ngyiHMcV1t2lx5syULd51LeKT9B+mF03R9EOb8XcX2SvMSAc/3/ZHxwmQF83/ZjMgppvkXSSVDXmkPpLvJ5lTqxDav9b6MqGbBEbwjw==
 
-build:
-  ci:
-    - mysql -e "CREATE USER shippable@localhost IDENTIFIED BY 'password'; GRANT ALL ON *.* TO shippable@localhost; FLUSH PRIVILEGES;"
-    - mysql -e "CREATE DATABASE `shoq_test`;"
-    - mysql -u shippable@localhost -ppassword shoq_test < resources/testMysql.sql
-
 before_script:
+  - mysql -e "CREATE USER shippable@localhost IDENTIFIED BY 'password'; GRANT ALL ON *.* TO shippable@localhost; FLUSH PRIVILEGES;"
+  - mysql -e "CREATE DATABASE `shoq_test`;"
+  - mysql -u shippable@localhost -ppassword shoq_test < resources/testMysql.sql
   - cp "resources/configSpecimen.php" ".config.php"
   - composer config -g github-oauth.github.com $GH_TOKEN
   - composer self-update -n
