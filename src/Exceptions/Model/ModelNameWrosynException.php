@@ -17,9 +17,7 @@ class ModelNameWrosynException extends ClassFopException
      *
      * @param string         $name  Given wrong name.
      * @param Model          $model Model that has the problem.
-     * @param Throwable|null $cause Throwable that caused the problem.
-     *
-     * @since v1.0
+     * @param null|Throwable $cause Throwable that caused the problem.
      */
     public function __construct(string $name, Model $model, ?Throwable $cause = null)
     {

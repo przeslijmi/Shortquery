@@ -19,8 +19,6 @@ class DateField extends Field implements FieldInterface
      *
      * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -41,7 +39,6 @@ class DateField extends Field implements FieldInterface
      * @param null|string $value  Value to be checked.
      * @param boolean     $throws Optional, true. If set to false `throw` will be off.
      *
-     * @since  v1.0
      * @throws FieldValueInproperException When Field value is inproper.
      * @return boolean
      */
@@ -54,13 +51,13 @@ class DateField extends Field implements FieldInterface
         }
 
         // Prepare to check.
-        $ex = explode('-', $value);
-        $ex[0] = (int) ( $ex[0] ?? 0 );
-        $ex[1] = (int) ( $ex[1] ?? 0 );
-        $ex[2] = (int) ( $ex[2] ?? 0 );
+        $ex       = explode('-', $value);
+        $ex[0]    = (int) ( $ex[0] ?? 0 );
+        $ex[1]    = (int) ( $ex[1] ?? 0 );
+        $ex[2]    = (int) ( $ex[2] ?? 0 );
         $testDate = date('Y-m-d', mktime(0, 0, 0, $ex[1], $ex[2], $ex[0]));
 
-        // Check and return true.
+        // Check and return true if this statement is true.
         if ($testDate === $value) {
             return true;
         }
@@ -78,7 +75,6 @@ class DateField extends Field implements FieldInterface
      *
      * @param string $dateReal Date to convert.
      *
-     * @since  v1.0
      * @return integer
      */
     public function formatToExcel(string $dateReal) : int
@@ -92,8 +88,10 @@ class DateField extends Field implements FieldInterface
         $dateReal  = new DateTime($dateReal);
 
         // Calc.
-        $days  = $dateExcel->diff($dateReal)->format('%a');
-        $days += 2; // add boundary days
+        $days = $dateExcel->diff($dateReal)->format('%a');
+
+        // Add boundary days.
+        $days += 2;
 
         return $days;
     }
@@ -101,7 +99,6 @@ class DateField extends Field implements FieldInterface
     /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string
@@ -119,14 +116,19 @@ class DateField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string
     {
 
         // Lvd.
-        $php  = $this->ln(2, 'if (' . $this->cc(true) . ' !== null && func_num_args() > 0 && func_get_arg(0) === \'excel\') {');
+        $php  = $this->ln(2, 'if (empty(' . $this->cc(true) . ') === true) {');
+        $php .= $this->ln(3, $this->cc(true) . ' = null;');
+        $php .= $this->ln(2, '}', 2);
+        $php .= $this->ln(
+            2,
+            'if (' . $this->cc(true) . ' !== null && func_num_args() > 0 && func_get_arg(0) === \'excel\') {'
+        );
         $php .= $this->ln(3, 'return (string) $this->grabField(\'' . $this->getName() . '\')');
         $php .= $this->ln(4, '->formatToExcel(' . $this->cc(true) . ');');
         $php .= $this->ln(2, '}', 2);
@@ -138,7 +140,6 @@ class DateField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string
@@ -152,7 +153,6 @@ class DateField extends Field implements FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string
@@ -164,7 +164,6 @@ class DateField extends Field implements FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string

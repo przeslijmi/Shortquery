@@ -10,7 +10,7 @@ use Przeslijmi\Shortquery\Items\Rule;
  * ## Usage example
  * ```
  * $rule = new Rule(new Field('name'), new Comp('eq'), new Val('john'));
- * echo (new RuleToString())->toString(); // will return `name='john'`
+ * echo (new RuleToString())->toString(); // will return `name`='john'
  * ```
  */
 class RuleToString
@@ -19,16 +19,14 @@ class RuleToString
     /**
      * Rule element to be converted to string.
      *
-     * @var   Rule
-     * @since v1.0
+     * @var Rule
      */
     private $rule;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -37,8 +35,6 @@ class RuleToString
      *
      * @param Rule   $rule    Rule element to be converted to string.
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(Rule $rule, string $context = '')
     {
@@ -50,7 +46,6 @@ class RuleToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      *
      * @phpcs:disable Generic.Metrics.CyclomaticComplexity
@@ -98,11 +93,7 @@ class RuleToString
             case 'Przeslijmi\Shortquery\Items\FalseVal':
                 $left = ( new FalseValToString($this->context) )->toString();
             break;
-
-            default:
-                $left = null;
-            break;
-        }
+        }//end switch
 
         switch ($rightIs) {
             case 'Przeslijmi\Shortquery\Items\Field':
@@ -134,17 +125,9 @@ class RuleToString
             break;
 
             case 'Przeslijmi\Shortquery\Items\FalseVal':
-                $right = ( new TrueValToString($this->context) )->toString();
+                $right = ( new FalseValToString($this->context) )->toString();
             break;
-
-            default:
-                $right = null;
-            break;
-        }
-
-        if ($right === null || $left === null) {
-            die('sfiosjioejfiosr');
-        }
+        }//end switch
 
         if ($rightIs === 'Przeslijmi\Shortquery\Items\NullVal' && $compMethodIs === 'eq') {
             $this->rule->getComp()->setMethod('is');

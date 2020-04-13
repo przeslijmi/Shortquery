@@ -4,7 +4,6 @@ namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\ForTests\Models\Girl;
-use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldValueUnaccesibleException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueUnaccesibleException;
 use Przeslijmi\Shortquery\Data\Field;
@@ -16,25 +15,9 @@ final class InstanceTest extends TestCase
 {
 
     /**
-     * Test if creator works properly.
-     *
-     * @return void
-     */
-    public function testModelCreator() : void
-    {
-
-        $md = new CreatorStarter();
-        $md->run('resources/schemaForTesting.php');
-
-        $this->assertEquals(1, 1);
-    }
-
-    /**
      * Test if Girl Item can be properly read.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingGirlItemByPkWorks() : void
     {
@@ -64,8 +47,6 @@ final class InstanceTest extends TestCase
      * Test if Girl Item can be properly read.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingGirlItemByNameWorks() : void
     {
@@ -90,8 +71,6 @@ final class InstanceTest extends TestCase
      * Test if trying to read nonexisting Field throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfTryingToReadNonexistingFieldThrows() : void
     {
@@ -109,8 +88,6 @@ final class InstanceTest extends TestCase
      * Test if trying to get nonexisting dictionary multi in Field throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfTryingToReadNonexistingDictMultiThrows() : void
     {
@@ -128,8 +105,6 @@ final class InstanceTest extends TestCase
      * Test if trying to get nonexisting dictionary multi key in Field throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfTryingToReadNonexistingDictMultiKeyThrows() : void
     {
@@ -147,8 +122,6 @@ final class InstanceTest extends TestCase
      * Test if trying to get nonexisting dictionary in Field throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfTryingToReadNonexistingDictThrows() : void
     {
@@ -166,8 +139,6 @@ final class InstanceTest extends TestCase
      * Test if trying to get nonexisting dictionary key in Field throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfTryingToReadNonexistingDictKeyThrows() : void
     {
@@ -185,8 +156,6 @@ final class InstanceTest extends TestCase
      * Test if creating and deleting record works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCreatingRecordWorks() : void
     {
@@ -220,8 +189,6 @@ final class InstanceTest extends TestCase
      * Test if deleting nonadded record works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfDeletingNoncreatedRecordWorks() : void
     {
@@ -238,8 +205,6 @@ final class InstanceTest extends TestCase
      * Test if saving with cration and update works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfSaveWorks() : void
     {
@@ -253,7 +218,7 @@ final class InstanceTest extends TestCase
         // Test.
         $this->assertEquals('integer', gettype($girl->getPk()));
 
-        // Create new instance to read
+        // Create new instance to read.
         $girl = new Girl();
         $girl->setPk($pk);
         $girl->read();
@@ -271,8 +236,6 @@ final class InstanceTest extends TestCase
      * Test if converting Instance to string works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfToStringFromAddedWorks() : void
     {
@@ -296,8 +259,6 @@ webs: is
      * Test if converting Instance to string works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfToStringFromNonaddedWorks() : void
     {

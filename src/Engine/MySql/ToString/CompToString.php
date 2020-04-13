@@ -2,6 +2,7 @@
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
+use Exception;
 use Przeslijmi\Shortquery\Items\Comp;
 
 /**
@@ -19,26 +20,40 @@ class CompToString
     /**
      * Comp element to be converted to string.
      *
-     * @var   Comp
-     * @since v1.0
+     * @var Comp
      */
     private $comp;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
+
+    /**
+     * Dictionary of possible comparison methods.
+     *
+     * @var array
+     */
+    private $compsDict = [
+        'eq' => '=',
+        'neq' => '!=',
+        'gt' => '>',
+        'geq' => '>=',
+        'leq' => '<=',
+        'lt' => '<',
+        'is' => ' IS ',
+        'nis' => ' IS NOT ',
+        'lk' => ' LIKE ',
+        'nlk' => ' NOT LIKE ',
+    ];
 
     /**
      * Constructor.
      *
      * @param Comp   $comp    Comp element to be converted to string.
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(Comp $comp, string $context = '')
     {
@@ -50,7 +65,6 @@ class CompToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -61,47 +75,8 @@ class CompToString
             return '';
         }
 
-        switch ($this->comp->getMethod()) {
-            case 'eq':
-                $result = '=';
-            break;
-
-            case 'neq':
-                $result = '!=';
-            break;
-
-            case 'gt':
-                $result = '>';
-            break;
-
-            case 'geq':
-                $result = '>=';
-            break;
-
-            case 'leq':
-                $result = '<=';
-            break;
-
-            case 'lt':
-                $result = '<';
-            break;
-
-            case 'is':
-                $result = ' IS ';
-            break;
-
-            case 'nis':
-                $result = ' IS NOT ';
-            break;
-
-            case 'lk':
-                $result = ' LIKE ';
-            break;
-
-            case 'nlk':
-                $result = ' NOT LIKE ';
-            break;
-        }
+        // Get result.
+        $result = $this->compsDict[$this->comp->getMethod()];
 
         return $result;
     }

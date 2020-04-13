@@ -15,10 +15,9 @@ class ModelQueryCreationFailedException extends FopException
     /**
      * Constructor.
      *
-     * @param Model          $model Model that has the problem.
-     * @param Throwable|null $cause Throwable that caused the problem.
-     *
-     * @since v1.0
+     * @param Model          $model     Model that has the problem.
+     * @param string         $queryType Query type (SELECT, UPDATE, INSERT, DELETE).
+     * @param null|Throwable $cause     Throwable that caused the problem.
      */
     public function __construct(Model $model, string $queryType, ?Throwable $cause = null)
     {

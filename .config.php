@@ -25,6 +25,17 @@ define('PRZESLIJMI_SHORTQUERY_DATABASES', [
       'port' => 3306,
     ],
   ],
+  // Test engine.
+  'testWrong' => [
+    'engine'   => 'mySql',
+    'auth'   => [
+      'url'  => 'wrong',
+      'user' => 'wrong',
+      'pass' => 'wrong',
+      'db'   => 'wrong',
+      'port' => 3306,
+    ],
+  ],
 
 ]);
 

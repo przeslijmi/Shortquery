@@ -4,8 +4,8 @@ namespace Przeslijmi\Shortquery\ForTests\Models\Core;
 
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
-use Przeslijmi\Shortquery\ForTests\Models\Car;
-use Przeslijmi\Shortquery\ForTests\Models\Cars;
+use Przeslijmi\Shortquery\ForTests\Models\Car as Car8438;
+use Przeslijmi\Shortquery\ForTests\Models\Cars as Cars4475;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 use Przeslijmi\Shortquery\ForTests\Models\Girl;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
@@ -55,6 +55,8 @@ class GirlCore extends Instance
 
     /**
      * Constructor.
+     *
+     * @param string $database Optional, `null`. In which database this field is defined.
      */
     public function __construct(?string $database = null)
     {
@@ -64,6 +66,33 @@ class GirlCore extends Instance
 
         // Set database if given.
         $this->database = $database;
+    }
+
+    /**
+     * Fast data injector.
+     *
+     * @param array $inject Data to be injected to object.
+     *
+     * @return self
+     */
+    public function injectData(array $inject) : self
+    {
+
+        // Inject properties.
+        if (isset($inject['pk']) === true && $inject['pk'] !== null) {
+            $this->pk = (int) $inject['pk'];
+        }
+        if (isset($inject['name']) === true && $inject['name'] !== null) {
+            $this->name = (string) $inject['name'];
+        }
+        if (isset($inject['webs']) === true && $inject['webs'] !== null) {
+            $this->webs = (string) $inject['webs'];
+        }
+
+        // Mark all fields set.
+        $this->setFields = array_keys($inject);
+
+        return $this;
     }
 
     /**
@@ -93,7 +122,7 @@ class GirlCore extends Instance
 
         $noInSet = array_search('pk', $this->setFields);
 
-        if (is_int($noInSet)) {
+        if (is_int($noInSet) === true) {
             unset($this->setFields[$noInSet]);
         }
 
@@ -374,12 +403,12 @@ class GirlCore extends Instance
      *
      * @return Cars
      */
-    public function getCars() : Cars
+    public function getCars() : Cars4475
     {
 
         // Create empty collection if there isn't any added.
         if ($this->cars === null) {
-            $this->cars = new Cars();
+            $this->cars = new Cars4475();
             $this->cars->getLogics()->addFromRelation($this->grabModel()->getRelationByName('cars'));
         }
 
@@ -396,7 +425,7 @@ class GirlCore extends Instance
     {
 
         // Get records with those pks.
-        $children = new Cars(...func_get_args());
+        $children = new Cars4475(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getPk() !== null) {
@@ -417,11 +446,11 @@ class GirlCore extends Instance
     /**
      * Adds child-Collection to Relation Collection.
      *
-     * @param Cars $collection One child-Instance of child for Relation.
+     * @param Cars4475 $collection One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addCars(Cars $collection) : self
+    public function addCars(Cars4475 $collection) : self
     {
 
         // Put this Instance to this Collection.
@@ -435,12 +464,12 @@ class GirlCore extends Instance
      *
      * @return Cars
      */
-    public function getFastCars() : Cars
+    public function getFastCars() : Cars4475
     {
 
         // Create empty collection if there isn't any added.
         if ($this->fastCars === null) {
-            $this->fastCars = new Cars();
+            $this->fastCars = new Cars4475();
             $this->fastCars->getLogics()->addFromRelation($this->grabModel()->getRelationByName('fastCars'));
         }
 
@@ -457,7 +486,7 @@ class GirlCore extends Instance
     {
 
         // Get records with those pks.
-        $children = new Cars(...func_get_args());
+        $children = new Cars4475(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getPk() !== null) {
@@ -478,11 +507,11 @@ class GirlCore extends Instance
     /**
      * Adds child-Collection to Relation Collection.
      *
-     * @param Cars $collection One child-Instance of child for Relation.
+     * @param Cars4475 $collection One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addFastCars(Cars $collection) : self
+    public function addFastCars(Cars4475 $collection) : self
     {
 
         // Put this Instance to this Collection.

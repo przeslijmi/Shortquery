@@ -18,8 +18,6 @@ class JsonField extends Field implements FieldInterface
      *
      * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -37,9 +35,8 @@ class JsonField extends Field implements FieldInterface
     /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param ?stdClass $value Value to be checked.
+     * @param null|stdClass $value Value to be checked.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function isValueValid(?stdClass $value) : bool
@@ -54,11 +51,10 @@ class JsonField extends Field implements FieldInterface
     }
 
     /**
-     * Convert string into stdClass.
+     * Convert mixed into stdClass.
      *
-     * @param string $value Value to be converted to stdClass.
+     * @param mixed $value Value to be converted to stdClass.
      *
-     * @since  v1.0
      * @return null|stdClass
      */
     public function setProperType($value) : ?stdClass
@@ -75,7 +71,7 @@ class JsonField extends Field implements FieldInterface
         }
 
         // Short way 3.
-        if (is_a(json_decode($value), 'stdClass')) {
+        if (is_a(json_decode($value), 'stdClass') === true) {
             return json_decode($value);
         }
 
@@ -85,7 +81,6 @@ class JsonField extends Field implements FieldInterface
     /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string
@@ -93,7 +88,7 @@ class JsonField extends Field implements FieldInterface
 
         // Result.
         $php  = $this->ln(0, '', 1);
-        $php .= $this->ln(3, '( new JsonField(\'' . $this->getName() . '\', '.  $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(3, '( new JsonField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
         $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')');
         $php .= $this->ln(2, '', 0);
 
@@ -103,19 +98,23 @@ class JsonField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string
     {
 
-        return $this->ln(2, 'return ' . $this->cc(true) . ';');
+        $php  = $this->ln(2, '// Convert to JSON object if needed.');
+        $php .= $this->ln(2, 'if (is_string($this->jsonData) === true) {');
+        $php .= $this->ln(2, '    $this->jsonData = json_decode($this->jsonData);');
+        $php .= $this->ln(2, '}', 2);
+        $php .= $this->ln(2, 'return ' . $this->cc(true) . ';');
+
+        return $php;
     }
 
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string
@@ -123,7 +122,8 @@ class JsonField extends Field implements FieldInterface
 
         // Result.
         $php  = $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc());
-        $php .= $this->ln(3, '|| json_encode(' . $this->cc(true) . ') === json_encode($' . $this->cc() . ')) {');
+        $php .= $this->ln(3, '|| json_encode(' . $this->cc(true) . ') === json_encode($' . $this->cc() . ')');
+        $php .= $this->ln(2, ') {');
 
         return $php;
     }
@@ -133,7 +133,6 @@ class JsonField extends Field implements FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string
@@ -145,7 +144,6 @@ class JsonField extends Field implements FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string

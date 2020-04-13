@@ -2,15 +2,21 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql;
 
+use Exception;
+use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine\MySql;
-use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Items\LogicAnd;
+use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Items\LogicOr;
 use Przeslijmi\Shortquery\Items\Rule;
 use stdClass;
+use Throwable;
 
+/**
+ * Query contructor for MySql.
+ */
 abstract class Query extends MySql
 {
 
@@ -29,7 +35,7 @@ abstract class Query extends MySql
     private $logicsSet = [];
 
     /**
-     * Instances to use in this query (if applicable).
+     * Instances to use in this query.
      *
      * @var Instance[]
      */
@@ -38,9 +44,8 @@ abstract class Query extends MySql
     /**
      * Constructor.
      *
-     * @param Model $model Model to create query for.
-     *
-     * @since v1.0
+     * @param Model  $model    Model to create query for.
+     * @param string $database Opt., null. To which database of this model you want a query.
      */
     public function __construct(Model $model, ?string $database = null)
     {
@@ -52,7 +57,6 @@ abstract class Query extends MySql
     /**
      * Getter for Model.
      *
-     * @since  v1.0
      * @return Model
      */
     public function getModel() : Model
@@ -66,7 +70,6 @@ abstract class Query extends MySql
      *
      * @param array $logicsSet Array of logics to use in this query.
      *
-     * @since  v1.0
      * @return self
      */
     public function setLogicsSet(array $logicsSet) : self
@@ -77,6 +80,13 @@ abstract class Query extends MySql
         return $this;
     }
 
+    /**
+     * Add logics to query.
+     *
+     * @param LogicItem ...$logics Logics to be added.
+     *
+     * @return self
+     */
     public function addLogics(LogicItem ...$logics) : self
     {
 
@@ -85,13 +95,19 @@ abstract class Query extends MySql
         return $this;
     }
 
+    /**
+     * Add rule to query (send Rules as params).
+     *
+     * @throws MethodFopException When creation of Rule failed.
+     * @return self
+     */
     public function addRule() : self
     {
 
         try {
             $rule = Rule::factory(...func_get_args());
-        } catch (Exception $e) {
-            throw ( new MethodFopException('creationOfRuleFailed', $e) )
+        } catch (Throwable $thr) {
+            throw ( new MethodFopException('creationOfRuleFailed', $thr) )
                 ->addInfos(func_get_args(), 'ruleArgs');
         }
 
@@ -103,7 +119,6 @@ abstract class Query extends MySql
     /**
      * Getter for logics set.
      *
-     * @since  v1.0
      * @return LogicItem[]
      */
     public function getLogicsSet() : array
@@ -115,7 +130,6 @@ abstract class Query extends MySql
     /**
      * Clear array of instances to empty.
      *
-     * @since  v1.0
      * @return self
      */
     public function clearInstances() : self
@@ -129,9 +143,8 @@ abstract class Query extends MySql
     /**
      * Setter for one Instance.
      *
-     * @param Instance $instance Instance to use in this query (if applicable).
+     * @param Instance $instance Instance to use in this query.
      *
-     * @since  v1.0
      * @return self
      */
     public function setInstance(Instance $instance) : self
@@ -145,9 +158,8 @@ abstract class Query extends MySql
     /**
      * Setter for Instances.
      *
-     * @param array $instances Instances to use in this query (if applicable).
+     * @param array $instances Instances to use in this query.
      *
-     * @since  v1.0
      * @return self
      */
     public function setInstances(array $instances) : self
@@ -161,9 +173,8 @@ abstract class Query extends MySql
     /**
      * Adder for one Instance (increasing collection).
      *
-     * @param Instance $instance Instance to use in this query (if applicable).
+     * @param Instance $instance Instance to use in this query.
      *
-     * @since  v1.0
      * @return self
      */
     public function addInstance(Instance $instance) : self
@@ -177,9 +188,8 @@ abstract class Query extends MySql
     /**
      * Adder for Instances (increasing collection).
      *
-     * @param array $instances Instances to use in this query (if applicable).
+     * @param array $instances Instances to use in this query.
      *
-     * @since  v1.0
      * @return self
      */
     public function addInstances(array $instances) : self
@@ -201,30 +211,30 @@ abstract class Query extends MySql
         return $this->instances;
     }
 
-    protected function valueify($value) : string
+    /**
+     * Converts php value into proper syntax mysql query value.
+     *
+     * @param mixed $value Value to be converted to value in MySQL query.
+     *
+     * @throws Exception When can't valuify this value.
+     * @return string
+     */
+    public function valueify($value) : string
     {
 
-
+        // Make job done.
         if (is_null($value) === true) {
-            $value = 'NULL';
-
+            return 'NULL';
         } elseif (is_string($value) === true) {
-            $value = "'" . addslashes($value) . "'";
-
+            return "'" . addslashes($value) . "'";
         } elseif (is_bool($value) === true) {
-            $value = (int) $value;
-
+            return (string) (int) $value;
         } elseif (is_scalar($value) === true) {
-            $value = str_replace(',', '.', $value);
-
+            return str_replace(',', '.', $value);
         } elseif (is_a($value, 'stdClass') === true) {
-            $value = "'" . json_encode($value) . "'";
-
-        } else {
-            // @todo make throw instead of this
-            die('jdfgoijaf3498afjw9qjg54');
+            return "'" . json_encode($value) . "'";
         }
 
-        return $value;
+        throw new Exception('Can\'t valuify this value: ' . var_export($value, true) . '.');
     }
 }

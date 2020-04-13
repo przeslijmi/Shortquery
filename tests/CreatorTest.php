@@ -3,7 +3,9 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
+use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Sexceptions\Exceptions\FileDonoexException;
+use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 use Przeslijmi\Shortquery\Creator\PhpFile;
 use Przeslijmi\Shortquery\Creator\PhpFile\Model as ModelPhpFile;
@@ -25,9 +27,11 @@ final class CreatorTest extends TestCase
     public function testModelCreator() : void
     {
 
+        // Create.
         $md = new CreatorStarter();
         $md->run('resources/schemaForTesting.php');
 
+        // Test.
         $this->assertEquals(1, 1);
     }
 
@@ -128,5 +132,112 @@ final class CreatorTest extends TestCase
             // Return to dir.
             chdir('../');
         }
+    }
+
+    /**
+     * Test if model creator throws when no schema is given.
+     *
+     * @return void
+     */
+    public function testIfModelCreatorThrows1() : void
+    {
+
+        // Create creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+
+        // Prepare.
+        $this->expectException(ClassFopException::class);
+
+        // Test.
+        $creator->start();
+    }
+
+    /**
+     * Test if model creator throws when nonexisting schema is given.
+     *
+     * @return void
+     */
+    public function testIfModelCreatorThrows2() : void
+    {
+
+        // Create creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('schemaUri', 'nonexisting-Uri');
+
+        // Prepare.
+        $this->expectException(ClassFopException::class);
+
+        // Test.
+        $creator->start();
+    }
+
+    /**
+     * Test if model creator throws when corrupted schema is given.
+     *
+     * @return void
+     */
+    public function testIfModelCreatorThrows3() : void
+    {
+
+        // Create creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('schema', false);
+
+        // Prepare.
+        $this->expectException(ClassFopException::class);
+
+        // Test.
+        $creator->start();
+    }
+
+    /**
+     * Test if model creator throws when empty schema is given.
+     *
+     * @return void
+     */
+    public function testIfModelCreatorThrows4() : void
+    {
+
+        // Create creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('schema', []);
+
+        // Prepare.
+        $this->expectException(ClassFopException::class);
+
+        // Test.
+        $creator->start();
+    }
+
+    /**
+     * Test if model creator throws when schema without models is given.
+     *
+     * @return void
+     */
+    public function testIfModelCreatorThrows5() : void
+    {
+
+        // Create creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('schema', [
+            'settings' => [
+                'src' => [
+                    'Przeslijmi\Shortquery' => 'vendor\\przeslijmi\\shortquery\\src\\',
+                ],
+            ],
+            'models' => [
+            ],
+        ]);
+
+        // Prepare.
+        $this->expectException(ClassFopException::class);
+
+        // Test.
+        $creator->start();
     }
 }

@@ -3,23 +3,65 @@
 namespace Przeslijmi\Shortquery\ForTests;
 
 use Przeslijmi\Shortquery\Creator;
-use Przeslijmi\Shortquery\Data\Field\DateField;
-use Przeslijmi\Shortquery\Data\Field\DecimalField;
-use Przeslijmi\Shortquery\Data\Field\EnumField;
-use Przeslijmi\Shortquery\Data\Field\IntField;
-use Przeslijmi\Shortquery\Data\Field\JsonField;
-use Przeslijmi\Shortquery\Data\Field\SetField;
-use Przeslijmi\Shortquery\Data\Field\VarCharField;
-use Przeslijmi\Shortquery\Data\Model;
-use Przeslijmi\Shortquery\Data\Relation\HasManyRelation;
-use Przeslijmi\Shortquery\Data\Relation\HasOneRelation;
 
+/**
+ * Bootstrap for Creator.
+ *
+ * Creator recreates PHP files for all models, instances and collections.
+ */
 class CreatorStarter
 {
 
-    private $overwriteNonCore = true;
+    /**
+     * Does non-core files has to be overwritten. Default `false`.
+     *
+     * @var boolean
+     */
+    private $overwriteNonCore = false;
+
+    /**
+     * Does core files has to be overwritten. Default `true`.
+     *
+     * @var boolean
+     */
     private $overwriteCore = true;
 
+    /**
+     * Starts starter.
+     *
+     * Example of schema file: `resources/schemaForTesting.php`.
+     *
+     * @param string $schemaFileName File with instructions.
+     *
+     * @return self
+     */
+    public function run(string $schemaFileName) : self
+    {
+
+        // Lvd.
+        $schemaDir = rtrim(str_replace('\\', '/', __DIR__), '/');
+        $schemaDir = substr($schemaDir, 0, strrpos($schemaDir, '/'));
+        $schemaDir = substr($schemaDir, 0, strrpos($schemaDir, '/'));
+        $schemaUri = $schemaDir . '/' . $schemaFileName;
+
+        // Call creator.
+        $creator = new Creator();
+        $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('schemaUri', $schemaUri);
+        $creator->getParams()->setParam('overwriteNonCore', $this->overwriteNonCore);
+        $creator->getParams()->setParam('overwriteCore', $this->overwriteCore);
+        $creator->start();
+
+        return $this;
+    }
+
+    /**
+     * Setter for does non-core files has to be overwritten.
+     *
+     * @param boolean $overwriteNonCore Does non-core files has to be overwritten.
+     *
+     * @return self
+     */
     public function setOverwriteNonCore(bool $overwriteNonCore) : self
     {
 
@@ -28,35 +70,18 @@ class CreatorStarter
         return $this;
     }
 
+    /**
+     * Setter for does core files has to be overwritten.
+     *
+     * @param boolean $overwriteCore Does core files has to be overwritten.
+     *
+     * @return self
+     */
     public function setOverwriteCore(bool $overwriteCore) : self
     {
 
         $this->overwriteCore = $overwriteCore;
 
         return $this;
-    }
-
-    public function run(string $schemaFileName)
-    {
-
-        $schemaDir  = rtrim(str_replace('\\', '/', __DIR__), '/');
-        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '/'));
-        $schemaDir  = substr($schemaDir, 0, strrpos($schemaDir, '/'));
-
-        $schemaUri = $schemaDir . '/' . $schemaFileName;
-
-        $creator = new Creator();
-        $creator->getParams()->setOperation('create');
-        $creator->getParams()->setParam('schemaUri', $schemaUri);
-        $creator->getParams()->setParam('overwriteNonCore', $this->overwriteNonCore);
-        $creator->getParams()->setParam('overwriteCore', $this->overwriteCore);
-        $creator->start();
-    }
-
-    private function getStandardSchemaModels() : array
-    {
-
-        return [
-        ];
     }
 }

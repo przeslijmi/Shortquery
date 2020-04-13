@@ -19,18 +19,16 @@ class Comp extends AnyItem
 {
 
     /**
-     * Method name (eg. eq, neq).
+     * Method name (eg. `eq`, `neq`).
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $method;
 
     /**
      * Parent Rule object.
      *
-     * @var   Rule
-     * @since v1.0
+     * @var Rule
      */
     private $ruleParent;
 
@@ -42,8 +40,7 @@ class Comp extends AnyItem
      * $this->func->getRuleParent()->getComp()->setSilent();
      * ```
      *
-     * @var   boolean
-     * @since v1.0
+     * @var boolean
      */
     private $silent = false;
 
@@ -52,7 +49,6 @@ class Comp extends AnyItem
      *
      * @param string $method Method of comparison (eg. eq, noq, gt, etc.).
      *
-     * @since  v1.0
      * @throws ParamOtosetException When given comp. method does not exists.
      */
     public function __construct(string $method)
@@ -64,7 +60,6 @@ class Comp extends AnyItem
     /**
      * Getter for method name.
      *
-     * @since  v1.0
      * @return string
      */
     public function getMethod() : string
@@ -74,10 +69,12 @@ class Comp extends AnyItem
     }
 
     /**
-     * setter for method name.
+     * Setter for method name (eg. `eq`, `neq`).
      *
-     * @since  v1.0
-     * @return string
+     * @param string $method Method name (eg. `eq`, `neq`).
+     *
+     * @throws ParamOtosetException If this comparison method does not exists.
+     * @return self
      */
     public function setMethod(string $method) : self
     {
@@ -87,6 +84,7 @@ class Comp extends AnyItem
             throw new ParamOtosetException('compareMethod', Shoq::COMPARISON_METHODS, $method);
         }
 
+        // Save.
         $this->method = $method;
 
         return $this;
@@ -97,7 +95,6 @@ class Comp extends AnyItem
      *
      * @param Rule $ruleParent Set given Rule as a parent of this object.
      *
-     * @since  v1.0
      * @return void
      */
     public function setRuleParent(Rule $ruleParent) : void
@@ -109,13 +106,12 @@ class Comp extends AnyItem
     /**
      * Getter for parent Rule.
      *
-     * @since  v1.0
      * @return Rule
      */
     public function getRuleParent() : Rule
     {
 
-        return $this->ruleParent();
+        return $this->ruleParent;
     }
 
     /**
@@ -123,19 +119,19 @@ class Comp extends AnyItem
      *
      * @param boolean $silent Opt., true.
      *
-     * @since  v1.0
-     * @return void
+     * @return self
      */
-    public function setSilent(bool $silent = true) : void
+    public function setSilent(bool $silent = true) : self
     {
 
         $this->silent = $silent;
+
+        return $this;
     }
 
     /**
      * Getter for silent.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function getSilent() : bool

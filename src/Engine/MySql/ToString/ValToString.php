@@ -19,16 +19,14 @@ class ValToString
     /**
      * Val element to be converted to string.
      *
-     * @var   Val
-     * @since v1.0
+     * @var Val
      */
     private $val;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -37,8 +35,6 @@ class ValToString
      *
      * @param Val    $val     Val element to be converted to string.
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(Val $val, string $context = '')
     {
@@ -50,7 +46,6 @@ class ValToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

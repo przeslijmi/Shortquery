@@ -36,16 +36,14 @@ class FuncToString
     /**
      * Collection of Func elements to be converted to string.
      *
-     * @var   Func
-     * @since v1.0
+     * @var Func
      */
     private $func;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -66,8 +64,6 @@ class FuncToString
      *
      * @param Func   $func    Func element to be converted to string.
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(Func $func, string $context = '')
     {
@@ -79,7 +75,6 @@ class FuncToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @throws ParamOtosetException On functionName when given function name is not present.
      * @throws MethodFopException When sth went wrong on converting Func toString.
      * @return string
@@ -108,7 +103,7 @@ class FuncToString
         } catch (Sexception $e) {
             throw ( new MethodFopException('toString', $e) )
                 ->addInfo('funcName', $this->func->getName());
-        }
+        }//end try
 
         return $result;
     }

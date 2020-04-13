@@ -19,8 +19,6 @@ class IntVal extends ContentItem
      * Constructor.
      *
      * @param integer $value String.
-     *
-     * @since v1.0
      */
     public function __construct(int $value)
     {
@@ -31,7 +29,6 @@ class IntVal extends ContentItem
     /**
      * Getter of value.
      *
-     * @since  v1.0
      * @return array Array of values.
      */
     public function getValue() : int

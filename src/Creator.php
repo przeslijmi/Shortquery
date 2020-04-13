@@ -34,7 +34,7 @@ class Creator extends CliApp
     /**
      * Main screen of application - creates files.
      *
-     * @since  v1.0
+     * @throws MethodFopException When no models are given to be created.
      * @return void
      */
     public function create() : void
@@ -120,35 +120,35 @@ class Creator extends CliApp
     /**
      * Check and read in schema.
      *
-     * @since  v1.0
-     * @throws FileDonoexException
-     * @throws ConfigurationCorruptedException
-     * @throws ConfigurationIncompleteException
+     * @throws FileDonoexException             When file given as creator schema does not exists.
+     * @throws ConfigurationCorruptedException When configuration file is corrupted.
      * @return self
      */
     private function readInModelsToCreate() : self
     {
 
-        // If no schemaUri param is given - it means there is no file to send
+        // Decide.
         if ($this->getParams()->isParamSet('schema') === true) {
 
+            // If no schemaUri param is given - it means there is no file to send.
             $this->schema = $this->getParams()->getParam('schema');
-            return $this;
-        }
 
-        // Lvd.
-        $schemaUri = $this->getParams()->getParam('schemaUri');
+        } else {
 
-        // Check if source dir exists.
-        if (file_exists($schemaUri) === false) {
-            $hint = 'Creator has to take schema from a file given as param -su (--schemaUri). File is missing.';
-            var_dump($schemaUri);
-            throw (new FileDonoexException('shortqueryModelsCreatorSchemaUri', $schemaUri))
-                ->addInfo('hint', $hint);
-        }
+            // Otherwise - it is schema from file.
+            // Lvd.
+            $schemaUri = $this->getParams()->getParam('schemaUri');
 
-        // Get schema.
-        $this->schema = include $schemaUri;
+            // Check if source dir exists.
+            if (file_exists($schemaUri) === false) {
+                $hint = 'Creator has to take schema from a file given as param -su (--schemaUri). File is missing.';
+                throw (new FileDonoexException('shortqueryModelsCreatorSchemaUri', $schemaUri))
+                    ->addInfo('hint', $hint);
+            }
+
+            // Get schema.
+            $this->schema = include $schemaUri;
+        }//end if
 
         // Check if ARRAY was read.
         if (is_array($this->schema) === false) {
@@ -161,7 +161,6 @@ class Creator extends CliApp
     /**
      * Check are all neded params present.
      *
-     * @since  v1.0
      * @throws ClassFopException When no Schema has been given.
      * @return void
      */

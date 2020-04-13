@@ -9,16 +9,8 @@ class FuncDateDiffDaysToString extends FuncToStringParent
 {
 
     /**
-     * Func possible only for given comparison methods.
-     *
-     * @var string[]
-     */
-    protected $onlyForCompMethods = [ 'eq', 'neq' ];
-
-    /**
      * Converts func DATEDIFF to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -26,7 +18,7 @@ class FuncDateDiffDaysToString extends FuncToStringParent
 
         $this->throwIfItemsCountNotEquals(2);
 
-        $result  = ' DATEDIFF(';
+        $result  = 'DATEDIFF(';
         $result .= $this->itemToString($this->func->getItem(0));
         $result .= ', ';
         $result .= $this->itemToString($this->func->getItem(1));

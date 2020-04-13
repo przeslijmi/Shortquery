@@ -22,8 +22,6 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {
@@ -47,6 +45,7 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
 
         // Get pks (primary-keys) present in current collection.
         $pks = $this->getValuesByField('<?= $relation->getFieldFrom()->getName() ?>');
+        $pks = array_unique($pks);
 
         // Shortcut - nothing to expand.
         if (count($pks) === 0) {

@@ -19,8 +19,6 @@ class Vals extends ContentItem
      * Constructor.
      *
      * @param array $value Set of strings.
-     *
-     * @since v1.0
      */
     public function __construct(array $value)
     {
@@ -31,7 +29,6 @@ class Vals extends ContentItem
     /**
      * Getter of value.
      *
-     * @since  v1.0
      * @return array Array of values.
      */
     public function getValues() : array

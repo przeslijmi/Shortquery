@@ -38,17 +38,15 @@ class FuncToStringParent
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
     /**
      * Constructor.
      *
-     * @param Func $func Func to be converted to string.
-     *
-     * @since v1.0
+     * @param Func   $func    Func to be converted to string.
+     * @param string $context Name of context.
      */
     public function __construct(Func $func, string $context)
     {
@@ -62,7 +60,6 @@ class FuncToStringParent
      *
      * @param integer $properCount Proper (and only proper) number of parameters for given func.
      *
-     * @since  v1.0
      * @throws MethodFopException On convertingFuncToString.
      * @return void
      */
@@ -71,8 +68,8 @@ class FuncToStringParent
 
         if ($this->func->countItems() !== $properCount) {
             throw (new MethodFopException('convertingFuncToString'))
-                ->addInfo('itemsNeeded', $properCount)
-                ->addInfo('itemsGiven', $this->func->countItems());
+                ->addInfo('itemsNeeded', (string) $properCount)
+                ->addInfo('itemsGiven', (string) $this->func->countItems());
         }
     }
 
@@ -81,7 +78,6 @@ class FuncToStringParent
      *
      * @param integer $minCount Minimum acceptable number of parameters for given func.
      *
-     * @since  v1.0
      * @throws MethodFopException On convertingFuncToString.
      * @return void
      */
@@ -98,7 +94,8 @@ class FuncToStringParent
     /**
      * Sniff to check if func can be used with ordered comparison method.
      *
-     * @since  v1.0
+     * @todo Line 8 of this method's body. Shortcut - parent of this func is rule ... ???
+     *
      * @throws ParamOtosetException When rule comp method is not proper for this func.
      * @throws MethodFopException Rethrown from above.
      * @return void
@@ -106,12 +103,7 @@ class FuncToStringParent
     protected function throwIfCompMethodIsInappropriate() : void
     {
 
-        // Shortcut - there are no limitation to comp methods for this func.
-        if (count($this->onlyForCompMethods) === 0) {
-            return;
-        }
-
-        // Shortcut - parent of this func is rule ... ??? (@TODO).
+        // Shortcut - parent of this func is rule ... ???.
         if ($this->func->isRuleAParent() === false) {
             return;
         }
@@ -134,8 +126,9 @@ class FuncToStringParent
      *
      * @param ContentItem $item ContentItem to be converted.
      *
-     * @since  v1.0
      * @return string
+     *
+     * @phpcs:disable Generic.Metrics.CyclomaticComplexity
      */
     protected function itemToString(ContentItem $item) : string
     {
@@ -176,15 +169,7 @@ class FuncToStringParent
             case 'Przeslijmi\Shortquery\Items\FalseVal':
                 $result = ( new FalseValToString($this->context) )->toString();
             break;
-
-            default:
-                $result = null;
-            break;
-        }
-
-        if ($result === null) {
-            die('sdfgsaregfaw435e');
-        }
+        }//end switch
 
         return $result;
     }
@@ -192,7 +177,6 @@ class FuncToStringParent
     /**
      * Make corresponding (preceding) Comp element silent (ie. empty string).
      *
-     * @since  v1.0
      * @return void
      */
     protected function makeCompSilent() : void

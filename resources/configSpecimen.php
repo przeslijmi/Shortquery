@@ -1,5 +1,7 @@
 <?php declare(strict_types=1);
 
+use Przeslijmi\Silogger\Silogger;
+
 define('PRZESLIJMI_SHORTQUERY_ENGINES', [
   'mySql' => [
     'class'       => 'Przeslijmi\Shortquery\Engine\MySql',
@@ -18,10 +20,31 @@ define('PRZESLIJMI_SHORTQUERY_DATABASES', [
     'auth'   => [
       'url'  => 'localhost',
       'user' => 'user',
-      'pass' => 'password',
-      'db'   => 'db_name',
+      'pass' => 'user1234!',
+      'db'   => 'shoq_test',
+      'port' => 3306,
+    ],
+  ],
+  // Test engine.
+  'testWrong' => [
+    'engine'   => 'mySql',
+    'auth'   => [
+      'url'  => 'wrong',
+      'user' => 'wrong',
+      'pass' => 'wrong',
+      'db'   => 'wrong',
       'port' => 3306,
     ],
   ],
 
 ]);
+
+Silogger::declare(
+  'default',
+  [
+    'cli' => [
+      'levels' => [
+      ]
+    ]
+  ]
+);

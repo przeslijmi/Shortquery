@@ -14,7 +14,6 @@ class CollectionCore extends PhpFile
     /**
      * Prepare contents of the file.
      *
-     * @since  v1.0
      * @return self
      */
     public function prepare() : self
@@ -35,7 +34,6 @@ class CollectionCore extends PhpFile
     /**
      * Return URI of the file to use.
      *
-     * @since  v1.0
      * @return string
      */
     public function getUri() : string

@@ -59,8 +59,6 @@ class Splitter
      * @param string $incr  Opt., `(`. String (char) of incrementation of one level that make tool blind for stop sign.
      * @param string $decr  Opt., `)`. String (char) of decrementation of one level that make tool sightfull again.
      * @param string $esc   Opt., `\`. Escape char that make tool blind for this and next character.
-     *
-     * @since v1.0
      */
     public function __construct(
         string $text,
@@ -84,7 +82,6 @@ class Splitter
      * Spits text (runs the tool).
      *
      * @return array With splitting result.
-     * @since  v1.0
      */
     public function split() : array
     {

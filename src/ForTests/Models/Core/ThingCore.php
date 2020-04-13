@@ -31,7 +31,16 @@ class ThingCore extends Instance
     private $name;
 
     /**
+     * Field `json_data`.
+     *
+     * @var null|stdClass
+     */
+    private $jsonData;
+
+    /**
      * Constructor.
+     *
+     * @param string $database Optional, `null`. In which database this field is defined.
      */
     public function __construct(?string $database = null)
     {
@@ -41,6 +50,33 @@ class ThingCore extends Instance
 
         // Set database if given.
         $this->database = $database;
+    }
+
+    /**
+     * Fast data injector.
+     *
+     * @param array $inject Data to be injected to object.
+     *
+     * @return self
+     */
+    public function injectData(array $inject) : self
+    {
+
+        // Inject properties.
+        if (isset($inject['pk']) === true && $inject['pk'] !== null) {
+            $this->pk = (int) $inject['pk'];
+        }
+        if (isset($inject['name']) === true && $inject['name'] !== null) {
+            $this->name = (string) $inject['name'];
+        }
+        if (isset($inject['json_data']) === true && $inject['json_data'] !== null) {
+            $this->jsonData = $inject['json_data'];
+        }
+
+        // Mark all fields set.
+        $this->setFields = array_keys($inject);
+
+        return $this;
     }
 
     /**
@@ -70,7 +106,7 @@ class ThingCore extends Instance
 
         $noInSet = array_search('pk', $this->setFields);
 
-        if (is_int($noInSet)) {
+        if (is_int($noInSet) === true) {
             unset($this->setFields[$noInSet]);
         }
 
@@ -213,6 +249,84 @@ class ThingCore extends Instance
             $this->fieldsValuesHistory['name'] = [];
         }
         $this->fieldsValuesHistory['name'][] = $name;
+
+        return $this;
+    }
+
+    /**
+     * Getter for `json_data` field value.
+     *
+     * @return null|stdClass
+     */
+    public function getJsonData() : ?stdClass
+    {
+
+        return $this->getCoreJsonData(...func_get_args());
+    }
+
+    /**
+     * Core getter for `json_data` field value.
+     *
+     * @return null|stdClass
+     */
+    public function getCoreJsonData() : ?stdClass
+    {
+
+        // Convert to JSON object if needed.
+        if (is_string($this->jsonData) === true) {
+            $this->jsonData = json_decode($this->jsonData);
+        }
+
+        return $this->jsonData;
+    }
+
+
+    /**
+     * Setter for `json_data` field value.
+     *
+     * @param null|string|stdClass $jsonData Value to be set.
+     *
+     * @return Thing
+     */
+    public function setJsonData($jsonData) : Thing
+    {
+
+        return $this->setCoreJsonData($jsonData);
+    }
+
+    /**
+     * Core setter for `json_data` field value.
+     *
+     * @param null|string|stdClass $jsonData Value to be set.
+     *
+     * @return Thing
+     */
+    public function setCoreJsonData($jsonData) : Thing
+    {
+
+        // Test value.
+        $jsonData = $this->grabField('json_data')->setProperType($jsonData);
+        $this->grabField('json_data')->isValueValid($jsonData);
+
+        // If there is nothing to be changed.
+        if ($this->jsonData === $jsonData
+            || json_encode($this->jsonData) === json_encode($jsonData)
+        ) {
+            return $this;
+        }
+
+        // Save.
+        $this->jsonData = $jsonData;
+
+        // Note that was set.
+        $this->setFields[]     = 'json_data';
+        $this->changedFields[] = 'json_data';
+
+        // Note that was changed.
+        if (isset($this->fieldsValuesHistory['json_data']) === false) {
+            $this->fieldsValuesHistory['json_data'] = [];
+        }
+        $this->fieldsValuesHistory['json_data'][] = $jsonData;
 
         return $this;
     }

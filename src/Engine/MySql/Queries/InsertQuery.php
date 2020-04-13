@@ -12,12 +12,16 @@ use Przeslijmi\Shortquery\Engine\MySql\Query;
 class InsertQuery extends Query
 {
 
+    /**
+     * Primary key value for added record.
+     *
+     * @var integer
+     */
     private $addedPk;
 
     /**
      * Converts INSERT query into string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString()
@@ -71,10 +75,15 @@ class InsertQuery extends Query
         return $query;
     }
 
+    /**
+     * Call query and wait for response.
+     *
+     * @return boolean|mysqli_result
+     */
     public function call()
     {
 
-        $this->engineCallQuery();
+        $response = $this->engineCallQuery();
 
         // Mark instances added and put primary keys (if possible).
         foreach ($this->getInstances() as $no => $instance) {
@@ -87,8 +96,15 @@ class InsertQuery extends Query
                 $instance->definePkValue(( $this->lastInsertId + $no ));
             }
         }
+
+        return $response;
     }
 
+    /**
+     * Call query without waiting for any response.
+     *
+     * @return boolean True.
+     */
     public function fire()
     {
 
@@ -98,17 +114,34 @@ class InsertQuery extends Query
         foreach ($this->getInstances() as $instance) {
             $instance->defineIsAdded(true);
         }
+
+        return true;
     }
 
-    protected function setAddedPk(int $addedPk)
+    /**
+     * Setter for primary key value for added record.
+     *
+     * @param integer $addedPk Primary key value for added record.
+     *
+     * @return self
+     */
+    protected function setAddedPk(int $addedPk) : self
     {
 
+        // Save.
         $this->addedPk = $addedPk;
+
+        return $this;
     }
 
-    public function getAddedPk(int $forRecord = 0) : int
+    /**
+     * Getter for primary key value for added record.
+     *
+     * @return null|integer
+     */
+    public function getAddedPk() : ?int
     {
 
-        return ( $this->addedPk - $forRecord );
+        return $this->addedPk;
     }
 }

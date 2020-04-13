@@ -54,20 +54,30 @@ abstract class Field extends FieldEchoingMethods
     private $engineType;
 
     /**
-     * PHP type of value (string, int, etc.).
+     * PHP type of value on input (string, int, etc.).
      *
      * @var string
      */
     private $phpTypeInput;
 
     /**
+     * PHP type of value on output (string, int, etc.).
      *
+     * @var string
      */
     private $phpTypeOutput;
+
+    /**
+     * PHP DOCS type of value on input (string, int, etc.).
+     *
+     * @var string
+     */
     private $phpDocsTypeInput;
 
     /**
+     * PHP DOCS type of value on output (string, int, etc.).
      *
+     * @var string
      */
     private $phpDocsTypeOutput;
 
@@ -76,8 +86,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param string  $name    Name of field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -91,7 +99,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param string $name Name of field.
      *
-     * @since  v1.0
      * @return self
      */
     private function setName(string $name) : self
@@ -107,7 +114,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param string $case Optional 'original'. Otherwise `camelCase` or `pascalCase` can be sent.
      *
-     * @since  v1.0
      * @return string
      */
     public function getName(string $case = 'original') : string
@@ -142,7 +148,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param Model $model Model instance in which Field is used.
      *
-     * @since  v1.0
      * @return self
      */
     public function setModel(Model $model) : self
@@ -156,7 +161,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Checks if Field has model.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function hasModel() : bool
@@ -168,7 +172,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for Model instance in which Field is used.
      *
-     * @since  v1.0
      * @return Model
      */
     public function getModel() : Model
@@ -182,7 +185,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param boolean $isPrimaryKey Is this is a primary key.
      *
-     * @since  v1.0
      * @return self
      */
     public function setPrimaryKey(bool $isPrimaryKey) : self
@@ -204,7 +206,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param boolean $isPrimaryKey Is this is a primary key.
      *
-     * @since  v1.0
      * @return self
      */
     public function setPk(bool $isPrimaryKey) : self
@@ -216,7 +217,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `isPrimaryKey` setting.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function isPrimaryKey() : bool
@@ -230,7 +230,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param boolean $isNotNull Is this is a not null field.
      *
-     * @since  v1.0
      * @return self
      */
     private function setNotNull(bool $isNotNull) : self
@@ -244,7 +243,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `isNotNull` setting.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function isNotNull() : bool
@@ -258,7 +256,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param string $type Type of field.
      *
-     * @since  v1.0
      * @return self
      */
     protected function setType(string $type) : self
@@ -272,7 +269,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `type`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getType() : string
@@ -286,7 +282,6 @@ abstract class Field extends FieldEchoingMethods
      *
      * @param string $engineType Engine type of field.
      *
-     * @since  v1.0
      * @return self
      */
     public function setEngineType(string $engineType) : self
@@ -300,7 +295,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `engineType`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getEngineType() : string
@@ -312,9 +306,9 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Setter for `phpTypeInput` and `phpTypeOutput`.
      *
-     * @param string $phpType PHP type of value (string, int, etc.).
+     * @param string $phpTypeInput  PHP type of value on input (string, int, etc.).
+     * @param string $phpTypeOutput Optional, identical. PHP type of value on output (string, int, etc.).
      *
-     * @since  v1.0
      * @return self
      */
     public function setPhpType(string $phpTypeInput, ?string $phpTypeOutput = null) : self
@@ -330,6 +324,15 @@ abstract class Field extends FieldEchoingMethods
         return $this;
     }
 
+
+    /**
+     * Setter for `phpDocsTypeInput` and `phpDocsTypeOutput`.
+     *
+     * @param string $phpDocsTypeInput  PHP DOCS type of value on input (string, int, etc.).
+     * @param string $phpDocsTypeOutput Optional, identical. PHP DOCS type of value on output (string, int, etc.).
+     *
+     * @return self
+     */
     public function setPhpDocsType(string $phpDocsTypeInput, ?string $phpDocsTypeOutput = null) : self
     {
 
@@ -346,7 +349,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `phpTypeInput`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getPhpTypeInput() : string
@@ -363,9 +365,24 @@ abstract class Field extends FieldEchoingMethods
     }
 
     /**
+     * Convert php type input into braced php type input (eg. `string` into `(string)`).
+     *
+     * @return string
+     */
+    public function getPhpTypeInputInBraces() : string
+    {
+
+        // If php type input is not defined - return empty string.
+        if (empty($this->phpTypeInput) === true) {
+            return '';
+        }
+
+        return '(' . $this->phpTypeInput . ') ';
+    }
+
+    /**
      * Getter for `phpDocsTypeOutput`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getPhpDocsTypeInput() : string
@@ -380,7 +397,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `phpTypeOutput`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getPhpTypeOutput() : string
@@ -396,7 +412,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for `phpDocsTypeOutput`.
      *
-     * @since  v1.0
      * @return string
      */
     public function getPhpDocsTypeOutput() : string
@@ -412,7 +427,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for name of a getter method that returns value of this field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getGetterName() : string
@@ -433,7 +447,6 @@ abstract class Field extends FieldEchoingMethods
     /**
      * Getter for name of a setter method that sets value for this field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getSetterName() : string

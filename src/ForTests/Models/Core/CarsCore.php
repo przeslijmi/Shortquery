@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery\ForTests\Models\Core;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
-use Przeslijmi\Shortquery\ForTests\Models\Girls;
+use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls2693;
 
 /**
  * ShortQuery Collection Core class for Car Model Collection.
@@ -15,8 +15,6 @@ class CarsCore extends Collection
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {
@@ -39,6 +37,7 @@ class CarsCore extends Collection
 
         // Get pks (primary-keys) present in current collection.
         $pks = $this->getValuesByField('owner_girl');
+        $pks = array_unique($pks);
 
         // Shortcut - nothing to expand.
         if (count($pks) === 0) {
@@ -46,7 +45,7 @@ class CarsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Girls(...func_get_args());
+        $toAdd = new Girls2693(...func_get_args());
         $toAdd->getLogics()->addRule('pk', $pks);
         $toAdd->read();
 
@@ -67,6 +66,7 @@ class CarsCore extends Collection
 
         // Get pks (primary-keys) present in current collection.
         $pks = $this->getValuesByField('owner_girl');
+        $pks = array_unique($pks);
 
         // Shortcut - nothing to expand.
         if (count($pks) === 0) {
@@ -74,7 +74,7 @@ class CarsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Girls(...func_get_args());
+        $toAdd = new Girls2693(...func_get_args());
         $toAdd->getLogics()->addRule('pk', $pks);
         $toAdd->read();
 

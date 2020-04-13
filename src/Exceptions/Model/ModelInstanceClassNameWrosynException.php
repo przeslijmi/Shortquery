@@ -18,8 +18,6 @@ class ModelInstanceClassNameWrosynException extends ClassFopException
      * @param string         $instanceClassName Given wrong instance class name.
      * @param Model          $model             Model that has the problem.
      * @param Exception|null $cause             Exception that caused the problem.
-     *
-     * @since v1.0
      */
     public function __construct(string $instanceClassName, Model $model, ?Exception $cause = null)
     {

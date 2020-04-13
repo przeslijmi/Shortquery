@@ -43,8 +43,6 @@ class CarModel extends Model
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {
@@ -70,7 +68,7 @@ class CarModel extends Model
         $this->addField(
             ( new EnumField('is_fast', false) )
                 ->setValues('no', 'yes')
-                ->setDict('main', 'no', 'yes')
+                ->setDict('main', 'nie', 'tak')
                 ->setPk(false)
         );
         $this->addField(

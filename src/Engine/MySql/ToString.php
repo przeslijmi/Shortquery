@@ -2,30 +2,52 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql;
 
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\AggregationToString;
+use Exception;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\CompToString;
+use Przeslijmi\Shortquery\Engine\Mysql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\FieldToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\IntValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicsToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\NullValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\TrueValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\RuleToString;
+use Przeslijmi\Shortquery\Engine\Mysql\ToString\TrueValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValToString;
 use Przeslijmi\Shortquery\Items\AnyItem;
 
+/**
+ * Converts items to string using item-specific methods.
+ */
 class ToString
 {
 
-    public static function toString($item, string $context = '') : string
+    /**
+     * Converts item to string.
+     *
+     * @param Item|LogicItem[] $item    Item to be converted to string.
+     * @param string           $context Name of context.
+     *
+     * @return string
+     *
+     * @phpcs:disable Generic.Metrics.CyclomaticComplexity
+     */
+    public static function convert($item, string $context = '') : string
     {
 
         return self::getMaker($item, $context)->toString();
     }
 
+    /**
+     * Returns method for this particular kind of Item that converts it to string.
+     *
+     * @param Item|LogicItem[] $item    Item to be converted to string.
+     * @param string           $context Name of context.
+     *
+     * @throws Exception When send Item not fits to any maker.
+     * @return string
+     */
     private static function getMaker($item, string $context)
     {
 
@@ -34,13 +56,10 @@ class ToString
         }
 
         if (is_object($item) === false) {
-            throw new \Exception('ups');
+            throw new Exception('ups');
         }
 
-        if (is_a($item, 'Przeslijmi\Shortquery\Items\Aggregation') === true) {
-            return new AggregationToString($item, $context);
-
-        } elseif (is_a($item, 'Przeslijmi\Shortquery\Items\Comp') === true) {
+        if (is_a($item, 'Przeslijmi\Shortquery\Items\Comp') === true) {
             return new CompToString($item, $context);
 
         } elseif (is_a($item, 'Przeslijmi\Shortquery\Items\Field') === true) {
@@ -72,9 +91,8 @@ class ToString
 
         } elseif (is_a($item, 'Przeslijmi\Shortquery\Items\Vals') === true) {
             return new ValsToString($item, $context);
-        }
+        }//end if
 
-        throw new \Exception('ups');
+        throw new Exception('ups');
     }
 }
-

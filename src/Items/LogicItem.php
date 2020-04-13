@@ -16,9 +16,16 @@ use Przeslijmi\Sivalidator\TypeHinting;
 abstract class LogicItem extends AnyItem
 {
 
-    public static function factory()
+    /**
+     * Creates logic item collection in array.
+     *
+     * @throws TemporaryException When sth will go wrong.
+     * @return array
+     */
+    public static function factory() : array
     {
 
+        // Lvd.
         $args   = func_get_args();
         $rules  = [];
         $logics = [];
@@ -28,8 +35,6 @@ abstract class LogicItem extends AnyItem
 
             if (is_array($arg) === true) {
                 $args[$id] = Rule::factory(...$arg);
-            } else {
-                throw new TemporaryException('You asked for strange logics...');
             }
 
             if (is_a($args[$id], 'Przeslijmi\Shortquery\Items\Rule') === true) {
@@ -65,23 +70,10 @@ abstract class LogicItem extends AnyItem
     /**
      * Constructor.
      *
-     * @since  v1.0
      * @throws ParamWrotypeException On creationOfLogicItemFromWrongElements.
      */
     public function __construct()
     {
-
-        // Chk.
-        try {
-            TypeHinting::isArrayOf(func_get_args(), 'Przeslijmi\Shortquery\Items\Rule');
-        } catch (TypeHintingFailException $e) {
-            throw new ParamWrotypeException(
-                'creationOfLogicItemFromWrongElements',
-                'Przeslijmi\Shortquery\Items\Rule[]',
-                $e->getIsInFact(),
-                $e
-            );
-        }
 
         // Add Rule at each iteration to $this->rules repo and set their parent to this class.
         foreach (func_get_args() as $rule) {
@@ -95,7 +87,6 @@ abstract class LogicItem extends AnyItem
     /**
      * Checks if this LogicItem has any rules.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function hasRules() : bool
@@ -107,7 +98,6 @@ abstract class LogicItem extends AnyItem
     /**
      * Getter for all rules inside this LogicOr/LogicAnd.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function getRules() : array
@@ -121,7 +111,6 @@ abstract class LogicItem extends AnyItem
      *
      * @param Collection $collectionParent Parent of this object.
      *
-     * @since  v1.0
      * @return void
      */
     public function setCollectionParent(Collection $collectionParent) : void
@@ -133,7 +122,6 @@ abstract class LogicItem extends AnyItem
     /**
      * Getter for Parent of this object.
      *
-     * @since  v1.0
      * @return Collection Parent of this object.
      */
     public function getCollectionParent() : Collection

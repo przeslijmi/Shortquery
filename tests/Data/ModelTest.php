@@ -50,17 +50,17 @@ final class ModelTest extends TestCase
 
         // Preapare fields.
         $fields = [
-            'pk'        => (new IntField('pk'))->setPrimaryKey(true),
-            'full_name' => (new VarCharField('full_name')),
+            'pk'        => ( new IntField('pk') )->setPrimaryKey(true),
+            'full_name' => ( new VarCharField('full_name') ),
         ];
 
         // Preapare relations.
         $relations = [
-            'deeper' => (new HasOneRelation('deeper'))
-              ->setModelFrom('Clean\\Nice\\Namespace\\Core\\TestModel')
-              ->setFieldFrom('pk')
-              ->setModelTo('Clean\\Nice\\Namespace\\Core\\DeepModel')
-              ->setFieldTo('pk')
+            'deeper' => ( new HasOneRelation('deeper') )
+                ->setModelFrom('Clean\\Nice\\Namespace\\Core\\TestModel')
+                ->setFieldFrom('pk')
+                ->setModelTo('Clean\\Nice\\Namespace\\Core\\DeepModel')
+                ->setFieldTo('pk')
         ];
 
         // Create Model.
@@ -377,8 +377,8 @@ final class ModelTest extends TestCase
         // Create Model without collection class name and ask for it.
         $model = new Model();
         $model->setName('test');
-        $model->addField((new IntField('pk')));
-        $model->addField((new IntField('pk')));
+        $model->addField(( new IntField('pk') ));
+        $model->addField(( new IntField('pk') ));
     }
 
     /**
@@ -426,8 +426,8 @@ final class ModelTest extends TestCase
         // Create Model without collection class name and ask for it.
         $model = new Model();
         $model->setName('test');
-        $model->addField((new IntField('pk1'))->setPrimaryKey(true));
-        $model->addField((new IntField('pk2'))->setPrimaryKey(true));
+        $model->addField(( new IntField('pk1') )->setPrimaryKey(true));
+        $model->addField(( new IntField('pk2') )->setPrimaryKey(true));
         $model->getPrimaryKeyField();
     }
 
@@ -446,8 +446,8 @@ final class ModelTest extends TestCase
         $model->setName('test');
         $model->setNamespace('This\\Is\\Just\\Test');
         $model->setInstanceClassName('Test');
-        $model->addRelation((new HasOneRelation('relation')));
-        $model->addRelation((new HasOneRelation('relation')));
+        $model->addRelation(( new HasOneRelation('relation') ));
+        $model->addRelation(( new HasOneRelation('relation') ));
     }
 
     /**

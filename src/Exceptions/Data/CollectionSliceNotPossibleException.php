@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Data;
 
-use Exception;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Data\Collection;
 
@@ -15,16 +14,14 @@ class CollectionSliceNotPossibleException extends ClassFopException
     /**
      * Constructor.
      *
-     * @param Collection     $collection Collection that has the problem.
-     * @param Exception|null $cause      Exception that caused the problem.
-     *
-     * @since v1.0
+     * @param Collection   $collection  Collection that has the problem.
+     * @param null|integer $sliceFrom   Starting point of silce (first record, starting with 0).
+     * @param null|integer $sliceLength Lenght of silce.
      */
     public function __construct(
         Collection $collection,
         ?int $sliceFrom = null,
-        ?int $sliceLength = null,
-        ?Exception $cause = null
+        ?int $sliceLength = null
     ) {
 
         // Lvd.
@@ -40,10 +37,6 @@ class CollectionSliceNotPossibleException extends ClassFopException
         $this->addInfo('modelName', $collection->getModel()->getName());
         $this->addInfo('sliceFrom', (string) ( (int) $sliceFrom ));
         $this->addInfo('sliceLength', (string) ( (int) $sliceLength ));
-        $this->addInfo('hint', $hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
+        $this->addHint($hint);
     }
 }

@@ -15,8 +15,7 @@ class Connection
     /**
      * Instances of connections.
      *
-     * @var   array
-     * @since v1.0
+     * @var array
      */
     private static $connections = [];
 
@@ -26,7 +25,6 @@ class Connection
      * @param string  $database Name of database to get configs from (PRZESLIJMI_SHORTQUERY_DATABASES).
      * @param integer $id       Opt., 0. Id of instance of connection.
      *
-     * @since  v1.0
      * @throws ClassFopException When connection is not established.
      * @return MySqli
      */
@@ -64,7 +62,6 @@ class Connection
      * @param string  $database Name of database.
      * @param integer $port     Opt., 3306. Port for database.
      *
-     * @since  v1.0
      * @throws MethodFopException When connection is not established.
      * @return MySqli
      *

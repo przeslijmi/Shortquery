@@ -15,7 +15,6 @@ class UpdateQuery extends Query
     /**
      * Converts UPDATE query into string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString()
@@ -29,6 +28,7 @@ class UpdateQuery extends Query
         // Go with each records.
         foreach ($this->getInstances() as $instance) {
 
+            // Short track.
             if ($instance->grabHaveAnythingChanged() === false) {
                 continue;
             }
@@ -76,15 +76,25 @@ class UpdateQuery extends Query
         return trim(implode(PHP_EOL, $queries));
     }
 
+    /**
+     * Call query and wait for response.
+     *
+     * @return boolean|mysqli_result
+     */
     public function call()
     {
 
-        $this->engineCallQuery();
+        return $this->engineCallQuery();
     }
 
-    public function fire()
+    /**
+     * Call query without waiting for any response.
+     *
+     * @return boolean True.
+     */
+    public function fire() : bool
     {
 
-        $this->engineFireQuery();
+        return $this->engineFireQuery();
     }
 }

@@ -11,7 +11,6 @@ class FuncSumToString extends FuncToStringParent
     /**
      * Converts func SUM to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

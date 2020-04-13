@@ -52,16 +52,17 @@ class Rule extends AnyItem
      * @param scalar|Comp             $comp  Comparison itself.
      * @param null|scalar|ContentItem $right Right item of comparison.
      *
-     * @since  v1.0
      * @throws MethodFopException On creationOfCompFailed.
      * @return Rule
+     *
+     * @phpcs:disable Generic.Metrics.CyclomaticComplexity
      */
     public static function factory($left, $comp = null, $right = null) : Rule
     {
 
         // In only left is given.
         if (func_num_args() === 1) {
-            $comp = 'eq';
+            $comp  = 'eq';
             $right = true;
         }
 
@@ -79,8 +80,6 @@ class Rule extends AnyItem
             } elseif (is_array($left) === true) {
                 $left = Func::factory(...$left);
             }
-        // } else {
-            // @todo Add throw wrotype (as below) here.
         }
 
         // If $comp is not a Comp - then try create one.
@@ -113,7 +112,7 @@ class Rule extends AnyItem
             } else {
                 $right = new Val($right);
             }
-        }
+        }//end if
 
         return new Rule($left, $comp, $right);
     }
@@ -125,7 +124,6 @@ class Rule extends AnyItem
      * @param scalar|Comp             $comp  Comparison itself.
      * @param null|scalar|ContentItem $right Right item of comparison.
      *
-     * @since  v1.0
      * @throws MethodFopException On creationOfCompFailed.
      * @return Rule
      */
@@ -136,9 +134,9 @@ class Rule extends AnyItem
             return new LogicAnd(self::factory($left));
         } elseif (func_num_args() === 2) {
             return new LogicAnd(self::factory($left, $comp));
-        } elseif (func_num_args() === 3) {
-            return new LogicAnd(self::factory($left, $comp, $right));
         }
+
+        return new LogicAnd(self::factory($left, $comp, $right));
     }
 
     /**
@@ -147,8 +145,6 @@ class Rule extends AnyItem
      * @param ContentItem $left  Left item of comparison.
      * @param Comp        $comp  Comparison itself.
      * @param ContentItem $right Right item of comparison.
-     *
-     * @since v1.0
      */
     public function __construct(ContentItem $left, Comp $comp, ContentItem $right)
     {
@@ -165,7 +161,6 @@ class Rule extends AnyItem
     /**
      * Getter for Left item of comparison.
      *
-     * @since  v1.0
      * @return ContentItem Left item of comparison.
      */
     public function getLeft() : ContentItem
@@ -177,7 +172,6 @@ class Rule extends AnyItem
     /**
      * Getter for comparison item
      *
-     * @since  v1.0
      * @return Comp Comparison item
      */
     public function getComp() : Comp
@@ -189,7 +183,6 @@ class Rule extends AnyItem
     /**
      * Getter for Right item of comparison.
      *
-     * @since  v1.0
      * @return ContentItem Right item of comparison.
      */
     public function getRight() : ContentItem
@@ -203,7 +196,6 @@ class Rule extends AnyItem
      *
      * @param LogicItem $logicItemParent Parent of this object.
      *
-     * @since  v1.0
      * @return void
      */
     public function setLogicItemParent(LogicItem $logicItemParent) : void
@@ -215,7 +207,6 @@ class Rule extends AnyItem
     /**
      * Getter for Parent of this object.
      *
-     * @since  v1.0
      * @return ContentItem Parent of this object.
      */
     public function getLogicItemParent() : LogicItem

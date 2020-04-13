@@ -15,25 +15,12 @@ interface FieldInterface
      *
      * @param string  $name    Name of field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false);
 
     /**
-     * Checks if value of the Field is valid according to this type.
-     *
-     * @param string $value Value to be checked.
-     *
-     * @since  v1.0
-     * @return boolean
-     */
-    // public function isValueValid($value) : bool;
-
-    /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string;
@@ -41,7 +28,6 @@ interface FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string;
@@ -49,7 +35,6 @@ interface FieldInterface
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string;
@@ -59,7 +44,6 @@ interface FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string;
@@ -67,7 +51,6 @@ interface FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string;

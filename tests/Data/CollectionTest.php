@@ -8,7 +8,6 @@ use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeReadException;
 use Przeslijmi\Shortquery\Exceptions\Items\LogicFactoryFailedException;
 use Przeslijmi\Shortquery\Exceptions\Items\RuleFactoryFailedException;
-use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
 use Przeslijmi\Shortquery\ForTests\Models\Things;
@@ -20,25 +19,9 @@ final class CollectionTest extends TestCase
 {
 
     /**
-     * Test if creator works properly.
-     *
-     * @return void
-     */
-    public function testModelCreator() : void
-    {
-
-        $md = new CreatorStarter();
-        $md->run('resources/schemaForTesting.php');
-
-        $this->assertEquals(1, 1);
-    }
-
-    /**
      * Test if Girls Collection can be properly read.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingGirlsTableWorks() : void
     {
@@ -64,8 +47,6 @@ final class CollectionTest extends TestCase
      * Test if counting (without reading records) Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCountingWithoutReadingWorks() : void
     {
@@ -82,8 +63,6 @@ final class CollectionTest extends TestCase
      * Test if ordering before reading Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfOrderingBeforeReadingWorks() : void
     {
@@ -102,8 +81,6 @@ final class CollectionTest extends TestCase
      * Test if Girls Collection can handle Logics.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingGirlsWithLogicsWorks() : void
     {
@@ -126,8 +103,6 @@ final class CollectionTest extends TestCase
      * Test if reading Girls Collection with slice and order works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingWithSliceAndOrderWork() : void
     {
@@ -146,8 +121,6 @@ final class CollectionTest extends TestCase
      * Test if reading Girls Collection with relation to Cars works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingGirlsWithRelationToCarsWorks() : void
     {
@@ -168,8 +141,6 @@ final class CollectionTest extends TestCase
      * Test if reading Cars Collection with relation to GirlOwners works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingCarsWithRelationToGirlOwnersWorks() : void
     {
@@ -190,8 +161,6 @@ final class CollectionTest extends TestCase
      * Test if counting works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCountingCarsWorks() : void
     {
@@ -210,8 +179,6 @@ final class CollectionTest extends TestCase
      * Test if trying to create wrong Rule Throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCreatingWrongRuleThrows1() : void
     {
@@ -227,8 +194,6 @@ final class CollectionTest extends TestCase
      * Test if trying to create wrong Rule Throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCreatingWrongRuleThrows2() : void
     {
@@ -244,8 +209,6 @@ final class CollectionTest extends TestCase
      * Test if trying to create wrong Rule Throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCreatingWrongRuleThrows3() : void
     {
@@ -260,8 +223,6 @@ final class CollectionTest extends TestCase
      * Test if trying to create wrong Logic Throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCreatingWrongLogicThrows() : void
     {
@@ -277,8 +238,6 @@ final class CollectionTest extends TestCase
      * Test if putting not Instances but simple arrays to Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfPuttingArrayToCollectionWorks() : void
     {
@@ -308,8 +267,6 @@ final class CollectionTest extends TestCase
      * Test if saving Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfSavingCollectionWorks() : void
     {
@@ -351,8 +308,6 @@ final class CollectionTest extends TestCase
      * Test if create, update and delete on Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfCrudOnCollectionWorks() : void
     {
@@ -394,8 +349,6 @@ final class CollectionTest extends TestCase
      * Test if clearing Collection works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfClearingCollectionWorks() : void
     {
@@ -423,8 +376,6 @@ final class CollectionTest extends TestCase
      * Test if trying to get wrong slice of records throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfWrongSliceOfCollectionThrows() : void
     {
@@ -448,8 +399,6 @@ final class CollectionTest extends TestCase
      * Test if trying to get wrong slice of records throws.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfWrongReadThrows() : void
     {

@@ -22,31 +22,28 @@ abstract class Collection extends Tools
     /**
      * Array of Records.
      *
-     * @var   Instance[]
-     * @since v1.0
+     * @var Instance[]
      */
     private $instances = [];
 
     /**
      * Logics Collection for Collection.
      *
-     * @var   Logics
-     * @since v1.0
+     * @var Logics
      */
     public $logics;
 
     /**
      * Model which is used by this Collection. Defined in *CollectionCore class.
      *
-     * @var   Model
-     * @since v1.0
+     * @var Model
      */
     protected $model;
 
     /**
      * Constructor.
      *
-     * @since v1.0
+     * @throws CollectionCantBeCreatedException If collection cant be created.
      */
     public function __construct()
     {
@@ -66,7 +63,7 @@ abstract class Collection extends Tools
     /**
      * Magic method for clone - clean logics and instances.
      *
-     * @since v1.0
+     * @return void Does return Collection.
      */
     public function __clone()
     {
@@ -79,7 +76,6 @@ abstract class Collection extends Tools
     /**
      * Getter for Model.
      *
-     * @since  v1.0
      * @return Model
      */
     public function getModel() : Model
@@ -91,7 +87,6 @@ abstract class Collection extends Tools
     /**
      * Getter for Logics.
      *
-     * @since  v1.0
      * @return Logics
      */
     public function getLogics() : Logics
@@ -111,7 +106,7 @@ abstract class Collection extends Tools
      * @param null|integer $sliceFrom   Optional. If only part of results if needed - slice from (starting from 0).
      * @param null|integer $sliceLength Optional. If only part of results if needed - slice length.
      *
-     * @since  v1.0
+     * @throws CollectionSliceNotPossibleException If Collection slice is not possible to be done.
      * @return Instance[]
      */
     public function get(?int $sliceFrom = null, ?int $sliceLength = null) : array
@@ -140,7 +135,6 @@ abstract class Collection extends Tools
      *
      * @param integer $sliceFrom Optional. Which instance has it to be.
      *
-     * @since  v1.0
      * @return Instance
      */
     public function getOne(?int $sliceFrom = 0) : Instance
@@ -154,7 +148,6 @@ abstract class Collection extends Tools
      *
      * @param string|integer $pkValue Value of primary key.
      *
-     * @since  v1.0
      * @return null|Instance
      */
     public function getByPk($pkValue) : ?Instance
@@ -162,7 +155,7 @@ abstract class Collection extends Tools
 
         // Look and return if found.
         foreach ($this->instances as $instance) {
-            if ($instance->grabPkValue() === $pkValue) {
+            if ((string) $instance->grabPkValue() === (string) $pkValue) {
                 return $instance;
             }
         }
@@ -173,7 +166,6 @@ abstract class Collection extends Tools
     /**
      * Return array with two arrays with instances, where [0] is for added, [1] is for nonadded.
      *
-     * @since  v1.0
      * @return array
      */
     public function getByAdded() : array
@@ -202,7 +194,6 @@ abstract class Collection extends Tools
     /**
      * Return array with Instances that are set to be deleted.
      *
-     * @since  v1.0
      * @return Instance[]
      */
     public function getByToBeDeleted() : array
@@ -227,7 +218,6 @@ abstract class Collection extends Tools
      * @param string  $fieldOrGetterName Name of the field or getter.
      * @param boolean $isThisGetter      Optional, false. Set to true if 0nd param is getter already.
      *
-     * @since  v1.0
      * @return array
      */
     public function getValuesByField(string $fieldOrGetterName, bool $isThisGetter = false) : array
@@ -260,7 +250,6 @@ abstract class Collection extends Tools
      * @param string  $fieldOrGetterName Name of the field or getter.
      * @param boolean $isThisGetter      Optional, false. Set to true if 0nd param is getter already.
      *
-     * @since  v1.0
      * @return Instances[]
      */
     public function getGroupedByField(string $fieldOrGetterName, bool $isThisGetter = false) : array
@@ -297,7 +286,6 @@ abstract class Collection extends Tools
     /**
      * Return length of Collection.
      *
-     * @since  v1.0
      * @return integer
      */
     public function length() : int
@@ -309,9 +297,8 @@ abstract class Collection extends Tools
     /**
      * Add one Instance to Collection.
      *
-     * @param Instance|Instance[] $instance Instance or array of Instances to be put.
+     * @param Instance|Instance[] $instanceOrInstances Instance or array of Instances to be put.
      *
-     * @since  v1.0
      * @return self
      */
     public function put($instanceOrInstances) : self
@@ -337,7 +324,6 @@ abstract class Collection extends Tools
      *
      * @param array $record Array record to be put in.
      *
-     * @since  v1.0
      * @return self
      */
     public function putRecord(array $record) : self
@@ -355,9 +341,8 @@ abstract class Collection extends Tools
     /**
      * Put many array records (not Instances) into Collection.
      *
-     * @param array $record Array records to be put in.
+     * @param array $records Array records to be put in.
      *
-     * @since  v1.0
      * @return self
      */
     public function putRecords(array $records) : self
@@ -380,7 +365,6 @@ abstract class Collection extends Tools
      * @param Collection $children Children fitting to all parents (ie. Instances of `$this`).
      * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
      *
-     * @since  v1.0
      * @return self
      */
     public function unpack(Collection $children, Relation $relation) : self
@@ -405,7 +389,6 @@ abstract class Collection extends Tools
      * @param Collection $children Children fitting to all parents (ie. fitting to Instances of `$this`).
      * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
      *
-     * @since  v1.0
      * @return self
      */
     public function unpackHasMany(Collection $children, Relation $relation) : self
@@ -442,7 +425,6 @@ abstract class Collection extends Tools
      * @param Collection $children Children fitting to all parents (ie. fitting to Instances of `$this`).
      * @param Relation   $relation Relation that explains by which Field Children and Parent are matched.
      *
-     * @since  v1.0
      * @return self
      */
     public function unpackHasOne(Collection $children, Relation $relation) : self
@@ -474,7 +456,6 @@ abstract class Collection extends Tools
     /**
      * Deletes all Instances from this Collection.
      *
-     * @since  v1.0
      * @return self
      */
     public function clear() : self
@@ -490,9 +471,9 @@ abstract class Collection extends Tools
      *
      * @param null|integer $sliceFrom   Optional. If only part of results if needed - slice from (starting from 0).
      * @param null|integer $sliceLength Optional. If only part of results if needed - slice length.
-     * @param string|array $orderBys     Optional. Field or fields to used for ordering.
+     * @param string|array $orderBys    Optional. Field or fields to used for ordering.
      *
-     * @since  v1.0
+     * @throws CollectionCantBeReadException If collection cant be read.
      * @return array Array of plain Records from db.
      */
     public function read(?int $sliceFrom = null, ?int $sliceLength = null, $orderBys = '') : self
@@ -505,7 +486,7 @@ abstract class Collection extends Tools
             $select->setLogicsSet($this->getLogics()->get());
 
             // Add LIMIT to Query.
-            if (is_null($sliceFrom) === false) {
+            if (is_null($sliceFrom) === false || is_null($sliceLength) === false) {
                 $select->setLimit((int) $sliceFrom, (int) $sliceLength);
             }
 
@@ -528,11 +509,20 @@ abstract class Collection extends Tools
 
         } catch (Throwable $thr) {
             throw new CollectionCantBeReadException(get_class($this), $thr);
-        }
+        }//end try
 
         return $this;
     }
 
+    /**
+     * Gets Records from DB and puts them to Collection as Instances order by fiven field.
+     *
+     * @param string|array $fieldOrFields Field or fields to used for ordering.
+     * @param null|integer $sliceFrom     Optional. If only part of results if needed - slice from (starting from 0).
+     * @param null|integer $sliceLength   Optional. If only part of results if needed - slice length.
+     *
+     * @return self
+     */
     public function readOrderedBy($fieldOrFields, ?int $sliceFrom = null, ?int $sliceLength = null) : self
     {
 
@@ -563,7 +553,6 @@ abstract class Collection extends Tools
      * @param array  $aggregationFields Optional, empty. Fields that has to be used for aggregation.
      * @param string $separator         Optional, backlash. Used to join aggregators values to create keys.
      *
-     * @since  v1.0
      * @return integer[]
      */
     public function count(array $aggregationFields = [], string $separator = '\\') : array
@@ -612,7 +601,8 @@ abstract class Collection extends Tools
     /**
      * Calls engine to update existing records.
      *
-     * @since  v1.0
+     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be updated.
+     *
      * @return self
      */
     public function update(?array $differentSetOfInstances = null) : self
@@ -640,7 +630,8 @@ abstract class Collection extends Tools
     /**
      * Calls engine to insert records.
      *
-     * @since  v1.0
+     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be created.
+     *
      * @return void
      */
     public function create(?array $differentSetOfInstances = null) : void
@@ -663,7 +654,8 @@ abstract class Collection extends Tools
     /**
      * Calls engine to delete records.
      *
-     * @since  v1.0
+     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be deleted.
+     *
      * @return void
      */
     public function delete(?array $differentSetOfInstances = null) : void
@@ -687,7 +679,6 @@ abstract class Collection extends Tools
     /**
      * Calls engine to insert, update or delete records.
      *
-     * @since  v1.0
      * @return void
      */
     public function save() : void

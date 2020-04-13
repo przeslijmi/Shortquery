@@ -15,7 +15,6 @@ use Przeslijmi\Shortquery\Exceptions\Model\RelationModelToDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\RelationModelToIsCorrupted;
 use Przeslijmi\Shortquery\Exceptions\Model\RelationNameWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Model\RelationFailedToCreateRule;
-use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 
@@ -26,26 +25,9 @@ final class RelationTest extends TestCase
 {
 
     /**
-     * Test if creator works properly.
-     *
-     * @return void
-     */
-    public function testModelCreator() : void
-    {
-
-        // Call to create local DB PHP files.
-        $md = new CreatorStarter();
-        $md->run('resources/schemaForTesting.php');
-
-        $this->assertEquals(1, 1);
-    }
-
-    /**
      * Test if reading existing relation works.
      *
      * @return void
-     *
-     * @depends testModelCreator
      */
     public function testIfReadingRelationWorks() : void
     {

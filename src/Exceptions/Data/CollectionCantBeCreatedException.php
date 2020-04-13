@@ -16,18 +16,14 @@ class CollectionCantBeCreatedException extends ClassFopException
      *
      * @param string         $className For which collection the problem occurs.
      * @param array          $params    What was the params sent to constructor.
-     * @param Throwable|null $cause     Throwable that caused the problem.
-     *
-     * @since v1.0
-     *
-     * phpcs:disable Generic.Files.LineLength
+     * @param null|Throwable $cause     Throwable that caused the problem.
      */
     public function __construct(string $className, array $params, ?Throwable $cause = null)
     {
 
         // Define.
         $this->addInfo('className', $className);
-        $this->addInfo('params', print_r($params, true));
+        $this->addInfo('params', var_export($params, true));
         $this->addInfo('context', 'ShortqueryCreatingCollection');
         $this->addInfo('hint', 'There was an error during creation of Collection. See causes.');
 

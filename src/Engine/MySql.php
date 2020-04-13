@@ -24,14 +24,14 @@ abstract class MySql extends Engine implements EngineInterface
     protected $lastInsertId;
 
     /**
-     * Method of calling query incl. waiting for response.
+     * Method of calling query including waiting for response.
      *
-     * @param string $query Query created by one of *Query objects.
-     *
-     * @since  v1.0
      * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
      * @throws MethodFopException On mysqliQueryWrosyn.
      * @return boolean|mysqli_result
+     *
+     * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
+     * @phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
      */
     protected function engineCallQuery()
     {
@@ -47,7 +47,7 @@ abstract class MySql extends Engine implements EngineInterface
         }
 
         // Log.
-        if (substr(trim($query), 0, 7) !== 'SELECT ') {
+        if (substr(trim($query), 0, 6) !== 'SELECT') {
             Log::get()->notice($query);
         }
 
@@ -71,9 +71,6 @@ abstract class MySql extends Engine implements EngineInterface
     /**
      * Method of calling query without waiting for any response.
      *
-     * @param string $query Query created by one of *Query objects.
-     *
-     * @since  v1.0
      * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
      * @throws MethodFopException On mysqliQueryWrosyn.
      * @return mysqli_result

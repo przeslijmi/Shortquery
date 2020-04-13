@@ -36,8 +36,6 @@ class EnumField extends Field implements FieldInterface
      *
      * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -55,9 +53,8 @@ class EnumField extends Field implements FieldInterface
     /**
      * Setter for `values`.
      *
-     * @param string[] $values Values to use in set field.
+     * @param string ...$values Values to use in set field.
      *
-     * @since  v1.0
      * @return self
      */
     public function setValues(string ...$values) : self
@@ -73,7 +70,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Getter for `values`.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getValues() : array
@@ -85,9 +81,8 @@ class EnumField extends Field implements FieldInterface
     /**
      * Setter for `mainDict`.
      *
-     * @param string[] $values Values to use in this dict.
+     * @param string ...$values Values to use in this dict.
      *
-     * @since  v1.0
      * @return self
      */
     public function setMainDict(string ...$values) : self
@@ -102,10 +97,9 @@ class EnumField extends Field implements FieldInterface
     /**
      * Setter for any dict from `dicts`.
      *
-     * @param string   $dictName Name of the dictionary
-     * @param string[] $values   Values to use in this dict.
+     * @param string $dictName  Name of the dictionary.
+     * @param string ...$values Values to use in this dict.
      *
-     * @since  v1.0
      * @return self
      */
     public function setDict(string $dictName, string ...$values) : self
@@ -120,7 +114,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Getter for `mainDict`.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getMainDict() : array
@@ -132,7 +125,8 @@ class EnumField extends Field implements FieldInterface
     /**
      * Getter for any dict.
      *
-     * @since  v1.0
+     * @param string $dictName Optional, `main`. Which dictionary to read.
+     *
      * @throws FieldDictDonoexException When dict with given name has not been found.
      * @return array
      */
@@ -164,7 +158,6 @@ class EnumField extends Field implements FieldInterface
      * @param string $key      Key to look for (on of sent to `->setValues()`).
      * @param string $dictName Which dictionary.
      *
-     * @since  v1.0
      * @throws FieldDictValueDonoexException When there is no given key in given dict.
      * @return string
      */
@@ -191,7 +184,7 @@ class EnumField extends Field implements FieldInterface
      * @param null|string $value  Value to be checked.
      * @param boolean     $throws Optional, true. If set to false `throw` will be off.
      *
-     * @since  v1.0
+     * @throws FieldValueInproperException When Field value is inproper.
      * @return boolean
      */
     public function isValueValid(?string $value, bool $throws = true) : bool
@@ -221,7 +214,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string
@@ -247,7 +239,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string
@@ -271,7 +262,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string
@@ -285,7 +275,6 @@ class EnumField extends Field implements FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string
@@ -297,7 +286,6 @@ class EnumField extends Field implements FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string

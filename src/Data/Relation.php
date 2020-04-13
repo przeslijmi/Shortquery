@@ -77,12 +77,16 @@ abstract class Relation
     private $logicsSyntax = [];
 
     /**
-     * Set of rules defined for relation
+     * Set of Rules defined for relation
+     *
+     * @var array
      */
     private $rules = [];
 
     /**
+     * Set of Logics defined for relation
      *
+     * @var array
      */
     private $logics = [];
 
@@ -91,7 +95,6 @@ abstract class Relation
      *
      * @param string $type Type of Relation (hasMany or hasOne).
      *
-     * @since  v1.0
      * @return string
      */
     protected function setType(string $type) : self
@@ -105,7 +108,6 @@ abstract class Relation
     /**
      * Getter for Relation type.
      *
-     * @since  v1.0
      * @return string
      */
     public function getType() : string
@@ -119,7 +121,6 @@ abstract class Relation
      *
      * @param string $name Name of Relation.
      *
-     * @since  v1.0
      * @throws RelationNameWrosynException When name is corrupted.
      * @return string
      */
@@ -141,7 +142,6 @@ abstract class Relation
     /**
      * Getter for Relation name.
      *
-     * @since  v1.0
      * @return string
      */
     public function getName() : string
@@ -155,7 +155,6 @@ abstract class Relation
      *
      * @param string $modelFrom Model name from which Relation starts.
      *
-     * @since  v1.0
      * @return self
      */
     public function setModelFrom(string $modelFrom) : self
@@ -170,7 +169,6 @@ abstract class Relation
     /**
      * Getter for `modelFrom`.
      *
-     * @since  v1.0
      * @throws RelationModelFromDonoexException When relation's ModelFrom is not defined.
      * @throws RelationModelFromIsCorrupted     When relation's ModelFrom is defined but can't be instantiated.
      * @return Model
@@ -199,7 +197,6 @@ abstract class Relation
     /**
      * Getter for `modelFrom` as a string class.
      *
-     * @since  v1.0
      * @throws RelationModelFromDonoexException When relation's ModelFrom is not defined.
      * @return string
      */
@@ -219,7 +216,6 @@ abstract class Relation
      *
      * @param string $modelTo Model name to which Relation leads.
      *
-     * @since  v1.0
      * @return self
      */
     public function setModelTo(string $modelTo) : self
@@ -234,7 +230,6 @@ abstract class Relation
     /**
      * Getter for `modelTo`.
      *
-     * @since  v1.0
      * @throws RelationModelToDonoexException When relation's ModelTo is not defined.
      * @throws RelationModelToIsCorrupted     When relation's ModelTo is defined but can't be instantiated.
      * @return Model
@@ -263,7 +258,6 @@ abstract class Relation
     /**
      * Getter for `modelTo` as a string class.
      *
-     * @since  v1.0
      * @throws RelationModelToDonoexException When relation's ModelFrom is not defined.
      * @return string
      */
@@ -283,7 +277,6 @@ abstract class Relation
      *
      * @param string $fieldFrom Name of Field from which Relation starts.
      *
-     * @since  v1.0
      * @return self
      */
     public function setFieldFrom(string $fieldFrom) : self
@@ -297,7 +290,6 @@ abstract class Relation
     /**
      * Getter for `fieldFrom`.
      *
-     * @since  v1.0
      * @throws RelationFieldFromDonoexException When relation's FieldFrom is not defined.
      * @throws RelationFieldFromIsCorrupted     When relation's FieldFrom is defined but can't be instantiated.
      * @return Field
@@ -326,7 +318,6 @@ abstract class Relation
     /**
      * Getter for `fieldFrom` as a Field name.
      *
-     * @since  v1.0
      * @throws RelationFieldFromDonoexException When relation's FieldFrom is not defined.
      * @return string
      */
@@ -346,7 +337,6 @@ abstract class Relation
      *
      * @param string $fieldTo Name of Field to which Relation leads.
      *
-     * @since  v1.0
      * @return self
      */
     public function setFieldTo(string $fieldTo) : self
@@ -360,7 +350,6 @@ abstract class Relation
     /**
      * Getter for `fieldTo`.
      *
-     * @since  v1.0
      * @throws RelationFieldToDonoexException When relation's FieldTo is not defined.
      * @throws RelationFieldToIsCorrupted     When relation's FieldTo is defined but can't be instantiated.
      * @return Field
@@ -389,7 +378,6 @@ abstract class Relation
     /**
      * Getter for `fieldTo` as a Field name.
      *
-     * @since  v1.0
      * @throws RelationFieldToDonoexException When relation's FieldTo is not defined.
      * @return string
      */
@@ -407,7 +395,6 @@ abstract class Relation
     /**
      * Returns name of method that expands Instance or Collection with children from Relation.
      *
-     * @since  v1.0
      * @return string
      */
     public function getExpanderName() : string
@@ -419,7 +406,6 @@ abstract class Relation
     /**
      * Returns name of method that adds one child-Instance to Relation Collection.
      *
-     * @since  v1.0
      * @return string
      */
     public function getAdderName() : string
@@ -434,7 +420,6 @@ abstract class Relation
      * For hasOne Relation child-Instance will be returned with that method.
      * For hasMany Relation child-Collection will be returned with that method.
      *
-     * @since  v1.0
      * @return string
      */
     public function getGetterName() : string
@@ -448,7 +433,6 @@ abstract class Relation
      *
      * @param string $logicsSyntax Php string to copy to final models.
      *
-     * @since  v1.0
      * @return self
      */
     public function addLogicsSyntax(string $logicsSyntax) : self
@@ -465,7 +449,6 @@ abstract class Relation
      * After creator Logics syntax are conferted into Rules and real Logics, accesible via
      * `$this->getLogics()` while `$this->getLogicsSyntax()` remain shut.
      *
-     * @since  v1.0
      * @return array
      */
     public function getLogicsSyntax() : array
@@ -477,7 +460,6 @@ abstract class Relation
     /**
      * Adds one Rule into this Relations logics (using Rule wrapped factory).
      *
-     * @since  v1.0
      * @throws RelationFailedToCreateRule When Relation failed to create Rule.
      * @return self
      */
@@ -501,7 +483,6 @@ abstract class Relation
      *
      * @param LogicItem $logic One LogicItem with one or more Rules.
      *
-     * @since  v1.0
      * @return self
      */
     public function addLogic(LogicItem $logic) : self
@@ -515,7 +496,6 @@ abstract class Relation
     /**
      * Return all logics this relation has defined.
      *
-     * @since  v1.0
      * @return LogicItem[]
      */
     public function getLogics() : array
@@ -527,7 +507,6 @@ abstract class Relation
     /**
      * Checks if this relation has any logics defined.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function hasLogics() : bool

@@ -6,8 +6,6 @@ use Przeslijmi\Shortquery\Items\ContentItem;
 
 /**
  * Field item - table name and field name.
- *
- * @todo alias
  */
 class Field extends ContentItem
 {
@@ -15,16 +13,14 @@ class Field extends ContentItem
     /**
      * Table name for this Field.
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $table = '';
 
     /**
      * Field name.
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $field = '';
 
@@ -33,7 +29,8 @@ class Field extends ContentItem
      *
      * @param string $fieldOrTableWithField Field name or field and table name separated with dot.
      *
-     * @since  v1.0
+     * @todo Getting rid of gravises is rather harsh. Should be refactored.
+     *
      * @return Field
      */
     public static function factory(string $fieldOrTableWithField) : Field
@@ -41,6 +38,7 @@ class Field extends ContentItem
 
         // Delete gravis.
         $fieldOrTableWithField = trim($fieldOrTableWithField, '`');
+        $fieldOrTableWithField = str_replace('`.`', '.', $fieldOrTableWithField);
 
         // Keep table and field name organized.
         if (strpos($fieldOrTableWithField, '.') !== false) {
@@ -56,9 +54,9 @@ class Field extends ContentItem
     /**
      * Constructor.
      *
-     * @param string $tableAndField Can have both (table & field) or only field.
+     * @param string $field Field name.
+     * @param string $table Optional, empty. Table name.
      *
-     * @since  v1.0
      * @return self
      */
     public function __construct(string $field, string $table = '')
@@ -73,7 +71,6 @@ class Field extends ContentItem
      *
      * @param string $table Table name for this Field.
      *
-     * @since  v1.0
      * @return self
      */
     public function setTable(string $table) : self
@@ -87,7 +84,6 @@ class Field extends ContentItem
     /**
      * Getter for table name.
      *
-     * @since  v1.0
      * @return string
      */
     public function getTable() : string
@@ -101,7 +97,6 @@ class Field extends ContentItem
      *
      * @param string $field Field name.
      *
-     * @since  v1.0
      * @return self
      */
     public function setField(string $field) : self
@@ -115,7 +110,6 @@ class Field extends ContentItem
     /**
      * Getter for field name.
      *
-     * @since  v1.0
      * @return string
      */
     public function getField() : string

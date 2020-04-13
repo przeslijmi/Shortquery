@@ -2,6 +2,8 @@
 
 namespace Przeslijmi\Shortquery\Tools;
 
+use Throwable;
+use Exception;
 use Przeslijmi\Sexceptions\Exceptions\ClassDonoexException;
 use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Sexceptions\Exceptions\ParamWrosynException;
@@ -22,26 +24,29 @@ class InstancesFactory
      * @param object|string $classOrClassName Model class or model class name.
      * @param array         $props            Array with properties of object.
      *
-     * @since  v1.0
+     * @throws Exception InstancesFactory can take only collection name or collection instance as argument.
      * @throws ClassDonoexException On creatingInstanceForShortquery.
      * @throws ParamWrosynException On className.
      * @throws ParamWrotypeException On props.
      * @throws MethodFopException On constructorOfInstancesFailed.
      * @throws MethodFopException On creatingInstanceFromArrayFailed.
+     *
      * @return object Model object.
      */
     public static function fromArray($classOrClassName, array $props) : object
     {
 
+        // Lvd.
         $className = null;
         $instance  = null;
 
+        // Verify argument.
         if (is_string($classOrClassName) === true) {
             $className = $classOrClassName;
         } elseif (is_object($classOrClassName) === true) {
             $instance = $classOrClassName;
         } else {
-            die('sdadfgseawf345w3qrfestbr');
+            throw new Exception('InstancesFactory can take only collection name or collection instance as argument');
         }
 
         try {
@@ -66,55 +71,18 @@ class InstancesFactory
 
                 // Create instance.
                 try {
-                    $instance = new $className();
-                } catch (Sexception $e) {
+                    $instance = new $className(null);
+                } catch (Throwable $e) {
                     throw (new MethodFopException('constructorOfInstancesFailed', $e))->addInfo('class', $className);
                 }
             }//end if
 
-            $instance = self::fromArrayDo($instance, $props);
+            // Inject properties to object.
+            $instance->injectData($props);
 
-        } catch (\Exception $e) {
+        } catch (Throwable $e) {
             throw (new MethodFopException('creatingInstanceFromArrayFailed', $e))->addInfo('class', $className);
         }//end try
-
-        return $instance;
-    }
-
-    /**
-     * Helper method doing actual convertion from array to objects.
-     *
-     * @param object $instance Empty object of model.
-     * @param array  $props    Properties.
-     *
-     * @since  v1.0
-     * @throws MethodFopException On settingValueForInstanceFailed.
-     * @return object Model object.
-     */
-    private static function fromArrayDo(object $instance, array $props) : object
-    {
-
-        // Fill up instance.
-        foreach ($props as $propName => $propValue) {
-
-            $propNameExploded = explode('_', $propName);
-            array_walk(
-                $propNameExploded,
-                function (&$value) {
-                    $value = ucfirst($value);
-                }
-            );
-            $setterName = 'set' . implode('', $propNameExploded);
-
-            try {
-                call_user_func([ $instance, $setterName ], $propValue);
-            } catch (\Exception $e) {
-                throw (new MethodFopException('settingValueForInstanceFailed', $e))
-                    ->addInfo('class', get_class($instance))
-                    ->addInfo('name', $propName)
-                    ->addInfo('value', $propValue);
-            }
-        }
 
         return $instance;
     }

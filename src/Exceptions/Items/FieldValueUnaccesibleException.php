@@ -17,11 +17,7 @@ class FieldValueUnaccesibleException extends MethodFopException
      *
      * @param string         $fieldName Name of field.
      * @param Instance       $instance  Where to look for fields.
-     * @param Throwable|null $cause     Throwable that caused the problem.
-     *
-     * @since v1.0
-     *
-     * phpcs:disable Generic.Files.LineLength
+     * @param null|Throwable $cause     Throwable that caused the problem.
      */
     public function __construct(string $fieldName, Instance $instance, ?Throwable $cause = null)
     {

@@ -11,7 +11,6 @@ class TrueVal extends ContentItem
     /**
      * Getter of value.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function getValue()

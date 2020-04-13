@@ -11,7 +11,6 @@ class FuncLocalToString extends FuncToStringParent
     /**
      * Converts any locally existing func to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

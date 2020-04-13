@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Creator;
 
-use Exception;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 
 /**
@@ -13,12 +12,8 @@ class ConfigurationCorruptedException extends ClassFopException
 
     /**
      * Constructor.
-     *
-     * @param Exception|null $cause Exception that caused the problem.
-     *
-     * @since v1.0
      */
-    public function __construct(?Exception $cause = null)
+    public function __construct()
     {
 
         // Lvd.
@@ -27,10 +22,6 @@ class ConfigurationCorruptedException extends ClassFopException
 
         // Define.
         $this->addInfo('context', 'CreatorHasNoConfigurationToStartWork');
-        $this->addInfo('hint', $hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
+        $this->addHint($hint);
     }
 }

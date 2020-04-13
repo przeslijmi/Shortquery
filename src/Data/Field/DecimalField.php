@@ -33,8 +33,6 @@ class DecimalField extends Field implements FieldInterface
      *
      * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -54,11 +52,12 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Setter for `maxLength` and `fractionDigits`.
      *
-     * @param integer $maxLength     Maximum length of value in Field.
+     * @param integer $maxLength      Maximum length of value in Field.
+     * @param integer $fractionDigits Number of decimal digits for value in Field.
      *
-     * @param int|integer $fractionDigits [description]
+     * @return self
      */
-    public function setSize(int $maxLength, int $fractionDigits = 2)
+    public function setSize(int $maxLength, int $fractionDigits = 2) : self
     {
 
         $this->setMaxLength($maxLength);
@@ -70,10 +69,8 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Setter for `maxLength`.
      *
-     * @param integer $maxLength      Maximum length of value in Field.
-     * @param integer $fractionDigits Number of decimal digits for value in Field.
+     * @param integer $maxLength Maximum length of value in Field.
      *
-     * @since  v1.0
      * @throws FieldDefinitionWrosynException When max length is below 1 or above 21.
      * @return self
      */
@@ -101,7 +98,6 @@ class DecimalField extends Field implements FieldInterface
      *
      * @param integer $fractionDigits Number of decimal digits for value in Field.
      *
-     * @since  v1.0
      * @throws FieldDefinitionWrosynException When there are too many or too little fraction digits.
      * @return self
      */
@@ -115,7 +111,12 @@ class DecimalField extends Field implements FieldInterface
 
         // On too high.
         if ($fractionDigits > ( $this->maxLength - 1 )) {
-            throw new FieldDefinitionWrosynException('Number of fraction digits have to be included in max length of field (eg. 4.5331 is number with max lenght 5, and 4 fraction digits.', $this);
+
+            // Lvd.
+            $info  = 'Number of fraction digits have to be included in max length of field ';
+            $info .= '(eg. 4.5331 is number with max lenght 5, and 4 fraction digits.';
+
+            throw new FieldDefinitionWrosynException($info, $this);
         }
 
         // Save.
@@ -127,7 +128,6 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Getter for `maxLength`.
      *
-     * @since  v1.0
      * @return integer
      */
     public function getMaxLength() : int
@@ -139,7 +139,6 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Getter for `fractionDigits`.
      *
-     * @since  v1.0
      * @return integer
      */
     public function getFractionDigits() : int
@@ -151,10 +150,9 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Checks if value of Field is valid according to this type.
      *
-     * @param null|int $value  Value to be checked.
-     * @param boolean  $throws Optional, true. If set to false `throw` will be off.
+     * @param null|integer $value  Value to be checked.
+     * @param boolean      $throws Optional, true. If set to false `throw` will be off.
      *
-     * @since  v1.0
      * @throws FieldValueInproperException When Field value is inproper.
      * @return boolean
      */
@@ -197,7 +195,6 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string
@@ -205,7 +202,10 @@ class DecimalField extends Field implements FieldInterface
 
         // Result.
         $php  = $this->ln(0, '', 1);
-        $php .= $this->ln(3, '( new DecimalField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(
+            3,
+            '( new DecimalField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )'
+        );
         $php .= $this->ln(4, '->setSize(' . $this->getMaxLength() . ', ' . $this->getFractionDigits() . ')');
         $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')', 1);
         $php .= $this->ln(2, '', 0);
@@ -216,7 +216,6 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string
@@ -228,7 +227,6 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string
@@ -246,7 +244,6 @@ class DecimalField extends Field implements FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string
@@ -258,12 +255,15 @@ class DecimalField extends Field implements FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string
     {
 
-        return 'There has to be no more than ' . $this->getFractionDigits() . ' fraction digits and whole value has to be shorter than ' . $this->getMaxLength() . ' digits.';
+        // Lvd.
+        $result  = 'There has to be no more than ' . $this->getFractionDigits() . ' fraction digits ';
+        $result .= 'and whole value has to be shorter than ' . $this->getMaxLength() . ' digits.';
+
+        return $result;
     }
 }

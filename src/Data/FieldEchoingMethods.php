@@ -13,7 +13,6 @@ abstract class FieldEchoingMethods
      *
      * @param integer $repeatments Number of repeatments.
      *
-     * @since  v1.0
      * @return string
      */
     public function ind(int $repeatments) : string
@@ -32,7 +31,6 @@ abstract class FieldEchoingMethods
      * @param string  $lineOfCode Contents of PHP line of code.
      * @param integer $newLines   Optional, 1. How many of new lines add after code.
      *
-     * @since  v1.0
      * @return string
      */
     public function ln(int $indent, string $lineOfCode, int $newLines = 1) : string
@@ -46,7 +44,6 @@ abstract class FieldEchoingMethods
      *
      * @param mixed $variable Any kind of variable.
      *
-     * @since  v1.0
      * @return string
      */
     public function ex($variable) : string
@@ -63,7 +60,6 @@ abstract class FieldEchoingMethods
      * @param string $end    How to end every element.
      * @param string $middle How to connect each of elements.
      *
-     * @since  v1.0
      * @return string
      */
     public function imp(array $array, string $start = '\'', string $end = '\'', string $middle = ', ') : string
@@ -85,7 +81,6 @@ abstract class FieldEchoingMethods
      *
      * @param array $array Array to be converted.
      *
-     * @since  v1.0
      * @return string
      */
     public function csv(array $array) : string
@@ -99,7 +94,6 @@ abstract class FieldEchoingMethods
      *
      * @param boolean $addScope Optional, false. To add `$this->` or not.
      *
-     * @since  v1.0
      * @return string
      */
     public function cc(bool $addScope = false) : string

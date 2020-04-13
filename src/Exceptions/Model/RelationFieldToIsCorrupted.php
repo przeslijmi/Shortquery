@@ -16,17 +16,19 @@ class RelationFieldToIsCorrupted extends ClassFopException
      * Constructor.
      *
      * @param Relation       $relation Relation that has the problem.
-     * @param Throwable|null $cause    Throwable that caused the problem.
-     *
-     * @since v1.0
+     * @param null|Throwable $cause    Throwable that caused the problem.
      */
     public function __construct(Relation $relation, ?Throwable $cause = null)
     {
 
+        // Lvd.
+        $hint = 'Relation has FieldTo defined but when tries to instantiate it ... fails. See causes.';
+
+        // Define.
         $this->addInfo('context', 'DefiningRelation');
         $this->addInfo('relationName', $relation->getName());
         $this->addInfo('relationClass', get_class($relation));
-        $this->addInfo('hint', 'Relation has FieldTo defined but when tries to instantiate it ... fails. See causes.');
+        $this->addHint($hint);
 
         if (is_null($cause) === false) {
             $this->setCause($cause);

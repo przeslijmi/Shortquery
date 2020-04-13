@@ -12,11 +12,11 @@ use Przeslijmi\Sivalidator\TypeHinting;
  * ## Usage example
  * ```
  * $ruleName = new Rule(new Field('name'), new Comp('eq'), new Val('john'));
- * $ruleAge = new Rule(new Field('age'), new Comp('lt'), new Val(25));
+ * $ruleAge = new Rule(new Field('age'), new Comp('lt'), new Val('25'));
  * $logicItem = new LogicAnd($ruleName, $ruleAge)
  * echo (new LogicItemToString($logicItem))->toString();
  * // will return
- * // name='john' and age<'25'
+ * // (`name`='john' AND `age`<'25')
  * ```
  */
 class LogicsToString
@@ -25,16 +25,14 @@ class LogicsToString
     /**
      * Collection of LogicItem elements to be converted to string.
      *
-     * @var   LogicItem[]
-     * @since v1.0
+     * @var LogicItem[]
      */
     private $logics;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -44,7 +42,6 @@ class LogicsToString
      * @param LogicItem[] $logics  Collection of LogicItem elements to be converted to string.
      * @param string      $context Name of context.
      *
-     * @since  v1.0
      * @throws ParamWrotypeException On mysqlEngineConvLogicsToString.
      */
     public function __construct(array $logics, string $context = '')
@@ -68,7 +65,6 @@ class LogicsToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -88,7 +84,6 @@ class LogicsToString
     /**
      * Converts to string that includes WHERE statement.
      *
-     * @since  v1.0
      * @return string
      */
     public function toWhereString() : string

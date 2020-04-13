@@ -44,6 +44,8 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
     /**
      * Constructor.
+     *
+     * @param string $database Optional, `null`. In which database this field is defined.
      */
     public function __construct(?string $database = null)
     {
@@ -53,6 +55,29 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         // Set database if given.
         $this->database = $database;
+    }
+
+    /**
+     * Fast data injector.
+     *
+     * @param array $inject Data to be injected to object.
+     *
+     * @return self
+     */
+    public function injectData(array $inject) : self
+    {
+
+        // Inject properties.
+<?php foreach ($this->model->getFields() as $field): ?>
+        if (isset($inject['<?= $field->getName() ?>']) === true && $inject['<?= $field->getName() ?>'] !== null) {
+            $this-><?= $field->getName('camelCase') ?> = <?= $field->getPhpTypeInputInBraces() ?>$inject['<?= $field->getName() ?>'];
+        }
+<?php endforeach; ?>
+
+        // Mark all fields set.
+        $this->setFields = array_keys($inject);
+
+        return $this;
     }
 
     /**
@@ -82,7 +107,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         $noInSet = array_search('<?= $this->model->getPrimaryKeyField()->getName('camelCase') ?>', $this->setFields);
 
-        if (is_int($noInSet)) {
+        if (is_int($noInSet) === true) {
             unset($this->setFields[$noInSet]);
         }
 
@@ -287,7 +312,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
     /**
      * Adds child-Collection to Relation Collection.
      *
-     * @param <?= $relation->getModelTo()->getClass('collectionClassName') ?> $collection One child-Instance of child for Relation.
+     * @param <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?> $collection One child-Instance of child for Relation.
      *
      * @return self
      */

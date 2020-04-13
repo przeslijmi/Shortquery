@@ -11,12 +11,14 @@ class FuncConcatToString extends FuncToStringParent
     /**
      * Converts func CONCAT to string.
      *
-     * @todo   No negation acceptable.
-     * @since  v1.0
+     * @todo No negation acceptable.
+     *
      * @return string
      */
     public function toString() : string
     {
+
+        $this->throwIfItemsCountLessThan(1);
 
         $items = [];
 

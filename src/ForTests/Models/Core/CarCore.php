@@ -7,8 +7,8 @@ use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
-use Przeslijmi\Shortquery\ForTests\Models\Girl;
-use Przeslijmi\Shortquery\ForTests\Models\Girls;
+use Przeslijmi\Shortquery\ForTests\Models\Girl as Girl6707;
+use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls6752;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 use stdClass;
 
@@ -62,6 +62,8 @@ class CarCore extends Instance
 
     /**
      * Constructor.
+     *
+     * @param string $database Optional, `null`. In which database this field is defined.
      */
     public function __construct(?string $database = null)
     {
@@ -71,6 +73,36 @@ class CarCore extends Instance
 
         // Set database if given.
         $this->database = $database;
+    }
+
+    /**
+     * Fast data injector.
+     *
+     * @param array $inject Data to be injected to object.
+     *
+     * @return self
+     */
+    public function injectData(array $inject) : self
+    {
+
+        // Inject properties.
+        if (isset($inject['pk']) === true && $inject['pk'] !== null) {
+            $this->pk = (int) $inject['pk'];
+        }
+        if (isset($inject['owner_girl']) === true && $inject['owner_girl'] !== null) {
+            $this->ownerGirl = (int) $inject['owner_girl'];
+        }
+        if (isset($inject['is_fast']) === true && $inject['is_fast'] !== null) {
+            $this->isFast = (string) $inject['is_fast'];
+        }
+        if (isset($inject['name']) === true && $inject['name'] !== null) {
+            $this->name = (string) $inject['name'];
+        }
+
+        // Mark all fields set.
+        $this->setFields = array_keys($inject);
+
+        return $this;
     }
 
     /**
@@ -100,7 +132,7 @@ class CarCore extends Instance
 
         $noInSet = array_search('pk', $this->setFields);
 
-        if (is_int($noInSet)) {
+        if (is_int($noInSet) === true) {
             unset($this->setFields[$noInSet]);
         }
 
@@ -394,16 +426,16 @@ class CarCore extends Instance
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
-     * @return Girl
+     * @return Girl6707
      */
-    public function getOneOwnerGirl() : Girl
+    public function getOneOwnerGirl() : Girl6707
     {
 
         return $this->oneOwnerGirl->getOne();
     }
 
     /**
-     * Call to add children (Girl) to this Instance.
+     * Call to add children (Girl6707) to this Instance.
      *
      * @since  v1.0
      * @return self
@@ -412,7 +444,7 @@ class CarCore extends Instance
     {
 
         // Get records with those pks.
-        $child = new Girl(...func_get_args());
+        $child = new Girl6707(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getOwnerGirl() !== null) {
@@ -429,16 +461,16 @@ class CarCore extends Instance
     /**
      * Adds one child-Instance to Relation Collection.
      *
-     * @param Girl $instance One child-Instance of child for Relation.
+     * @param Girl6707 $instance One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addOneOwnerGirl(Girl $instance) : self
+    public function addOneOwnerGirl(Girl6707 $instance) : self
     {
 
         // If there is no Collection created - create one.
         if (is_null($this->oneOwnerGirl) === true) {
-            $this->oneOwnerGirl = new Girls();
+            $this->oneOwnerGirl = new Girls6752();
         }
 
         // Put this Instance to this Collection.
@@ -450,16 +482,16 @@ class CarCore extends Instance
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
-     * @return Girl
+     * @return Girl6707
      */
-    public function getOneOwnerGirlWithSnapchat() : Girl
+    public function getOneOwnerGirlWithSnapchat() : Girl6707
     {
 
         return $this->oneOwnerGirlWithSnapchat->getOne();
     }
 
     /**
-     * Call to add children (Girl) to this Instance.
+     * Call to add children (Girl6707) to this Instance.
      *
      * @since  v1.0
      * @return self
@@ -468,7 +500,7 @@ class CarCore extends Instance
     {
 
         // Get records with those pks.
-        $child = new Girl(...func_get_args());
+        $child = new Girl6707(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getOwnerGirl() !== null) {
@@ -485,16 +517,16 @@ class CarCore extends Instance
     /**
      * Adds one child-Instance to Relation Collection.
      *
-     * @param Girl $instance One child-Instance of child for Relation.
+     * @param Girl6707 $instance One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addOneOwnerGirlWithSnapchat(Girl $instance) : self
+    public function addOneOwnerGirlWithSnapchat(Girl6707 $instance) : self
     {
 
         // If there is no Collection created - create one.
         if (is_null($this->oneOwnerGirlWithSnapchat) === true) {
-            $this->oneOwnerGirlWithSnapchat = new Girls();
+            $this->oneOwnerGirlWithSnapchat = new Girls6752();
         }
 
         // Put this Instance to this Collection.

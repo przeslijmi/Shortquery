@@ -3,7 +3,6 @@
 namespace Przeslijmi\Shortquery\Data\Collection;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 
@@ -153,19 +152,26 @@ final class ToolsTest extends TestCase
         $this->assertEquals($newCars['no'][0]['name'], $cars->getOne(2)->getName());
     }
 
+    /**
+     * Test if splitting collection by field works.
+     *
+     * @return void
+     */
     public function testIfSplittingByFieldWorks() : void
     {
 
+        // Lvd.
         $cars = new Cars();
         $cars->read();
 
+        // Make splitting.
         $bySpeed = $cars->splitByField($cars->getModel()->getFieldByName('is_fast'));
 
+        // Tests.
         $this->assertEquals(2, count($bySpeed));
         $this->assertTrue(in_array('yes', array_keys($bySpeed)));
         $this->assertTrue(in_array('no', array_keys($bySpeed)));
         $this->assertEquals(3, count($bySpeed['yes']->get()));
         $this->assertEquals(2, count($bySpeed['no']->get()));
-
     }
 }

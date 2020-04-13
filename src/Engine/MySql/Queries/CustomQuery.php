@@ -22,8 +22,6 @@ class CustomQuery extends Query
      * Constructor.
      *
      * @param string $database Name of database (see: PRZESLIJMI_SHORTQUERY_DATABASES).
-     *
-     * @since v1.0
      */
     public function __construct(string $database)
     {
@@ -36,7 +34,6 @@ class CustomQuery extends Query
      *
      * @param string $query Contents of the query.
      *
-     * @since  v1.0
      * @return self
      */
     public function set(string $query) : self
@@ -51,7 +48,6 @@ class CustomQuery extends Query
     /**
      * Converts UPDATE query into string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString()
@@ -60,22 +56,16 @@ class CustomQuery extends Query
         return $this->query;
     }
 
-    public function call()
-    {
-
-        return $this->engineCallQuery();
-    }
-
-    public function fire()
-    {
-
-        $this->engineFireQuery();
-    }
-
+    /**
+     * Return records in a simple array.
+     *
+     * @return array
+     */
     public function read()
     {
 
-        $array = [];
+        // Lvd.
+        $array  = [];
         $result = $this->call();
 
         // Go through every record and put it into final array.
@@ -84,5 +74,27 @@ class CustomQuery extends Query
         }
 
         return $array;
+    }
+
+    /**
+     * Call query and wait for response.
+     *
+     * @return boolean|mysqli_result
+     */
+    public function call()
+    {
+
+        return $this->engineCallQuery();
+    }
+
+    /**
+     * Call query without waiting for any response.
+     *
+     * @return boolean True.
+     */
+    public function fire() : bool
+    {
+
+        return $this->engineFireQuery();
     }
 }

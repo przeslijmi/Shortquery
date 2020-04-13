@@ -23,16 +23,14 @@ class LogicToString
     /**
      * LogicItem element to be converted to string.
      *
-     * @var   LogicItem
-     * @since v1.0
+     * @var LogicItem
      */
     private $logicItem;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -41,8 +39,6 @@ class LogicToString
      *
      * @param LogicItem $logicItem LogicItem element to be converted to string.
      * @param string    $context   Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(LogicItem $logicItem, string $context = '')
     {
@@ -54,7 +50,6 @@ class LogicToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -66,10 +61,6 @@ class LogicToString
 
         foreach ($this->logicItem->getRules() as $rule) {
             $results[] = ( new RuleToString($rule) )->toString();
-        }
-
-        if (count($results) === 0) {
-            return '';
         }
 
         $result = '(' . implode(' ' . $conjunction . ' ', $results) . ')';

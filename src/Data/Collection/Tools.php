@@ -19,7 +19,6 @@ abstract class Tools
      *
      * @param array $new How Collection should be visible.
      *
-     * @since  v1.0
      * @return self
      */
     public function makeContentAnalogousToArray(array $new) : self
@@ -48,7 +47,7 @@ abstract class Tools
                 $setterName = $this->getModel()->getFieldByName($fieldName)->getSetterName();
                 $instance->$setterName($value);
             }
-        }
+        }//end foreach
 
         // Lvd.
         $countOld = count($this->get());
@@ -72,7 +71,6 @@ abstract class Tools
      * @param Field $field Field to be used to split.
      * @param array $new   How Collection should be visible.
      *
-     * @since  v1.0
      * @return self
      */
     public function makeSplittedContentsAnalogousToArray(
@@ -106,7 +104,6 @@ abstract class Tools
      * @param Field $field         Field to be used to split.
      * @param array $forcedNewKeys Optional, null. If set those given new keys will be added with empty Collections.
      *
-     * @since  v1.0
      * @return self
      */
     public function splitByField(Field $field, ?array $forcedNewKeys = null) : array
@@ -146,9 +143,8 @@ abstract class Tools
     /**
      * Gather all splitted Collection back to mother (`$this`) Collection.
      *
-     * @param Collection[] $sollections Splitted collection to gather into `$this`.
+     * @param Collection ...$collections Splitted collection to gather into `$this`.
      *
-     * @since  v1.0
      * @return self
      */
     public function recomposeItemsFrom(Collection ...$collections)

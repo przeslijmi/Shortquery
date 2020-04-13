@@ -57,8 +57,6 @@ abstract class PhpFile
      *
      * @param array $settings Settings to use to create.
      * @param Model $model    Model for which to create.
-     *
-     * @since v1.0
      */
     public function __construct(array $settings, Model $model)
     {
@@ -73,7 +71,6 @@ abstract class PhpFile
      *
      * @param boolean $overwrite If set to true and file exists - it will be overwritten.
      *
-     * @since  v1.0
      * @return self
      */
     public function save(bool $overwrite) : self
@@ -101,7 +98,8 @@ abstract class PhpFile
      *
      * @param string $name Template name (eg. `Collection`) - one from `TPL_*` constants.
      *
-     * @since  v1.0
+     * @throws ParamOtosetException When Template of this name does not exists.
+     * @throws FileDonoexException  When template file does not exists.
      * @return string
      */
     public function getTplUri(string $name) : string
@@ -145,7 +143,6 @@ abstract class PhpFile
     /**
      * Getter for contents.
      *
-     * @since  v1.0
      * @return string
      */
     public function getContents() : string
@@ -165,11 +162,18 @@ abstract class PhpFile
         return chr(60) . chr(63) . 'php declare(strict_types=1);' . "\n";
     }
 
+    /**
+     * Add next `use` - ie. create class alias if neccesary.
+     *
+     * @param string $namespace Namespace to use.
+     *
+     * @return self
+     */
     protected function addUse(string $namespace) : self
     {
 
         // Find class name for this namespace.
-        $className = substr($namespace, (strrpos($namespace, '\\') + 1));
+        $className = substr($namespace, ( strrpos($namespace, '\\') + 1 ));
         $aliasName = $className;
 
         // Find if this class name is not taken and if so - change alias.
@@ -189,6 +193,11 @@ abstract class PhpFile
         return $this;
     }
 
+    /**
+     * Echo `use` section of class.
+     *
+     * @return void
+     */
     protected function showNamespaces() : void
     {
 
@@ -201,7 +210,12 @@ abstract class PhpFile
         // Fill up.
         foreach ($this->namespaces as $namespace) {
 
-            $addAlias = ( $namespace['aliasName'] !== $namespace['className'] ? ' as ' . $namespace['aliasName'] : '' );
+            // Lvd.
+            $addAlias = '';
+
+            if ($namespace['aliasName'] !== $namespace['className']) {
+                $addAlias = ' as ' . $namespace['aliasName'];
+            }
 
             $result .= 'use ' . $namespace['namespace'] . $addAlias . ';' . "\n";
         }
@@ -209,9 +223,15 @@ abstract class PhpFile
         echo $result;
     }
 
+    /**
+     * Returns alias class name for given full class (includeing changes made in `use` section).
+     *
+     * @param string $namespace Namespace of class to return alias class name.
+     *
+     * @return string
+     */
     protected function getClassName(string $namespace) : string
     {
-
 
         return $this->namespaces[$namespace]['aliasName'];
     }

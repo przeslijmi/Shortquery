@@ -19,11 +19,7 @@ class FieldDictValueUnaccesibleException extends MethodFopException
      * @param string         $dictName  Name of dictionary.
      * @param string         $value     Value in this dictionary.
      * @param Instance       $instance  Where to look for fields.
-     * @param Throwable|null $cause     Throwable that caused the problem.
-     *
-     * @since v1.0
-     *
-     * phpcs:disable Generic.Files.LineLength
+     * @param null|Throwable $cause     Throwable that caused the problem.
      */
     public function __construct(
         string $fieldName,

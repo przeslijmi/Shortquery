@@ -45,8 +45,6 @@ class <?= $this->model->getClass('modelClassName') ?> extends Model
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {

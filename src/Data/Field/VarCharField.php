@@ -8,7 +8,6 @@ use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDefinitionWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
-
 /**
  * Most standard Field to use - varchar.
  */
@@ -27,8 +26,6 @@ class VarCharField extends Field implements FieldInterface
      *
      * @param string  $name    Name of Field.
      * @param boolean $notNull Opt., false. If true - null value is not accepted.
-     *
-     * @since v1.0
      */
     public function __construct(string $name, bool $notNull = false)
     {
@@ -49,7 +46,6 @@ class VarCharField extends Field implements FieldInterface
      *
      * @param integer $maxLength Maximum length of the value in Field.
      *
-     * @since  v1.0
      * @throws FieldDefinitionWrosynException When max length is below 1 or above 8000.
      * @return self
      */
@@ -75,7 +71,6 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Getter for `maxLength`.
      *
-     * @since  v1.0
      * @return integer
      */
     public function getMaxLength() : int
@@ -87,10 +82,9 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Checks if value of the Field is valid according to this type.
      *
-     * @param null|int $value  Value to be checked.
-     * @param boolean  $throws Optional, true. If set to false `throw` will be off.
+     * @param null|integer $value  Value to be checked.
+     * @param boolean      $throws Optional, true. If set to false `throw` will be off.
      *
-     * @since  v1.0
      * @throws FieldValueInproperException When Field value is inproper.
      * @return boolean
      */
@@ -121,7 +115,6 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Prepare PHP commands to create this Field in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string
@@ -129,7 +122,10 @@ class VarCharField extends Field implements FieldInterface
 
         // Result.
         $php  = $this->ln(0, '', 1);
-        $php .= $this->ln(3, '( new VarCharField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )');
+        $php .= $this->ln(
+            3,
+            '( new VarCharField(\'' . $this->getName() . '\', ' . $this->ex($this->isNotNull()) . ') )'
+        );
         $php .= $this->ln(4, '->setMaxLength(' . $this->getMaxLength() . ')');
         $php .= $this->ln(4, '->setPk(' . $this->ex($this->isPrimaryKey()) . ')');
         $php .= $this->ln(2, '', 0);
@@ -140,7 +136,6 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for getter.
      *
-     * @since  v1.0
      * @return string
      */
     public function getterToPhp() : string
@@ -152,7 +147,6 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Prepare PHP commands for comparer given value vs saved value.
      *
-     * @since  v1.0
      * @return string
      */
     public function compareToPhp() : string
@@ -166,7 +160,6 @@ class VarCharField extends Field implements FieldInterface
      *
      * @param Model $model To use for PHP code.
      *
-     * @since  v1.0
      * @return string
      */
     public function extraMethodsToPhp(Model $model) : string
@@ -178,7 +171,6 @@ class VarCharField extends Field implements FieldInterface
     /**
      * Deliver hint for value correctness for this Field.
      *
-     * @since  v1.0
      * @return string
      */
     public function getProperValueHint() : string

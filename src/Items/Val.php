@@ -19,9 +19,8 @@ class Val extends ContentItem
      * Factory method.
      *
      * @param string      $value String.
-     * @param null}string $alias Optional. Name of alias to use with this Item.
+     * @param null?string $alias Optional. Name of alias to use with this Item.
      *
-     * @since  v1.0
      * @return Val
      */
     public static function factory(string $value, ?string $alias = null) : Val
@@ -40,8 +39,6 @@ class Val extends ContentItem
      * Constructor.
      *
      * @param string $value String.
-     *
-     * @since v1.0
      */
     public function __construct(string $value)
     {
@@ -52,7 +49,6 @@ class Val extends ContentItem
     /**
      * Getter of value.
      *
-     * @since  v1.0
      * @return array Array of values.
      */
     public function getValue() : string

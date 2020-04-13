@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Items;
 
-use Throwable;
 use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Data\Field;
 
@@ -15,20 +14,14 @@ class FieldDictValueDonoexException extends MethodFopException
     /**
      * Constructor.
      *
-     * @param string         $dictName Name of dictionary.
-     * @param string         $value    Value in this dictionary.
-     * @param Field          $field    Field itself.
-     * @param Throwable|null $cause    Throwable that caused the problem.
-     *
-     * @since v1.0
-     *
-     * phpcs:disable Generic.Files.LineLength
+     * @param string $dictName Name of dictionary.
+     * @param string $value    Value in this dictionary.
+     * @param Field  $field    Field itself.
      */
     public function __construct(
         string $dictName,
         string $value,
-        Field $field,
-        ?Throwable $cause = null
+        Field $field
     ) {
 
         $this->addInfo('context', 'readingShortqueryFieldDictionaryValue');
@@ -43,10 +36,6 @@ class FieldDictValueDonoexException extends MethodFopException
         if ($field->hasModel() === true) {
             $this->addInfo('model', get_class($field->getModel()));
             $this->addInfo('modelName', $field->getModel()->getName());
-        }
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
         }
     }
 }

@@ -88,7 +88,6 @@ class Model
      *
      * @param string $name Collection name.
      *
-     * @since  v1.0
      * @throws ModelNameWrosynException When Model name is wrong.
      * @return self
      */
@@ -111,7 +110,6 @@ class Model
     /**
      * Getter for name.
      *
-     * @since  v1.0
      * @throws ModelNameDonoexException When name is empty (null).
      * @return string
      */
@@ -131,7 +129,6 @@ class Model
      *
      * @param string $database Engine name.
      *
-     * @since  v1.0
      * @throws ModelDatabaseNameOtosetException When Model database name is wrong.
      * @return self
      */
@@ -154,7 +151,6 @@ class Model
     /**
      * Getter for databases.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getDatabases() : array
@@ -166,7 +162,6 @@ class Model
     /**
      * Getter for databases as string (format: `'database1', 'database2'`).
      *
-     * @since  v1.0
      * @return string
      */
     public function getDatabasesAsString() : string
@@ -178,7 +173,8 @@ class Model
     /**
      * Getter for databases.
      *
-     * @since  v1.0
+     * @param string $database Opt., null. To which database of this model you want a query.
+     *
      * @throws ModelDatabaseDonoexException When no database is defined for this model.
      * @return string
      */
@@ -201,7 +197,8 @@ class Model
     /**
      * Getter for engine name.
      *
-     * @since  v1.0
+     * @param string $database Opt., null. To which database of this model you want a query.
+     *
      * @throws ModelEngineDonoexException   When there is no engine for this database.
      * @return string
      */
@@ -230,9 +227,9 @@ class Model
     /**
      * Returns Select Query object for this model.
      *
-     * @param string $database Opt., null. To which database of this model you want a query?
+     * @param string $database Opt., null. To which database of this model you want a query.
      *
-     * @since  v1.0
+     * @throws ModelQueryCreationFailedException When creation of query failed.
      * @return SelectQuery
      */
     public function newSelect(?string $database = null) : Engine
@@ -261,9 +258,9 @@ class Model
     /**
      * Returns Update Query object for this model.
      *
-     * @param string $database Opt., null. To which database of this model you want a query?
+     * @param string $database Opt., null. To which database of this model you want a query.
      *
-     * @since  v1.0
+     * @throws ModelQueryCreationFailedException When creation of query failed.
      * @return UpdateQuery
      */
     public function newUpdate(?string $database = null) : Engine
@@ -292,9 +289,9 @@ class Model
     /**
      * Returns Insert Query object for this model.
      *
-     * @param string $database Opt., null. To which database of this model you want a query?
+     * @param string $database Opt., null. To which database of this model you want a query.
      *
-     * @since  v1.0
+     * @throws ModelQueryCreationFailedException When creation of query failed.
      * @return InsertQuery
      */
     public function newInsert(?string $database = null) : Engine
@@ -323,9 +320,9 @@ class Model
     /**
      * Returns Delete Query object for this model.
      *
-     * @param string $database Opt., null. To which database of this model you want a query?
+     * @param string $database Opt., null. To which database of this model you want a query.
      *
-     * @since  v1.0
+     * @throws ModelQueryCreationFailedException When creation of query failed.
      * @return InsertQuery
      */
     public function newDelete(?string $database = null) : Engine
@@ -356,7 +353,6 @@ class Model
      *
      * @param string $namespace Namespace name.
      *
-     * @since  v1.0
      * @throws ModelNamespaceWrosynException When Model namespace is wrong.
      * @return self
      */
@@ -388,7 +384,6 @@ class Model
      * @param null|integer $sliceFrom   Optional. If only part of namespace if needed - slice from (starting from 0).
      * @param null|integer $sliceLength Optional. If only part of namespace if needed - slice length.
      *
-     * @since  v1.0
      * @throws ModelNamespaceDonoexException When namespace is empty (null).
      * @return string
      */
@@ -417,7 +412,6 @@ class Model
      *
      * @param string $instanceClassName Instance class name.
      *
-     * @since  v1.0
      * @throws ModelInstanceClassNameWrosynException When Model instance class name is wrong.
      * @return self
      */
@@ -440,7 +434,6 @@ class Model
     /**
      * Getter for instance class name.
      *
-     * @since  v1.0
      * @throws ModelInstanceClassNameDonoexException When namespace is empty (null)..
      * @return string
      */
@@ -460,7 +453,6 @@ class Model
      *
      * @param string $collectionClassName Instance class name.
      *
-     * @since  v1.0
      * @throws ModelCollectionClassNameWrosynException When Model collection class name is wrong.
      * @return self
      */
@@ -483,7 +475,6 @@ class Model
     /**
      * Getter for collection class name.
      *
-     * @since  v1.0
      * @throws ModelCollectionClassNameDonoexException When namespace is empty (null)..
      * @return string
      */
@@ -516,7 +507,7 @@ class Model
      *
      * @param string $which One question as mentioned above.
      *
-     * @since  v1.0
+     * @throws ParamOtosetException When calling method with wrong parameter.
      * @return string
      *
      * @phpcs:disable Generic.Metrics.CyclomaticComplexity
@@ -581,7 +572,6 @@ class Model
      *
      * @param Field $field Field object.
      *
-     * @since  v1.0
      * @throws ModelFieldNameAlrexException When trying to add new Field but it's name is already taken.
      * @return self
      */
@@ -605,7 +595,6 @@ class Model
     /**
      * Return all Fields in Model.
      *
-     * @since  v1.0
      * @return array Field[].
      */
     public function getFields() : array
@@ -619,7 +608,6 @@ class Model
      *
      * @param string $name Name of Field.
      *
-     * @since  v1.0
      * @throws ModelFieldDonoexException When Field does not exists.
      * @return Field.
      */
@@ -639,7 +627,6 @@ class Model
      *
      * @todo Make better test for duplicating primary key or accept that there can be more then one.
      *
-     * @since  v1.0
      * @throws ModelPrimaryKeyFieldAlrexException  When there are more than one Primary Keys in this Model.
      * @throws ModelPrimaryKeyFieldDonoexException When there is no Primary Key in this Model.
      * @return Field
@@ -672,7 +659,6 @@ class Model
     /**
      * Alias for `getPrimaryKeyField`.
      *
-     * @since  v1.0
      * @return Field
      */
     public function getPkField() : Field
@@ -684,7 +670,6 @@ class Model
     /**
      * Return list of Fields names.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getFieldsNames() : array
@@ -696,7 +681,6 @@ class Model
     /**
      * Return list of getter methods for each Field.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getFieldsGettersNames() : array
@@ -729,7 +713,6 @@ class Model
     /**
      * Return list of setter methods for each Field.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function getFieldsSettersNames() : array
@@ -764,7 +747,6 @@ class Model
      *
      * @param Relation $relation Relation object.
      *
-     * @since  v1.0
      * @throws ModelRelationNameAlrexException When trying to add next relation with the same name.
      * @return self
      */
@@ -788,7 +770,6 @@ class Model
     /**
      * Return list of relations in model.
      *
-     * @since  v1.0
      * @return array Relation[].
      */
     public function getRelations() : array
@@ -802,7 +783,6 @@ class Model
      *
      * @param string $name Name of relation.
      *
-     * @since  v1.0
      * @throws ModelRelationDonoexException If relation does not exists.
      * @return Relation.
      */
@@ -820,7 +800,6 @@ class Model
     /**
      * Return list of Fields names.
      *
-     * @since  v1.0
      * @return array string[].
      */
     public function getRelationsNames() : array
@@ -832,7 +811,6 @@ class Model
     /**
      * Creates and return new instance of this model.
      *
-     * @since  v1.0
      * @throws ModelInstanceCreationFailedException When failed to create instance.
      * @return object
      */

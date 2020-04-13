@@ -11,7 +11,6 @@ class NullVal extends ContentItem
     /**
      * Getter of value.
      *
-     * @since  v1.0
      * @return null
      */
     public function getValue()

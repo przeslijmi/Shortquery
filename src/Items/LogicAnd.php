@@ -13,8 +13,6 @@ class LogicAnd extends LogicItem
      *
      * @param Rule $rule One or more rules (as next parameters).
      *
-     * @since v1.0
-     *
      * @phpcs:disable Generic.CodeAnalysis.UnusedFunctionParameter
      */
     public function __construct(Rule $rule)

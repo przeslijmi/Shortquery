@@ -19,16 +19,14 @@ class FieldToString
     /**
      * Field element to be converted to string.
      *
-     * @var   Field
-     * @since v1.0
+     * @var Field
      */
     private $field;
 
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -37,8 +35,6 @@ class FieldToString
      *
      * @param Field  $field   Field element to be converted to string.
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(Field $field, string $context = '')
     {
@@ -50,7 +46,6 @@ class FieldToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -66,6 +61,10 @@ class FieldToString
             $result .= '*';
         } else {
             $result .= '`' . $this->field->getField() . '`';
+        }
+
+        if (empty($this->field->getAlias()) === false) {
+            $result .= ' AS `' . $this->field->getAlias() . '`';
         }
 
         return $result;

@@ -18,7 +18,6 @@ class FuncInToString extends FuncToStringParent
     /**
      * Converts func IN to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

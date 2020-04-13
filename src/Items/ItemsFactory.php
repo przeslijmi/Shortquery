@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Items;
 
-use Przeslijmi\Shortquery\Items\Aggregation;
 use Przeslijmi\Shortquery\Items\Comp;
 use Przeslijmi\Shortquery\Items\Field;
 use Przeslijmi\Shortquery\Items\Func;
@@ -28,28 +27,6 @@ class ItemsFactory
 {
 
     /**
-     * Creates Aggregation object.
-     *
-     * @return Aggregation
-     */
-    public static function aggreggation() : Aggregation
-    {
-
-        return Aggregation::factory(...func_get_args());
-    }
-
-    /**
-     * Creates Aggregation object (alias to `::aggregation()`).
-     *
-     * @return Aggregation
-     */
-    public static function aggr() : Aggregation
-    {
-
-        return Aggregation::factory(...func_get_args());
-    }
-
-    /**
      * Creates Comp object.
      *
      * @return Comp
@@ -57,7 +34,7 @@ class ItemsFactory
     public static function comp() : Comp
     {
 
-        return Comp::factory(...func_get_args());
+        return new Comp(...func_get_args());
     }
 
     /**
@@ -98,9 +75,9 @@ class ItemsFactory
      *
      * @return Vals
      */
-    public static function vals() : Val
+    public static function vals() : Vals
     {
 
-        return Vals::factory(...func_get_args());
+        return new Vals(...func_get_args());
     }
 }

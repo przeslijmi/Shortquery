@@ -12,21 +12,21 @@ abstract class ContentItem extends AnyItem
 {
 
     /**
-     * Holds parent Rule object.
+     * Parent Rule object.
      *
      * @var Rule
      */
     private $ruleParent;
 
     /**
-     * Holds parent Func object.
+     * Parent Func object.
      *
      * @var Func
      */
     private $funcParent;
 
     /**
-     * Holds alias name for this Content Item.
+     * Alias name for this Content Item.
      *
      * @var string
      */
@@ -37,7 +37,6 @@ abstract class ContentItem extends AnyItem
      *
      * @param Rule $ruleParent Set given Rule as a parent of this object.
      *
-     * @since  v1.0
      * @return void
      */
     public function setRuleParent(Rule $ruleParent) : void
@@ -49,7 +48,6 @@ abstract class ContentItem extends AnyItem
     /**
      * Getter for parent Rule.
      *
-     * @since  v1.0
      * @return Rule
      */
     public function getRuleParent() : Rule
@@ -63,7 +61,6 @@ abstract class ContentItem extends AnyItem
      *
      * @param Func $funcParent Set given Func as a parent of this object.
      *
-     * @since  v1.0
      * @return void
      */
     public function setFuncParent(Func $funcParent) : void
@@ -75,7 +72,6 @@ abstract class ContentItem extends AnyItem
     /**
      * Getter for parent Func.
      *
-     * @since  v1.0
      * @return Func
      */
     public function getFuncParent() : Func
@@ -87,7 +83,6 @@ abstract class ContentItem extends AnyItem
     /**
      * Returns true if a parent of this object is a Rule object
      *
-     * @since  v1.0
      * @return boolean
      *
      * @phpcs:disable Generic.NamingConventions.CamelCapsFunctionName
@@ -98,14 +93,27 @@ abstract class ContentItem extends AnyItem
         return ( is_null($this->ruleParent) !== true );
     }
 
+    /**
+     * Setter for alias name for this Content Item.
+     *
+     * @param string $alias Alias name for this Content Item.
+     *
+     * @return self
+     */
     public function setAlias(string $alias) : self
     {
 
+        // Save.
         $this->alias = $alias;
 
         return $this;
     }
 
+    /**
+     * Getter for alias name for this Content Item.
+     *
+     * @return string
+     */
     public function getAlias() : string
     {
 

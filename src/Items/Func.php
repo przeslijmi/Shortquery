@@ -9,8 +9,6 @@ use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
  * Func item - eg. MAX(), MIN(), etc..
- *
- * @todo alias
  */
 class Func extends ContentItem
 {
@@ -36,7 +34,6 @@ class Func extends ContentItem
      * @param array  $items Subsequent parameters.
      *
      * @todo   Add throws and proper catching of them.
-     * @since  v1.0
      * @return Func
      */
     public static function factory(string $name, array $items) : Func
@@ -67,7 +64,6 @@ class Func extends ContentItem
      * @param string $name  Name of the function.
      * @param array  $items Parameters.
      *
-     * @since  v1.0
      * @throws ParamWrotypeException When not every given item is a ContentItem.
      */
     public function __construct(string $name, array $items)
@@ -78,22 +74,6 @@ class Func extends ContentItem
         } catch (TypeHintingFailException $e) {
             throw new ParamWrotypeException('items', 'ContentItem[]', $e->getIsInFact());
         }
-
-
-        // Exclude duplicates.
-        /*$foundValues = [];
-
-        foreach ($items as $i => $item) {
-            if (isset($foundValues[$item->getValue()]) === true) {
-                unset($items[$i]);
-            }
-
-            $foundValues[$item->getValue()] = true;
-        }*/
-
-        // $items = array_slice($items, 0, 1);
-        // var_dump($items[0]->getValue());
-        // die;
 
         $this->name  = strtolower($name);
         $this->items = $items;
@@ -106,7 +86,6 @@ class Func extends ContentItem
     /**
      * Getter for function name.
      *
-     * @since  v1.0
      * @return string
      */
     public function getName() : string
@@ -118,7 +97,6 @@ class Func extends ContentItem
     /**
      * Getter for function items (parameters).
      *
-     * @since  v1.0
      * @return array
      */
     public function getItems() : array
@@ -130,7 +108,6 @@ class Func extends ContentItem
     /**
      * Return number of given parameters.
      *
-     * @since  v1.0
      * @return integer
      */
     public function countItems() : int
@@ -144,7 +121,6 @@ class Func extends ContentItem
      *
      * @param integer $itemId Id of needed item (starting with 0 [zero]).
      *
-     * @since  v1.0
      * @throws ParamOtosetException When no parameter at given id is present.
      * @return ContentItem
      */

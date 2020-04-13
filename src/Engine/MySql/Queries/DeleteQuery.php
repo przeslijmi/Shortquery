@@ -14,12 +14,9 @@ use Przeslijmi\Shortquery\Items\Rule;
 class DeleteQuery extends Query
 {
 
-    private $addedPk;
-
     /**
      * Converts DELETE query into string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString()
@@ -55,15 +52,25 @@ class DeleteQuery extends Query
         return $query;
     }
 
+    /**
+     * Call query and wait for response.
+     *
+     * @return boolean|mysqli_result
+     */
     public function call()
     {
 
-        $this->engineCallQuery();
+        return $this->engineCallQuery();
     }
 
-    public function fire()
+    /**
+     * Call query without waiting for any response.
+     *
+     * @return boolean True.
+     */
+    public function fire() : bool
     {
 
-        $this->engineFireQuery();
+        return $this->engineFireQuery();
     }
 }

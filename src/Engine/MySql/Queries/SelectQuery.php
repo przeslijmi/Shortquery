@@ -34,7 +34,7 @@ class SelectQuery extends Query
      */
     private $sliceLength = 0;
 
-    /**s
+    /**
      * Set of ContentItems (Fields, Funcs, Val) to SELECT section.
      *
      * @var ContentItem[]
@@ -68,7 +68,6 @@ class SelectQuery extends Query
      * @param integer $sliceFrom   Where from cut the results.
      * @param integer $sliceLength How many records to retur.
      *
-     * @since  v1.0
      * @return self
      */
     public function setLimit(int $sliceFrom = 0, int $sliceLength = 1) : self
@@ -84,10 +83,9 @@ class SelectQuery extends Query
     /**
      * Adder for Field ContentItems.
      *
-     * @param mixed[] ...$fields Array of variables from which Field can be created.
+     * @param mixed ...$fields Array of variables from which Field can be created.
      *
-     * @since  v1.0
-     * @return void
+     * @return self
      */
     public function addFields(...$fields) : self
     {
@@ -103,12 +101,12 @@ class SelectQuery extends Query
     /**
      * Adder for one Field with option to add aggregation also.
      *
-     * @param Field   $field     Field to be added.
+     * @param mixed   $field     Field to be added.
      * @param boolean $toSelect  Optional, true. If this Field is meant to be in SELECT section of Query.
+     * @param boolean $toOrderBy Optional, false. If this Func is meant to be in ORDER BY section of Query.
      * @param boolean $toGroupBy Optional, false. If this Field is meant to be in GROUP BY section of Query.
      *
-     * @since  v1.0
-     * @return void
+     * @return Field
      */
     public function addField(
         $field,
@@ -141,12 +139,13 @@ class SelectQuery extends Query
     /**
      * Adder for one Func with option to add aggregation also.
      *
-     * @param Func    $func      Func to be added.
+     * @param string  $funcName  Name of func to be added.
+     * @param array   $funcItems Items (words) of func to be added.
      * @param boolean $toSelect  Optional, true. If this Func is meant to be in SELECT section of Query.
+     * @param boolean $toOrderBy Optional, false. If this Func is meant to be in ORDER BY section of Query.
      * @param boolean $toGroupBy Optional, false. If this Func is meant to be in GROUP BY section of Query.
      *
-     * @since  v1.0
-     * @return void
+     * @return Func
      */
     public function addFunc(
         string $funcName,
@@ -182,14 +181,13 @@ class SelectQuery extends Query
      *
      * @param string[]|Val[] ...$vals Array of variables from which Val can be created.
      *
-     * @since  v1.0
-     * @return void
+     * @return self
      */
     public function addVals(...$vals) : self
     {
 
         foreach ($vals as $val) {
-            if (is_array($val)) {
+            if (is_array($val) === true) {
                 $this->select[] = Val::factory($val[0], $val[1]);
             } else {
                 $this->select[] = Val::factory($val);
@@ -204,7 +202,6 @@ class SelectQuery extends Query
      *
      * @param string|Val $val Val to be added.
      *
-     * @since  v1.0
      * @return Val
      */
     public function addVal($val) : Val
@@ -219,6 +216,13 @@ class SelectQuery extends Query
         return $val;
     }
 
+    /**
+     * Adder for one Relation.
+     *
+     * @param string $name Name of relation to be added to be added.
+     *
+     * @return self
+     */
     public function addRelation(string $name) : self
     {
 
@@ -230,7 +234,6 @@ class SelectQuery extends Query
     /**
      * Converts ContentItems from SELECT section into final SELECT section string.
      *
-     * @since  v1.0
      * @return string
      */
     private function selectSectionToString() : string
@@ -246,7 +249,7 @@ class SelectQuery extends Query
 
         // For every Content Item.
         foreach ($this->select as $contentItem) {
-            $result[] = ToString::toString($contentItem);
+            $result[] = ToString::convert($contentItem);
         }
 
         return implode(', ', $result);
@@ -255,14 +258,13 @@ class SelectQuery extends Query
     /**
      * Converts Relations into final FROM section string.
      *
-     * @since  v1.0
      * @return string
      */
     private function fromSectionToString() : string
     {
 
         // Create without Relations.
-        $result = [];
+        $result   = [];
         $result[] = 'FROM';
         $result[] = '`' . $this->getModel()->getName() . '`';
 
@@ -289,13 +291,12 @@ class SelectQuery extends Query
     /**
      * Converts ContentItems from SELECT section into final SELECT section string.
      *
-     * @since  v1.0
      * @return string
      */
     private function logicsSectionToString() : string
     {
 
-        $result = trim(ToString::toString($this->getLogicsSet()));
+        $result = trim(ToString::convert($this->getLogicsSet()));
 
         return ( ( $result === '' ) ? '' : 'WHERE ' . $result );
     }
@@ -303,7 +304,6 @@ class SelectQuery extends Query
     /**
      * Converts defined limits into final LIMIT section string.
      *
-     * @since  v1.0
      * @return string
      */
     private function limitSectionToString() : string
@@ -320,7 +320,6 @@ class SelectQuery extends Query
     /**
      * Converts ContentItems from GROUP BY section into final GROUP BY section string.
      *
-     * @since  v1.0
      * @return string
      */
     private function groupBySectionToString() : string
@@ -336,12 +335,17 @@ class SelectQuery extends Query
 
         // For every Content Item.
         foreach ($this->groupBy as $contentItem) {
-            $result[] = ToString::toString($contentItem, 'group');
+            $result[] = ToString::convert($contentItem, 'group');
         }
 
         return 'GROUP BY ' . implode(', ', $result);
     }
 
+    /**
+     * Converts object settings into final ORDER BY section string.
+     *
+     * @return string
+     */
     private function orderBySectionToString() : string
     {
 
@@ -355,7 +359,7 @@ class SelectQuery extends Query
 
         // For every Content Item.
         foreach ($this->orderBy as $contentItem) {
-            $result[] = ToString::toString($contentItem, 'order');
+            $result[] = ToString::convert($contentItem, 'order');
         }
 
         return 'ORDER BY ' . implode(', ', $result);
@@ -364,7 +368,6 @@ class SelectQuery extends Query
     /**
      * Converts SELECT query into string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string
@@ -389,16 +392,12 @@ class SelectQuery extends Query
             }
         }
 
-        // print_r(implode(' ', $result) . ';');
-        // die;
-
         return implode(' ', $result) . ';';
     }
 
     /**
-     * Just return records in a simple array.
+     * Return records in a simple array.
      *
-     * @since  v1.0
      * @return array
      */
     public function read() : array
@@ -418,6 +417,13 @@ class SelectQuery extends Query
         return $array;
     }
 
+    /**
+     * Read records into simple array using `$field` as a key to this array.
+     *
+     * @param string $field Name of field to be used as a key.
+     *
+     * @return array
+     */
     public function readBy(string $field) : array
     {
 
@@ -440,7 +446,6 @@ class SelectQuery extends Query
      *
      * @param Instance $instance Instance to put found values to.
      *
-     * @since  v1.0
      * @return void
      */
     public function readIntoInstance(Instance $instance) : void
@@ -458,9 +463,6 @@ class SelectQuery extends Query
             $instance->defineIsAdded(true);
             $instance->defineNothingChanged();
         }
-
-        // throw new Exception('nothing has been taken from DB so nothing can be put to Instance');
-        return;
     }
 
     /**
@@ -468,7 +470,6 @@ class SelectQuery extends Query
      *
      * @param Collection $collection Collection to put found values to.
      *
-     * @since  v1.0
      * @return void
      */
     public function readIntoCollection(Collection $collection) : void
@@ -481,18 +482,18 @@ class SelectQuery extends Query
         $pkFieldName   = $collection->getModel()->getPkField()->getName();
         $instanceClass = $collection->getModel()->getClass('instanceClass');
 
-        // Lvd
+        // Lvd.
         $toBePut = [];
         $i       = 0;
 
         // Scan through every record.
         while (( $array = $result->fetch_assoc() ) !== null) {
 
-            // Check if this record is already present in Collection (by primary key value)
+            // Check if this record is already present in Collection (by primary key value).
             $pkValue  = $array[$pkFieldName];
             $instance = $collection->getByPk($pkValue);
 
-            // If it is null - if it is not found inside Collection.
+            // If it is null - it is not found inside Collection.
             if ($instance === null) {
 
                 // Create new Instance.
@@ -513,7 +514,7 @@ class SelectQuery extends Query
             InstancesFactory::fromArray($instance, $array);
             $instance->defineIsAdded(true);
             $instance->defineNothingChanged();
-        }
+        }//end while
 
         // So finally - if there are ready Instances to be put to Collection - do it now.
         if (count($toBePut) > 0) {
@@ -521,19 +522,25 @@ class SelectQuery extends Query
         }
     }
 
-    public function call() : mysqli_result
+    /**
+     * Call query and wait for response.
+     *
+     * @return boolean|mysqli_result
+     */
+    public function call()
     {
 
-        $result = $this->engineCallQuery();
-
-        return $result;
+        return $this->engineCallQuery();
     }
 
-    public function fire() : mysqli_result
+    /**
+     * Call query without waiting for any response.
+     *
+     * @return boolean True.
+     */
+    public function fire() : bool
     {
 
-        $result = $this->engineFireQuery();
-
-        return $result;
+        return $this->engineFireQuery();
     }
 }

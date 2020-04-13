@@ -14,8 +14,6 @@ class HasOneRelation extends Relation
      * Constructor.
      *
      * @param string $name Name of Relation.
-     *
-     * @since v1.0
      */
     public function __construct(string $name)
     {
@@ -27,7 +25,6 @@ class HasOneRelation extends Relation
     /**
      * Prepare PHP commands to create this Relation in model.
      *
-     * @since  v1.0
      * @return string
      */
     public function toPhp() : string

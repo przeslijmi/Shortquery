@@ -18,7 +18,6 @@ class FuncInSetToString extends FuncToStringParent
     /**
      * Converts func IN SET to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

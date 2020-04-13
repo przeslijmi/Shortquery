@@ -14,8 +14,6 @@ class ThingsCore extends Collection
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {

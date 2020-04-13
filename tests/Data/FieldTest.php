@@ -40,6 +40,14 @@ final class FieldTest extends TestCase
     /**
      * Test if creating model properly works.
      *
+     * @param string $fieldClass        Name of field class.
+     * @param string $type              Name of type (?) of field class.
+     * @param string $engineType        Variable type in engine.
+     * @param string $phpTypeInput      Variable type in php on input.
+     * @param string $phpTypeOutput     Variable type in php on ouput.
+     * @param string $phpDocsTypeInput  Variable type in php docs on input.
+     * @param string $phpDocsTypeOutput Variable type in php docs on ouput.
+     *
      * @return void
      *
      * @dataProvider fieldsDataProvider

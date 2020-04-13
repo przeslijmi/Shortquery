@@ -74,6 +74,7 @@ return [
       ->addField(
         (new EnumField('is_fast'))
           ->setValues('no', 'yes')
+          ->setMainDict('nie', 'tak')
       )
       ->addField(
         (new VarCharField('name'))
@@ -108,6 +109,9 @@ return [
       ->addField(
         (new VarCharField('name'))
           ->setMaxLength(45)
+      )
+      ->addField(
+        (new JsonField('json_data'))
       ),
   ]
 ];

@@ -15,12 +15,7 @@ class CollectionCantBeReadException extends ClassFopException
      * Constructor.
      *
      * @param string         $className For which Collection problem occurs.
-     * @param array          $params    What was params sent to constructor.
-     * @param Throwable|null $cause     Throwable that caused problem.
-     *
-     * @since v1.0
-     *
-     * phpcs:disable Generic.Files.LineLength
+     * @param null|Throwable $cause     Throwable that caused problem.
      */
     public function __construct(string $className, ?Throwable $cause = null)
     {

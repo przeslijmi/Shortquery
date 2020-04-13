@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Data\Model;
 
@@ -15,27 +14,20 @@ class ModelInstanceClassNameDonoexException extends ClassFopException
     /**
      * Constructor.
      *
-     * @param Model          $model Model that has the problem.
-     * @param Exception|null $cause Exception that caused the problem.
-     *
-     * @since v1.0
+     * @param Model $model Model that has the problem.
      */
-    public function __construct(Model $model, ?Exception $cause = null)
+    public function __construct(Model $model)
     {
 
         // Lvd.
         $hint  = 'Model has no given instance class name,';
         $hint .= ' use `$model->setInstanceClassName($nonEmptyInstanceClassName)` to fix.';
 
-        // Define
+        // Define.
         $this->setCodeName('ModelInstanceClassNameDonoexException');
         $this->addInfo('context', 'DefiningModel');
         $this->addInfo('modelName', $model->getName());
         $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('hint', $hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
+        $this->addHint($hint);
     }
 }

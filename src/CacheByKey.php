@@ -2,6 +2,7 @@
 
 namespace Przeslijmi\Shortquery;
 
+use Exception;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine;
@@ -75,8 +76,6 @@ class CacheByKey
      *
      * @param string            $model            Name of model class to create cache on.
      * @param null|string|array $fieldNameOrNames Optional. Name of field/fields to use if other than field pk.
-     *
-     * @since v1.0
      */
     public function __construct(string $model, ?string $fieldNameOrNames = null)
     {
@@ -96,7 +95,6 @@ class CacheByKey
     /**
      * Getter for model.
      *
-     * @since  v1.0
      * @return Model
      */
     public function getModel() : Model
@@ -108,7 +106,6 @@ class CacheByKey
     /**
      * Getter for select.
      *
-     * @since  v1.0
      * @return Engine
      */
     public function getSelect() : Engine
@@ -120,7 +117,6 @@ class CacheByKey
     /**
      * Gathers data from databse.
      *
-     * @since  v1.0
      * @return self
      */
     public function prepare() : self
@@ -145,7 +141,7 @@ class CacheByKey
      * @param string|integer $keyValue       Value of primary key or other field (if used).
      * @param boolean        $throwOnMissing Optional, false. If set to true will throw on missing.
      *
-     * @since  v1.0
+     * @throws Exception When element from cache is missing.
      * @return Instance
      */
     public function get($keyValue, bool $throwOnMissing = false) : Instance
@@ -181,7 +177,13 @@ class CacheByKey
 
         // If data is not present and throwing is on.
         if ($data === null && $throwOnMissing === true) {
-            throw new \Exception('Cache element missing ' . $keyValue . ' on ' . get_class($this->model) . ' (' . $this->fieldOtherThanPk . ').');
+
+            // Lvd.
+            $text  = 'Cache element missing ' . $keyValue . ' on ';
+            $text .= get_class($this->model) . ' (' . $this->fieldOtherThanPk . ').';
+
+            // Throw.
+            throw new Exception($text);
         }
 
         // If data was not present - create empty instance with this key value.
@@ -215,7 +217,6 @@ class CacheByKey
      *
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
-     * @since  v1.0
      * @throws RecordAlreadyTakenOutFromCacheByKey If this record was already taken before.
      * @return Instance
      */
@@ -233,7 +234,6 @@ class CacheByKey
      *
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
-     * @since  v1.0
      * @return self
      */
     public function markUsed($keyValue) : self
@@ -250,7 +250,6 @@ class CacheByKey
      *
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
-     * @since  v1.0
      * @throws RecordAlreadyTakenOutFromCacheByKey If this record was already taken before.
      * @return self
      */
@@ -258,7 +257,7 @@ class CacheByKey
     {
 
         // Throw if already taken.
-        if (in_array($keyValue, $this->takenOutKeys)) {
+        if (in_array($keyValue, $this->takenOutKeys) === true) {
             throw new RecordAlreadyTakenOutFromCacheByKey($keyValue, $this);
         }
 
@@ -272,7 +271,6 @@ class CacheByKey
     /**
      * Getter for all nonused key values - ie. all that was not downloaded by any method.
      *
-     * @since  v1.0
      * @return string[]|integer[]
      */
     public function getNonUsedKeys() : array
@@ -284,7 +282,6 @@ class CacheByKey
     /**
      * Getter for all nontaken key values - ie. all that was not downloaded by `getOnce()`, nor `takeOut()`.
      *
-     * @since  v1.0
      * @return string[]|integer[]
      */
     public function getNonTakenOutKeys() : array

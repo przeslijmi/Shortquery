@@ -18,8 +18,6 @@ class ModelCollectionClassNameWrosynException extends ClassFopException
      * @param string         $collectionClassName Given wrong collection class name.
      * @param Model          $model               Model that has the problem.
      * @param Exception|null $cause               Exception that caused the problem.
-     *
-     * @since v1.0
      */
     public function __construct(string $collectionClassName, Model $model, ?Exception $cause = null)
     {

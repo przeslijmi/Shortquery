@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Throwable;
 use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Data\Relation;
 
@@ -15,21 +14,18 @@ class RelationModelToDonoexException extends ClassFopException
     /**
      * Constructor.
      *
-     * @param Relation       $relation Relation that has the problem.
-     * @param Throwable|null $cause    Throwable that caused the problem.
-     *
-     * @since v1.0
+     * @param Relation $relation Relation that has the problem.
      */
-    public function __construct(Relation $relation, ?Throwable $cause = null)
+    public function __construct(Relation $relation)
     {
 
+        // Lvd.
+        $hint = 'Relation has no defined model from. Use `$relation->setModelTo()`.';
+
+        // Define.
         $this->addInfo('context', 'DefiningRelation');
         $this->addInfo('relationName', $relation->getName());
         $this->addInfo('relationClass', get_class($relation));
-        $this->addInfo('hint', 'Relation has no defined model from. Use `$relation->setModelTo()`.');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
+        $this->addHint($hint);
     }
 }

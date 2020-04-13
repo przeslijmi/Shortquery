@@ -23,7 +23,7 @@ final class JsonFieldTest extends TestCase
     {
 
         // Lvd.
-        $testStdClass = new stdClass();
+        $testStdClass       = new stdClass();
         $testStdClass->test = true;
 
         // Create Field.

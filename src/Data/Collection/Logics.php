@@ -38,8 +38,6 @@ class Logics
      * Constructor.
      *
      * @param Collection $collection Parent Collection object.
-     *
-     * @since v1.0
      */
     public function __construct(Collection $collection)
     {
@@ -50,7 +48,6 @@ class Logics
     /**
      * Getter for array of all Logics.
      *
-     * @since  v1.0
      * @return LogicItem[]
      */
     public function get() : array
@@ -62,7 +59,6 @@ class Logics
     /**
      * Counts how many Logics are in Collection.
      *
-     * @since  v1.0
      * @return integer
      */
     public function length() : int
@@ -76,7 +72,6 @@ class Logics
      *
      * @param LogicItem ...$logicItems Array of LogicItems.
      *
-     * @since  v1.0
      * @return self
      */
     public function add(LogicItem ...$logicItems) : self
@@ -95,9 +90,8 @@ class Logics
     /**
      * Setter for adding new rule (and therefore also LogicAnd) to the model.
      *
-     * @since  v1.0
+     * @throws RuleFactoryFailedException When creation of Rule have failed.
      * @return self
-     * @throws MethodFopException When creation of Rule have failed.
      */
     public function addRule() : self
     {
@@ -122,7 +116,6 @@ class Logics
     /**
      * Setter for adding new rule "equals" (and therefore also LogicAnd) to the model.
      *
-     * @since  v1.0
      * @return self
      */
     public function addRuleEq() : self
@@ -140,7 +133,6 @@ class Logics
     /**
      * Setter for adding new rule "not equals" (and therefore also LogicAnd) to the model.
      *
-     * @since  v1.0
      * @return self
      */
     public function addRuleNeq() : self
@@ -160,7 +152,8 @@ class Logics
      *
      * @param array ...$rulesDefinitions Array of arrays with rules definitions.
      *
-     * @since  v1.0
+     * @throws RuleFactoryFailedException  When creation of Rule failed.
+     * @throws LogicFactoryFailedException When creation of Logic failed.
      * @return self
      */
     public function addLogicOr(array ...$rulesDefinitions) : self
@@ -196,7 +189,6 @@ class Logics
      *
      * @param Relation $relation Relation between to tables.
      *
-     * @since  v1.0
      * @return self
      */
     public function addFromRelation(Relation $relation) : self

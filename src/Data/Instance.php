@@ -16,6 +16,11 @@ use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueUnaccesibleException;
 abstract class Instance
 {
 
+    /**
+     * In which database this instance is present.
+     *
+     * @var string
+     */
     protected $database;
 
     /**
@@ -33,6 +38,7 @@ abstract class Instance
     private $isToBeDeleted = false;
 
     /**
+     * Fileds that were set during instantiation.
      *
      * @var string[]
      */
@@ -75,7 +81,6 @@ abstract class Instance
      *
      * @param string $fieldName Name of field.
      *
-     * @since  v1.0
      * @return Field
      */
     public function grabField(string $fieldName) : Field
@@ -89,7 +94,6 @@ abstract class Instance
      *
      * @param string $fieldName Name of Field.
      *
-     * @since  v1.0
      * @throws FieldValueUnaccesibleException When field is not present.
      * @return mixed
      */
@@ -117,7 +121,7 @@ abstract class Instance
      * @param string $dictName  Dictionary name (use `main` as standard).
      * @param string $value     Dictionary value.
      *
-     * @since  v1.0
+     * @throws FieldDictValueUnaccesibleException When it is impossible to get this field's dict value.
      * @return string
      */
     public function grabDictFieldValue(string $fieldName, string $dictName, string $value) : string
@@ -139,15 +143,20 @@ abstract class Instance
     /**
      * Getter for field dictionary many values (sent as comma separated list) (for set end enum fields).
      *
-     * @param string $fieldName Name of field.
-     * @param string $dictName  Dictionary name (use `main` as standard).
-     * @param string $value     Dictionary values separated with comma.
+     * @param string      $fieldName Name of field.
+     * @param string      $dictName  Dictionary name (use `main` as standard).
+     * @param null|string $value     Dictionary values separated with comma.
      *
-     * @since  v1.0
+     * @throws FieldDictValueUnaccesibleException When it is impossible to get this field's dict value.
      * @return string
      */
-    public function grabMultiDictFieldValue(string $fieldName, string $dictName, string $value) : string
+    public function grabMultiDictFieldValue(string $fieldName, string $dictName, ?string $value) : string
     {
+
+        // Shortcut.
+        if (empty($value) === true) {
+            return '';
+        }
 
         // Lvd.
         $result  = '';
@@ -178,7 +187,6 @@ abstract class Instance
      *
      * @param boolean $isAdded If this Instance is already in Engine.
      *
-     * @since  v1.0
      * @return self
      */
     public function defineIsAdded(bool $isAdded) : self
@@ -196,7 +204,6 @@ abstract class Instance
     /**
      * Getter for if this Instance is already in Engine.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function grabIsAdded() : bool
@@ -210,7 +217,6 @@ abstract class Instance
      *
      * @param boolean $isToBeDeleted If this Instance in Collection is to be deleted.
      *
-     * @since  v1.0
      * @return self
      */
     public function defineIsToBeDeleted(bool $isToBeDeleted) : self
@@ -224,7 +230,6 @@ abstract class Instance
     /**
      * Getter for if this Instance inside Collection is decided to be deleted.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function grabIsToBeDeleted() : bool
@@ -236,7 +241,6 @@ abstract class Instance
     /**
      * Setter to add info that there were no changes in this instance (so `save()` will ignore).
      *
-     * @since  v1.0
      * @return self
      */
     public function defineNothingChanged() : self
@@ -251,7 +255,6 @@ abstract class Instance
     /**
      * Return info if any field in this Instance has been changed.
      *
-     * @since  v1.0
      * @return boolean
      */
     public function grabHaveAnythingChanged() : bool
@@ -260,6 +263,11 @@ abstract class Instance
         return ( count($this->changedFields) > 0 );
     }
 
+    /**
+     * Return info if primary key field in this Instance has been changed.
+     *
+     * @return boolean
+     */
     public function grabPkFieldHasChanged() : bool
     {
 
@@ -269,7 +277,6 @@ abstract class Instance
     /**
      * Return list of fields that has been changed in this Instance.
      *
-     * @since  v1.0
      * @return string[]
      */
     public function grabChangedFieldsNames() : array
@@ -281,7 +288,6 @@ abstract class Instance
     /**
      * Getter for Primary Key field.
      *
-     * @since  v1.0
      * @return Field
      */
     public function grabPkField() : Field
@@ -293,7 +299,6 @@ abstract class Instance
     /**
      * Getter for Primary Key name.
      *
-     * @since  v1.0
      * @return string
      */
     public function grabPkName() : string
@@ -305,7 +310,6 @@ abstract class Instance
     /**
      * Getter for Primary Key value.
      *
-     * @since  v1.0
      * @return mixed
      */
     public function grabPkValue()
@@ -316,6 +320,11 @@ abstract class Instance
         return $this->$pkGetter();
     }
 
+    /**
+     * Getter for Primary Key previous value (if changed).
+     *
+     * @return mixed
+     */
     public function grabPkPreviousValue()
     {
 
@@ -328,7 +337,6 @@ abstract class Instance
      *
      * @param mixed $value Primary key value.
      *
-     * @since  v1.0
      * @return mixed
      */
     public function definePkValue($value)
@@ -342,7 +350,6 @@ abstract class Instance
     /**
      * Read into this Instance current values of fields from Engine.
      *
-     * @since  v1.0
      * @return self
      */
     public function read() : self
@@ -376,7 +383,6 @@ abstract class Instance
     /**
      * Create record.
      *
-     * @since  v1.0
      * @return self
      */
     public function create() : self
@@ -403,7 +409,6 @@ abstract class Instance
     /**
      * Create record if it not exists - otherwise try to read.
      *
-     * @since  v1.0
      * @return self
      */
     public function createIfNotExists() : self
@@ -424,7 +429,6 @@ abstract class Instance
     /**
      * Update existing record.
      *
-     * @since  v1.0
      * @return self
      */
     public function update() : self
@@ -448,7 +452,6 @@ abstract class Instance
     /**
      * Save record (no matter if update or creation are needed)..
      *
-     * @since  v1.0
      * @return self
      */
     public function save() : self
@@ -465,7 +468,6 @@ abstract class Instance
     /**
      * Save record (no matter if update or creation are needed)..
      *
-     * @since  v1.0
      * @return self
      */
     public function delete() : self
@@ -497,7 +499,6 @@ abstract class Instance
     /**
      * Converts this item into string - showing all fields and its values.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

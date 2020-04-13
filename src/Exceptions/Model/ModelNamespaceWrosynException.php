@@ -18,8 +18,6 @@ class ModelNamespaceWrosynException extends ClassFopException
      * @param string         $namespace Given wrong namespace.
      * @param Model          $model     Model that has the problem.
      * @param Exception|null $cause     Exception that caused the problem.
-     *
-     * @since v1.0
      */
     public function __construct(string $namespace, Model $model, ?Exception $cause = null)
     {

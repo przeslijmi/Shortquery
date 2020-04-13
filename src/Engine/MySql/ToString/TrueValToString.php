@@ -19,8 +19,7 @@ class TrueValToString
     /**
      * Context name - where are you going to use result of this `FieldToString` class?
      *
-     * @var   string
-     * @since v1.0
+     * @var string
      */
     private $context;
 
@@ -28,8 +27,6 @@ class TrueValToString
      * Constructor.
      *
      * @param string $context Name of context.
-     *
-     * @since v1.0
      */
     public function __construct(string $context = '')
     {
@@ -40,7 +37,6 @@ class TrueValToString
     /**
      * Converts to string.
      *
-     * @since  v1.0
      * @return string
      */
     public function toString() : string

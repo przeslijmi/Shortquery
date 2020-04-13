@@ -43,8 +43,6 @@ class ThingModel extends Model
 
     /**
      * Constructor.
-     *
-     * @since v1.0
      */
     public function __construct()
     {
@@ -65,6 +63,10 @@ class ThingModel extends Model
         $this->addField(
             ( new VarCharField('name', false) )
                 ->setMaxLength(45)
+                ->setPk(false)
+        );
+        $this->addField(
+            ( new JsonField('json_data', false) )
                 ->setPk(false)
         );
     }
