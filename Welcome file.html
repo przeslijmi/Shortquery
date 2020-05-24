@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="przeslijmi-shortquery---my-pdo-approach">Przeslijmi Shortquery - my PDO approach</h1>
+<p><a href=""><img src="https://api.shippable.com/projects/5e4da235f1aab60006271a7b/badge?branch=master" alt="Run Status"></a></p>
+<p><a href=""><img src="https://api.shippable.com/projects/5e4da235f1aab60006271a7b/coverageBadge?branch=master" alt="Coverage Badge"></a></p>
+<h2 id="table-of-contents">Table of contents</h2>
+<ol>
+<li><a href="#usage-examples">Usage examples</a></li>
+<li><a href="#defining-data-structure">Defining data structure</a></li>
+</ol>
+<h2 id="usage-examples">Usage examples</h2>
+<p>There are three (plus one) ways to use Shoq as PDO.</p>
+<ol>
+<li><a href="#as-instance-reader">As instance reader</a></li>
+<li><a href="#as-collection-reader">As collection reader</a></li>
+<li>As direct query sender</li>
+<li><strong>In future</strong> as final short query own syntax</li>
+</ol>
+<h3 id="as-instance-reader">As instance reader</h3>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girl</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Girl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setPk</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Above code connects to the proper engine and using defined schema (data structure) creates PHP Object <code>Girl</code> with defined properties.</p>
+<p>It is now possible to get properties:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// which returns her name</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getWebs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// which returns her social websites</span>
+</code></pre>
+<p>It is possible to change her properties:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">'Lucia'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setWebs</span><span class="token punctuation">(</span><span class="token string">'fb,in'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>It is possible to create new instance:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girl</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Girl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setName</span><span class="token punctuation">(</span><span class="token string">'Anie'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setWebs</span><span class="token punctuation">(</span><span class="token string">'fb'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">save</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>When this model has a relation defined in data structure schema you can read it to:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girl</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Girl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setPk</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">expandCars</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// one to many relation</span>
+<span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token variable">$girl</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getCars</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// will echo '2' id this girl have two cars.</span>
+</code></pre>
+<h3 id="as-collection-reader">As collection reader</h3>
+<p>This will read in from data engine and create PHP instances in object all Girls:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girls</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Girls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girls</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>You can read only slice of records and ordered:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girls</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">readOrderedBy</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>You can add logics to reading. Below is the example of two rules:</p>
+<ul>
+<li>name is not ‘Adriana’, and</li>
+<li>name is not ‘test’ or is not ‘testEither’.</li>
+</ul>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$girls</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Girls</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girls</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getLogics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">addRuleNeq</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'Adriana'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$girls</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">getLogics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">addLogicOr</span><span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'neq'</span><span class="token punctuation">,</span> <span class="token string">'test'</span> <span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span> <span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token string">'neq'</span><span class="token punctuation">,</span> <span class="token string">'testEither'</span> <span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="defining-data-structure">Defining data structure</h2>
+<p>In order to use models you have to define them. This is then used to create PHP Class files in <code>Creator</code> process. You can afterwards enhance created PHP Classes.</p>
+<p>There are two ways to perform this action.</p>
+<ol>
+<li>Creating schema definition file and calling <code>modelsCreator.php</code> from command line.</li>
+<li>Creating schema definition file and calling <code>Creator</code> php class from other php class.</li>
+</ol>
+<p>In both ways definition schema has to be created properly. See example at <code>resources/schemaForTesting.php</code>. Definition schema consists of two elements: <code>settings</code> (which has metadata) and <code>models</code> (which has list of models).</p>
+<p>Element <code>settings</code> has to be an array with one key <code>src</code> beeing also an array in which all uris to all namespaces are defined. If you will use namespace <code>Vendor\App</code> you have to define here in which location models of this namespace are to be kept.</p>
+<p>Element <code>models</code> is array that has one child for every model that has to be created.</p>
+<p><strong>ATTENTION</strong> All relative paths used here has to relate to schema file location itself.</p>
+<h3 id="data-structure-creation-using-command-line">Data structure creation using command line</h3>
+<ol>
+<li>Create PHP file for schema definition somewhere in your app (for eq. in <code>resources/</code> dir).</li>
+<li>Prepare its contents basing on instructions above.</li>
+<li>Open command line, bash, etc.</li>
+<li>Change to directory <code>bin/</code> of <code>ShortQuery</code> in which <code>modelsCreator.php</code> file is located.</li>
+<li>Run command as shown below.</li>
+</ol>
+<pre><code>php modelsCreator.php create --bootstrap "../../../../bootstrap.php" --schemaUri "../resources/schemaForTesting.php"
+</code></pre>
+<p>Where:</p>
+<ul>
+<li><code>--bootstrap</code> param is a relative location to bootstrap file (which calls vendor autoloader for eg.),</li>
+<li><code>--schemaUri</code> param is a relative location to settings file.</li>
+</ul>
+<p><strong>ATTENTION</strong> Both relative locations relate to <code>modelsCreator.php</code> file location.</p>
+<h3 id="data-structure-creation-using-php">Data structure creation using PHP</h3>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$md</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">CreatorStarter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$md</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token string">'resources/schemaForTesting.php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>ATTENTION</strong> Relative location refer to current working directory of application</p>
+<p>When using this approach you can define two extra settings.</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$md</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setOverwriteCore</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$md</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">setOverwriteNonCore</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>First toggles overwriting existing core files. This is set to <code>true</code> as default. Core files should never be changed to let shortquery do any changes depending on application evolution or data structure evolution.</p>
+<p>Second toggles overwriting existing non-core files. This is set to <code>false</code> as default and it is very dangereous to set it to <code>true</code>. Non core files can be changed during development. They can be delivaring extra methods from data structure objects written by hand for this particular Model. Overwriting these files can erase some part of work and should not be done until you’re absolutely sure what you’re doing.</p>
+</div>
+</body>
+
+</html>
