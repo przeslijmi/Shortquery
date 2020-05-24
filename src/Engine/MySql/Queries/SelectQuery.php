@@ -239,17 +239,54 @@ class SelectQuery extends Query
     private function selectSectionToString() : string
     {
 
-        // Shortcut.
-        if (count($this->select) === 0) {
+        // Shortcut - nothing is given - and there is no relation - we can use asterix.
+        if (count($this->select) === 0 && count($this->relations) === 0) {
             return '*';
         }
 
         // Lvd.
         $result = [];
 
-        // For every Content Item.
-        foreach ($this->select as $contentItem) {
-            $result[] = ToString::convert($contentItem);
+        // Nothing is given but there is a relation set - has to be more specific.
+        if (count($this->select) === 0 && count($this->relations) > 0) {
+
+            // Add fields from main model - without table prefix.
+            foreach ($this->getModel()->getFields() as $field) {
+
+                // Lvd.
+                $fullField  = '`' . $this->getModel()->getName() . '`.`' . $field->getName();
+                $fullField .= '` AS \'' . $field->getName() . '\'';
+
+                // Add.
+                $result[] = $fullField;
+            }
+
+            // Add fields from relations - with table prefix.
+            foreach ($this->relations as $relation) {
+
+                // Find second model (it can be `to` or `from`).
+                $secondModel = $relation->getModelOtherThan($this->getModel()->getName());
+
+                // Add every field.
+                foreach ($secondModel->getFields() as $field) {
+
+                    // Lvd.
+                    $fullField  = '`' . $secondModel->getName() . '`.`' . $field->getName();
+                    $fullField .= '` AS \'' . $secondModel->getName() . '.' . $field->getName() . '\'';
+
+                    // Add.
+                    $result[] = $fullField;
+                }
+            }
+        }//end if
+
+        // Finally there are exact instructions on what to add.
+        if (count($this->select) > 0) {
+
+            // For every Content Item.
+            foreach ($this->select as $contentItem) {
+                $result[] = ToString::convert($contentItem);
+            }
         }
 
         return implode(', ', $result);
@@ -436,6 +473,30 @@ class SelectQuery extends Query
         // Go through every record and put it into final array.
         while (( $record = $result->fetch_assoc() ) !== null) {
             $array[$record[$field]] = $record;
+        }
+
+        return $array;
+    }
+
+    /**
+     * Read records into multiple array using `$field` as a key to this array.
+     *
+     * @param string $field Name of field to be used as a key.
+     *
+     * @return array
+     */
+    public function readMultipleBy(string $field) : array
+    {
+
+        // Lvd.
+        $array = [];
+
+        // Get results.
+        $result = $this->call();
+
+        // Go through every record and put it into final array.
+        while (( $record = $result->fetch_assoc() ) !== null) {
+            $array[$record[$field]][] = $record;
         }
 
         return $array;

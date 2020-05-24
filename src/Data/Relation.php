@@ -273,6 +273,23 @@ abstract class Relation
     }
 
     /**
+     * Get other model then given (no matter if it is `to` or `from`).
+     *
+     * @param string $relationName Relation name that is not of our interest.
+     *
+     * @return Model
+     */
+    public function getModelOtherThan(string $relationName) : Model
+    {
+
+        if ($this->getModelTo()->getName() !== $relationName) {
+            return $this->getModelTo();
+        }
+
+        return $this->getModelFrom();
+    }
+
+    /**
      * Setter for `fieldFrom`.
      *
      * @param string $fieldFrom Name of Field from which Relation starts.
@@ -390,6 +407,23 @@ abstract class Relation
         }
 
         return $this->fieldTo;
+    }
+
+    /**
+     * Get field from other model then given (no matter if it is `to` or `from`).
+     *
+     * @param string $relationName Relation name that is not of our interest.
+     *
+     * @return Field
+     */
+    public function getFieldFromModelOtherThan(string $relationName) : Field
+    {
+
+        if ($this->getModelTo()->getName() !== $relationName) {
+            return $this->getFieldTo();
+        }
+
+        return $this->getFieldFrom();
     }
 
     /**

@@ -321,6 +321,9 @@ final class CollectionTest extends TestCase
             'name' => 'something2'
         ]);
 
+        // Test debug.
+        $things->create(null, true);
+
         // Save Collection.
         $things->create();
 
@@ -331,6 +334,9 @@ final class CollectionTest extends TestCase
         // Change.
         $things->getOne(0)->setName('something11');
 
+        // Test debug.
+        $things->update(null, true);
+
         // Save.
         $things->update();
 
@@ -340,6 +346,9 @@ final class CollectionTest extends TestCase
         // Mark to delete.
         $things->getOne(0)->defineIsToBeDeleted(true);
         $things->getOne(1)->defineIsToBeDeleted(true);
+
+        // Test debug.
+        $things->delete(null, true);
 
         // Delete Collection.
         $things->delete();

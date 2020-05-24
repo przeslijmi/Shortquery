@@ -15,7 +15,7 @@ use Przeslijmi\Shortquery\Data\Relation\HasOneRelation;
 return [
   'settings' => [
     'src' => [
-      'Przeslijmi\Shortquery' => 'vendor\\przeslijmi\\shortquery\\src\\',
+      'Przeslijmi\Shortquery' => '../src/',
     ]
   ],
   'models' => [

@@ -104,8 +104,8 @@ class JsonField extends Field implements FieldInterface
     {
 
         $php  = $this->ln(2, '// Convert to JSON object if needed.');
-        $php .= $this->ln(2, 'if (is_string($this->jsonData) === true) {');
-        $php .= $this->ln(2, '    $this->jsonData = json_decode($this->jsonData);');
+        $php .= $this->ln(2, 'if (is_string(' . $this->cc(true) . ') === true) {');
+        $php .= $this->ln(2, '    ' . $this->cc(true) . ' = json_decode(' . $this->cc(true) . ');');
         $php .= $this->ln(2, '}', 2);
         $php .= $this->ln(2, 'return ' . $this->cc(true) . ';');
 

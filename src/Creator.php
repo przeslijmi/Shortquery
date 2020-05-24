@@ -72,6 +72,7 @@ class Creator extends CliApp
 
             // Create settings.
             $settings = [
+                'schemaSettingsUri' => $this->schema['settings']['schemaSettingsUri'],
                 'srcDir' => $this->schema['settings']['src'][$vendorApp],
             ];
 
@@ -89,6 +90,7 @@ class Creator extends CliApp
 
             // Create settings.
             $settings = [
+                'schemaSettingsUri' => $this->schema['settings']['schemaSettingsUri'],
                 'srcDir' => $this->schema['settings']['src'][$vendorApp],
             ];
 
@@ -136,8 +138,8 @@ class Creator extends CliApp
         } else {
 
             // Otherwise - it is schema from file.
-            // Lvd.
-            $schemaUri = $this->getParams()->getParam('schemaUri');
+            $schemaUri  = rtrim(str_replace('\\', '/', $this->getParams()->getParam('baseDir')), '/') . '/';
+            $schemaUri .= str_replace('\\', '/', $this->getParams()->getParam('schemaUri'));
 
             // Check if source dir exists.
             if (file_exists($schemaUri) === false) {
@@ -148,6 +150,9 @@ class Creator extends CliApp
 
             // Get schema.
             $this->schema = include $schemaUri;
+
+            // Add schema settings uri.
+            $this->schema['settings']['schemaSettingsUri'] = realpath(dirname($schemaUri));
         }//end if
 
         // Check if ARRAY was read.

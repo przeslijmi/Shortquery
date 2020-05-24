@@ -30,6 +30,13 @@ class CacheByKey
     private $data = [];
 
     /**
+     * Downloaded children data (first key is a relation name, second key is parent/cache/data key).
+     *
+     * @var array
+     */
+    private $dataChildren = [];
+
+    /**
      * Created instances.
      *
      * @var Instance[]
@@ -70,6 +77,13 @@ class CacheByKey
      * @var Engine
      */
     private $select;
+
+    /**
+     * Definitions of childrens that has to be delivered among delivering parent (cache element).
+     *
+     * @var array
+     */
+    private $children = [];
 
     /**
      * Constructor.
@@ -132,6 +146,20 @@ class CacheByKey
         // Download data.
         $this->data = $this->select->readBy($fieldName);
 
+        // Download data for children.
+        foreach ($this->children as $relationName => $relationInfo) {
+
+            // Lvd.
+            $relation = $relationInfo['relation'];
+            $pks      = array_column($this->data, $relationInfo['fieldOld']->getName());
+
+            // Get select.
+            $relationInfo['select']->addRule($relationInfo['fieldNew']->getName(), $pks);
+            $this->dataChildren[$relationName] = $relationInfo['select']->readMultipleBy(
+                $relationInfo['fieldNew']->getName()
+            );
+        }
+
         return $this;
     }
 
@@ -163,6 +191,30 @@ class CacheByKey
 
             // Artificially create instance.
             $instance = InstancesFactory::fromArray($instance, $data);
+
+            // Artificially create childrens instance.
+            foreach ($this->children as $relationName => $relationInfo) {
+
+                // Get collection object.
+                $collection  = new $relationInfo['collection']();
+                $adderName   = $relationInfo['relation']->getAdderName();
+                $keyRelValue = $data[$relationInfo['fieldOld']->getName()];
+                $children    = ( $this->dataChildren[$relationName][$keyRelValue] ?? [] );
+
+                // Every one child.
+                foreach ($children as $child) {
+                    $childInstance = $relationInfo['model']->getNewInstance();
+                    $childInstance = InstancesFactory::fromArray($childInstance, $child);
+                    $childInstance->defineIsAdded(true);
+                    $childInstance->defineNothingChanged();
+                    $collection->put($childInstance);
+                }
+
+                // Save children to parents.
+                $instance->$adderName($collection);
+            }
+
+            // Finish instance.
             $instance->defineIsAdded(true);
             $instance->defineNothingChanged();
 
@@ -173,7 +225,7 @@ class CacheByKey
             $this->instances[$keyValue] = $instance;
 
             return $instance;
-        }
+        }//end if
 
         // If data is not present and throwing is on.
         if ($data === null && $throwOnMissing === true) {
@@ -257,7 +309,7 @@ class CacheByKey
     {
 
         // Throw if already taken.
-        if (in_array($keyValue, $this->takenOutKeys) === true) {
+        if (in_array($keyValue, $this->takenOutKeys, true) === true) {
             throw new RecordAlreadyTakenOutFromCacheByKey($keyValue, $this);
         }
 
@@ -288,5 +340,39 @@ class CacheByKey
     {
 
         return array_diff(array_keys($this->data), $this->takenOutKeys);
+    }
+
+    /**
+     * Define need to deliver childrens (has many relation contents) among delivering parent (cache element).
+     *
+     * @param string $relationName Name of relation to be used.
+     *
+     * @return Engine
+     */
+    public function addChildren(string $relationName) : Engine
+    {
+
+        // Lvd.
+        $relation   = $this->model->getRelationByName($relationName);
+        $model      = $relation->getModelOtherThan($this->model->getName());
+        $fieldNew   = $relation->getFieldFromModelOtherThan($this->model->getName());
+        $fieldOld   = $relation->getFieldFromModelOtherThan($model->getName());
+        $select     = $model->newSelect();
+        $collection = $model->getClass('collectionClass');
+
+        // Save.
+        $this->children[$relationName] = [
+            'relation' => $relation,
+            'model' => $model,
+            'fieldNew' => $fieldNew,
+            'fieldOld' => $fieldOld,
+            'select' => $select,
+            'collection' => $collection,
+        ];
+
+        // Prepare data.
+        $this->dataChildren[$relationName] = [];
+
+        return $select;
     }
 }

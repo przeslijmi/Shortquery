@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery\ForTests\Models\Core;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
-use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls7565;
+use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls8989;
 
 /**
  * ShortQuery Collection Core class for Car Model Collection.
@@ -45,7 +45,7 @@ class CarsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Girls7565(...func_get_args());
+        $toAdd = new Girls8989(...func_get_args());
         $toAdd->getLogics()->addRule('pk', $pks);
         $toAdd->read();
 
@@ -74,7 +74,7 @@ class CarsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Girls7565(...func_get_args());
+        $toAdd = new Girls8989(...func_get_args());
         $toAdd->getLogics()->addRule('pk', $pks);
         $toAdd->read();
 

@@ -163,6 +163,7 @@ final class InstanceTest extends TestCase
         // Create girl.
         $girl = new Girl();
         $girl->setName('angelpolikarpova');
+        $girl->create(true);
         $girl->create();
 
         // Check if PK exists for girl.
@@ -172,6 +173,7 @@ final class InstanceTest extends TestCase
         $firstPk = $girl->getPk();
 
         // Now delete.
+        $girl->delete(true);
         $girl->delete();
 
         // And create again.
@@ -223,6 +225,7 @@ final class InstanceTest extends TestCase
         $girl->setPk($pk);
         $girl->read();
         $girl->setName('kalocsay.niki2');
+        $girl->save(true);
         $girl->save();
 
         // Test.

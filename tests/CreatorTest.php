@@ -29,7 +29,7 @@ final class CreatorTest extends TestCase
 
         // Create.
         $md = new CreatorStarter();
-        $md->run('resources/schemaForTesting.php');
+        $md->run('../resources/schemaForTesting.php');
 
         // Test.
         $this->assertEquals(1, 1);
@@ -48,7 +48,7 @@ final class CreatorTest extends TestCase
         $md = new CreatorStarter();
         $md->setOverwriteCore(false);
         $md->setOverwriteNonCore(false);
-        $md->run('resources/schemaForTesting.php');
+        $md->run('../resources/schemaForTesting.php');
 
         $this->assertEquals(1, 1);
     }
@@ -164,6 +164,7 @@ final class CreatorTest extends TestCase
         // Create creator.
         $creator = new Creator();
         $creator->getParams()->setOperation('create');
+        $creator->getParams()->setParam('baseDir', 'nonexisting-Dir');
         $creator->getParams()->setParam('schemaUri', 'nonexisting-Uri');
 
         // Prepare.

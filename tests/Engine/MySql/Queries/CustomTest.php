@@ -6,6 +6,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Engine\Mysql\Queries\CustomQuery;
+use Przeslijmi\Shortquery\ForTests\Models\Car;
 use stdClass;
 
 /**
@@ -121,6 +122,25 @@ final class CustomTest extends TestCase
     }
 
     /**
+     * Test if calling multi query on wrong database throw.
+     *
+     * @return void
+     */
+    public function testIfCallingMultiToWrongDatabaseThrows() : void
+    {
+
+        // Create.
+        $query = new CustomQuery('testWrong');
+        $query->set('SELECT COUNT(*) FROM `nonexisting_table`;');
+
+        // Prepare.
+        $this->expectException(MethodFopException::class);
+
+        // Test.
+        $query->callMulti();
+    }
+
+    /**
      * Test if firing query on wrong database throw.
      *
      * @return void
@@ -171,5 +191,96 @@ final class CustomTest extends TestCase
 
         // Test.
         $this->assertTrue($query->fire());
+    }
+
+    /**
+     * Test if calling empty query uses fast lane.
+     *
+     * @return void
+     */
+    public function testIfCallingEmptyQueryWorks() : void
+    {
+
+        // Preapre.
+        $custom = new CustomQuery('test');
+        $custom->set('');
+
+        // Test.
+        $this->assertTrue($custom->call());
+        $this->assertEquals([], $custom->callMulti());
+    }
+
+    /**
+     * Test if calling multi query works.
+     *
+     * @return void
+     */
+    public function testIfCallingMultiQueryWorks() : void
+    {
+
+        // Lvd.
+        $query  = 'UPDATE `cars` SET `is_fast`=\'no\' WHERE `pk`=\'1\';';
+        $query .= 'UPDATE `cars` SET `is_fast`=\'yes\' WHERE `pk`=\'1\';';
+
+        // Prepare.
+        $custom = new CustomQuery('test');
+        $custom->set($query);
+        $custom->callMulti();
+
+        // Read.
+        $car = new Car();
+        $car->setPk(1);
+        $car->read();
+
+        // Test.
+        $this->assertEquals('yes', $car->getIsFast());
+    }
+
+    /**
+     * Test if calling multi query works.
+     *
+     * @return void
+     */
+    public function testIfCallingMultiQueryWorksTwo() : void
+    {
+
+        // Lvd.
+        $query  = 'SELECT * FROM `cars` ORDER BY `pk` LIMIT 0,1;';
+        $query .= 'SELECT * FROM `girls` ORDER BY `pk` LIMIT 0,1;';
+
+        // Prepare.
+        $custom = new CustomQuery('test');
+        $custom->set($query);
+        $result = $custom->callMulti();
+
+        // Test.
+        $this->assertIsArray($result);
+        $this->assertEquals(2, count($result));
+        $this->assertInstanceOf('mysqli_result', $result[0]);
+        $this->assertInstanceOf('mysqli_result', $result[1]);
+        $this->assertEquals('1', $result[0]->fetch_assoc()['pk']);
+        $this->assertEquals('1', $result[1]->fetch_assoc()['pk']);
+    }
+
+    /**
+     * Test if calling multi query that is wrong throws.
+     *
+     * @return void
+     */
+    public function testIfWrongCallingMultiQueryThrows() : void
+    {
+
+        // Lvd.
+        $query = 'WRONG STATEMENT `cars`;';
+
+        // Prepare.
+        $custom = new CustomQuery('test');
+        $custom->set($query);
+
+        // Prepare.
+        $this->expectException(MethodFopException::class);
+
+        // Test.
+        $this->assertTrue($custom->callMulti());
     }
 }

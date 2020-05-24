@@ -88,6 +88,17 @@ class UpdateQuery extends Query
     }
 
     /**
+     * Call mulit query and wait for response.
+     *
+     * @return boolean True.
+     */
+    public function callMulti()
+    {
+
+        return $this->engineCallMultiQuery();
+    }
+
+    /**
      * Call query without waiting for any response.
      *
      * @return boolean True.

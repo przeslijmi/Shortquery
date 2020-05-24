@@ -40,7 +40,8 @@ class Collection extends PhpFile
     {
 
         // Lvd.
-        $result  = $this->settings['srcDir'];
+        $result  = rtrim(str_replace('\\', '/', $this->settings['schemaSettingsUri']), '/') . '/';
+        $result .= $this->settings['srcDir'];
         $result .= $this->model->getClass('parentClassName');
         $result .= '/';
         $result .= $this->model->getClass('collectionClassName');

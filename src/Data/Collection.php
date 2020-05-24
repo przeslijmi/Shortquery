@@ -11,6 +11,7 @@ use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeReadException;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
+use Przeslijmi\Silogger\Log;
 use Throwable;
 
 /**
@@ -601,11 +602,13 @@ abstract class Collection extends Tools
     /**
      * Calls engine to update existing records.
      *
-     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be updated.
+     * @param null|Instance[] $differentSetOfInstances Opt., empty. If given only those given will be updated.
+     * @param boolean         $onlyReturnQuery         Opt., `false`. If set to true query will be sent to debug log
+     *                                                 without executing.
      *
      * @return self
      */
-    public function update(?array $differentSetOfInstances = null) : self
+    public function update(?array $differentSetOfInstances = null, bool $onlyReturnQuery = false) : self
     {
 
         // Create UPDATE Query.
@@ -621,8 +624,15 @@ abstract class Collection extends Tools
             $update->setInstances($differentSetOfInstances);
         }
 
-        // Fire Query.
-        $update->fire();
+        if ($onlyReturnQuery === true) {
+            if (empty($update->toString()) === false) {
+                Log::get()->debug($update->toString());
+            }
+            return $this;
+        }
+
+        // Call multi query.
+        $update->callMulti();
 
         return $this;
     }
@@ -630,11 +640,13 @@ abstract class Collection extends Tools
     /**
      * Calls engine to insert records.
      *
-     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be created.
+     * @param null|Instance[] $differentSetOfInstances Opt., empty. If given only those given will be created.
+     * @param boolean         $onlyReturnQuery         Opt., `false`. If set to true query will be sent to debug log
+     *                                                 without executing.
      *
      * @return void
      */
-    public function create(?array $differentSetOfInstances = null) : void
+    public function create(?array $differentSetOfInstances = null, bool $onlyReturnQuery = false) : void
     {
 
         // Create INSERT Query.
@@ -647,6 +659,13 @@ abstract class Collection extends Tools
             $insert->setInstances($differentSetOfInstances);
         }
 
+        if ($onlyReturnQuery === true) {
+            if (empty($insert->toString()) === false) {
+                Log::get()->debug($insert->toString());
+            }
+            return;
+        }
+
         // Fire Query.
         $insert->call();
     }
@@ -654,11 +673,13 @@ abstract class Collection extends Tools
     /**
      * Calls engine to delete records.
      *
-     * @param null|Instance[] $differentSetOfInstances Optional, empty. If given only those given will be deleted.
+     * @param null|Instance[] $differentSetOfInstances Opt., empty. If given only those given will be deleted.
+     * @param boolean         $onlyReturnQuery         Opt., `false`. If set to true query will be sent to debug log
+     *                                                 without executing.
      *
      * @return void
      */
-    public function delete(?array $differentSetOfInstances = null) : void
+    public function delete(?array $differentSetOfInstances = null, bool $onlyReturnQuery = false) : void
     {
 
         // Create DELETE Query.
@@ -672,6 +693,13 @@ abstract class Collection extends Tools
             $delete->setInstances($differentSetOfInstances);
         }
 
+        if ($onlyReturnQuery === true) {
+            if (empty($delete->toString()) === false) {
+                Log::get()->debug($delete->toString());
+            }
+            return;
+        }
+
         // Fire Query.
         $delete->fire();
     }
@@ -679,9 +707,11 @@ abstract class Collection extends Tools
     /**
      * Calls engine to insert, update or delete records.
      *
+     * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
+     *
      * @return void
      */
-    public function save() : void
+    public function save(bool $onlyReturnQuery = false) : void
     {
 
         // Get what has to be added and what has to be updated.
@@ -689,12 +719,12 @@ abstract class Collection extends Tools
 
         // Update.
         if (count($instancesAdded) > 0) {
-            $this->update($instancesAdded);
+            $this->update($instancesAdded, $onlyReturnQuery);
         }
 
         // Add.
         if (count($instancesNotAdded) > 0) {
-            $this->create($instancesNotAdded);
+            $this->create($instancesNotAdded, $onlyReturnQuery);
         }
 
         // Get what have to be deleted.
@@ -702,7 +732,7 @@ abstract class Collection extends Tools
 
         // Delete.
         if (count($instancesToBeDeleted) > 0) {
-            $this->delete($instancesToBeDeleted);
+            $this->delete($instancesToBeDeleted, $onlyReturnQuery);
         }
     }
 }

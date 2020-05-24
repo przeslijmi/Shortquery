@@ -42,6 +42,8 @@ final class RelationTest extends TestCase
         $this->assertInstanceOf(GirlModel::class, $relation->getModelFrom());
         $this->assertEquals(GirlModel::class, $relation->getModelFromAsName());
         $this->assertInstanceOf(CarModel::class, $relation->getModelTo());
+        $this->assertInstanceOf(GirlModel::class, $relation->getModelOtherThan('cars'));
+        $this->assertInstanceOf(CarModel::class, $relation->getModelOtherThan('girls'));
         $this->assertEquals(CarModel::class, $relation->getModelToAsName());
         $this->assertInstanceOf(Field::class, $relation->getFieldFrom());
         $this->assertEquals('pk', $relation->getFieldFrom()->getName());
@@ -52,6 +54,8 @@ final class RelationTest extends TestCase
         $this->assertEquals('expandCars', $relation->getExpanderName());
         $this->assertEquals('addCars', $relation->getAdderName());
         $this->assertEquals('getCars', $relation->getGetterName());
+        $this->assertEquals('pk', $relation->getFieldFromModelOtherThan('cars')->getName());
+        $this->assertEquals('owner_girl', $relation->getFieldFromModelOtherThan('girls')->getName());
     }
 
     /**

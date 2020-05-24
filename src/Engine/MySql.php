@@ -39,6 +39,11 @@ abstract class MySql extends Engine implements EngineInterface
         // Lvd.
         $query = $this->toString();
 
+        // Fast lane.
+        if (empty($query) === true) {
+            return true;
+        }
+
         // Check connection.
         try {
             $mysqli = Connection::get($this->database);
@@ -84,6 +89,7 @@ abstract class MySql extends Engine implements EngineInterface
         // Lvd.
         $query = $this->toString();
 
+        // Fast lane.
         if (empty($query) === true) {
             return true;
         }
@@ -99,7 +105,7 @@ abstract class MySql extends Engine implements EngineInterface
         Log::get()->notice($query);
 
         // Call query.
-        $result = $mysqli->multi_query($query);
+        $result = $mysqli->query($query);
 
         // Save last insert_id.
         $this->lastInsertId = (int) $mysqli->insert_id;
@@ -117,5 +123,58 @@ abstract class MySql extends Engine implements EngineInterface
         }
 
         return true;
+    }
+
+    /**
+     * Method of calling multi query including waiting for the response.
+     *
+     * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
+     * @throws MethodFopException On mysqliQueryWrosyn.
+     * @return array
+     *
+     * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
+     * @phpcs:disable Zend.NamingConventions.ValidVariableName.NotCamelCaps
+     */
+    protected function engineCallMultiQuery() : array
+    {
+
+        // Lvd.
+        $query  = $this->toString();
+        $result = [];
+
+        // Fast lane.
+        if (empty($query) === true) {
+            return [];
+        }
+
+        // Log.
+        Log::get()->notice($query);
+
+        // Check connection.
+        try {
+            $mysqli = Connection::get($this->database);
+        } catch (ClassFopException $e) {
+            throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
+        }
+
+        // Call query.
+        if ($mysqli->multi_query($query) !== false) {
+            do {
+
+                // Get result.
+                $resultOfThis = $mysqli->store_result();
+
+                // Save result for return.
+                $result[] = $resultOfThis;
+            } while ($mysqli->more_results() === true && $mysqli->next_result() === true);
+        } else {
+            throw (new MethodFopException('mysqliQueryWrosyn'))
+                ->addInfo('query', trim($query))
+                ->addInfo('errorNo', (string) $mysqli->errno)
+                ->addInfo('error', $mysqli->error);
+        }
+        $mysqli->close();
+
+        return $result;
     }
 }

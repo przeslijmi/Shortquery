@@ -8,27 +8,30 @@
  *
  * Basic usage:
  *
- * ```
- * cd c:\Dev\php\ws\stolem
- * php bin/fetchPopf.php
- * php bin/fetchPopf.php help
- * php bin/fetchPopf.php fetch -d "\Dev\data\dw\source.popf"
- * ```
- *
- * Where:
- * -d, --destination Directory to which all JSON file have to be put (use `\` at the beginning, do not use `\` at
- *                   the end). As dir separator use only backslashes.
  */
 
 // Change dir to one with this file.
-chdir(dirname($argv[0]));
-chdir('../');
+$dirOfBinFile = dirname(__FILE__);
+chdir($dirOfBinFile);
 
-// Now leave vendors up to main application dir.
-chdir('../../../');
+// Look for bootstrap param.
+if (($bootstrap = array_search('--bootstrap', $argv)) !== false) {
 
-// Require bootstrap.
-require('bootstrap.php');
+    // Find.
+    $bootstrap = ( $argv[(++$bootstrap)] ?? null );
+
+    // Continue.
+    if ($bootstrap !== null) {
+
+        // Lvd.
+        $bootstrapUri  = dirname($bootstrap);
+        $bootstrapFile = basename($bootstrap);
+
+        // Require.
+        chdir($bootstrapUri);
+        require $bootstrapFile;
+    }
+}
 
 use Przeslijmi\Shortquery\Creator;
 use Przeslijmi\Sexceptions\Handler;
@@ -40,6 +43,7 @@ try {
     $creator->getParams()->setAliases('config', 'c');
     $creator->getParams()->setAliases('schema', 's');
     $creator->getParams()->set($argv);
+    $creator->getParams()->setParam('baseDir', $dirOfBinFile);
 
     // Start performing operations.
     $creator->start();

@@ -179,4 +179,25 @@ final class CacheByKeyTest extends TestCase
         // Test.
         $this->assertEquals(( $postCount + 1 ), $preCount);
     }
+
+    /**
+     * Test if cache with relations works properly.
+     *
+     * @return void
+     */
+    public function testItCacheWithRelationWorks() : void
+    {
+
+        // Create cache.
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
+        $cache->addChildren('cars');
+        $cache->prepare();
+
+        // Get element.
+        $girl = $cache->getOnce(1);
+
+        // Test.
+        $this->assertEquals('Adriana', $girl->getName());
+        $this->assertEquals(2, $girl->getCars()->length());
+    }
 }

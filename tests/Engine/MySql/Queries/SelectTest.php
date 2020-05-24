@@ -4,9 +4,9 @@ namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\Mysql\Queries\SelectQuery;
-use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
+use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 
 /**
@@ -37,6 +37,31 @@ final class SelectTest extends TestCase
         // Test.
         $this->assertEquals('Krystal', $records[0]['name']);
         $this->assertEquals('wii', $records[0]['constant']);
+    }
+
+    /**
+     * Test if relation select works.
+     *
+     * @return void
+     */
+    public function testIfRelationWorksWithAllFields() : void
+    {
+
+        // Lvd.
+        $keysExpected = [ 'pk', 'name', 'webs', 'cars.pk', 'cars.owner_girl', 'cars.is_fast', 'cars.name' ];
+
+        // Create Query.
+        $query = new SelectQuery(new GirlModel());
+        $query->setLimit(0, 1);
+        $query->addRelation('cars');
+        $query->call();
+
+        // Get records.
+        $records = $query->read();
+
+        // Test.
+        $this->assertEquals($keysExpected, array_keys($records[0]));
+        $this->assertEquals('Adriana', $records[0]['name']);
     }
 
     /**
@@ -168,5 +193,48 @@ final class SelectTest extends TestCase
 
         // Test.
         $this->assertTrue(true);
+    }
+
+    /**
+     * Test if read by (grouping single on key) works.
+     *
+     * @return void
+     */
+    public function testIfReadByWorks() : void
+    {
+
+        // Create Query.
+        $query = new SelectQuery(new GirlModel());
+        $query->call();
+
+        // Get records.
+        $pks = $query->readBy('pk');
+
+        foreach ($pks as $pk => $girl) {
+            $this->assertEquals($pk, $girl['pk']);
+        }
+    }
+
+    /**
+     * Test if read multiple by (grouping multiple on key) works.
+     *
+     * @return void
+     */
+    public function testIfReadMulByWorks() : void
+    {
+
+        // Create Query.
+        $query = new SelectQuery(new CarModel());
+        $query->call();
+
+        // Get records.
+        $isFasts = $query->readMultipleBy('is_fast');
+
+        // Test.
+        foreach ($isFasts as $isFast => $cars) {
+            foreach ($cars as $car) {
+                $this->assertEquals($isFast, $car['is_fast']);
+            }
+        }
     }
 }

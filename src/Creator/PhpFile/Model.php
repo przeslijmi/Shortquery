@@ -40,7 +40,8 @@ class Model extends PhpFile
     {
 
         // Lvd.
-        $result  = $this->settings['srcDir'];
+        $result  = rtrim(str_replace('\\', '/', $this->settings['schemaSettingsUri']), '/') . '/';
+        $result .= $this->settings['srcDir'];
         $result .= $this->model->getClass('parentClassName');
         $result .= '\\Core\\';
         $result .= $this->model->getClass('modelClassName');

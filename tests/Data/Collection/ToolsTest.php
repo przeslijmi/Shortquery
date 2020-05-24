@@ -140,7 +140,7 @@ final class ToolsTest extends TestCase
                     'owner_girl' => 1,
                     'name'       => 'Nissan 789',
                 ],
-            ]
+            ],
         ];
 
         // Change collection.
@@ -150,6 +150,47 @@ final class ToolsTest extends TestCase
         $this->assertEquals($newCars['yes'][0]['name'], $cars->getOne(0)->getName());
         $this->assertEquals($newCars['yes'][1]['name'], $cars->getOne(1)->getName());
         $this->assertEquals($newCars['no'][0]['name'], $cars->getOne(2)->getName());
+    }
+
+    /**
+     * Test if `->makeSplittedContentAnalogousToArray()` works properly (third).
+     *
+     * @return void
+     */
+    public function testIfMakingSplittedContentAnalogousToArrayWorks3() : void
+    {
+
+        // Get cars.
+        $cars = new Cars();
+        $cars->getLogics()->addRule('pk', [ 1, 2, 3 ]);
+        $cars->read();
+
+        // Get field.
+        $field = $cars->getModel()->getFieldByName('is_fast');
+
+        // Create changed content.
+        $newCars = [
+            'yes' => [
+                [
+                    'pk'         => 1,
+                    'owner_girl' => 1,
+                    'name'       => 'Toyota 123',
+                ],
+                [
+                    'pk'         => 3,
+                    'owner_girl' => 2,
+                    'name'       => 'Opel 456',
+                ],
+            ],
+        ];
+
+        // Change collection.
+        $cars->makeSplittedContentsAnalogousToArray($field, $newCars);
+
+        // Tests.
+        $this->assertEquals($newCars['yes'][0]['name'], $cars->getOne(0)->getName());
+        $this->assertEquals($newCars['yes'][1]['name'], $cars->getOne(1)->getName());
+        $this->assertEquals(2, $cars->length());
     }
 
     /**

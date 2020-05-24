@@ -31,18 +31,15 @@ class CreatorStarter
      *
      * Example of schema file: `resources/schemaForTesting.php`.
      *
-     * @param string $schemaFileName File with instructions.
+     * @param string $schemaUri File with instructions.
      *
      * @return self
      */
-    public function run(string $schemaFileName) : self
+    public function run(string $schemaUri) : self
     {
 
-        // Lvd.
-        $schemaDir = rtrim(str_replace('\\', '/', __DIR__), '/');
-        $schemaDir = substr($schemaDir, 0, strrpos($schemaDir, '/'));
-        $schemaDir = substr($schemaDir, 0, strrpos($schemaDir, '/'));
-        $schemaUri = $schemaDir . '/' . $schemaFileName;
+        // Lvd baseDir.
+        $baseDir = trim(str_replace('\\', '/', dirname(dirname(dirname(__FILE__)))), '/') . '/bin/';
 
         // Call creator.
         $creator = new Creator();
@@ -50,6 +47,7 @@ class CreatorStarter
         $creator->getParams()->setParam('schemaUri', $schemaUri);
         $creator->getParams()->setParam('overwriteNonCore', $this->overwriteNonCore);
         $creator->getParams()->setParam('overwriteCore', $this->overwriteCore);
+        $creator->getParams()->setParam('baseDir', $baseDir);
         $creator->start();
 
         return $this;

@@ -86,7 +86,13 @@ abstract class Tools
 
         // Change states to every key of splitting.
         foreach ($keys as $key) {
-            $collections[$key]->makeContentAnalogousToArray($new[$key]);
+
+            // There is nothing in new.
+            if (isset($new[$key]) === true) {
+                $collections[$key]->makeContentAnalogousToArray($new[$key]);
+            } else {
+                unset($collections[$key]);
+            }
         }
 
         // Eliminate keys from final array.

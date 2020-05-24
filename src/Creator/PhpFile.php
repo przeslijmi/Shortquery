@@ -78,7 +78,6 @@ abstract class PhpFile
 
         // Get path.
         $path = $this->getUri();
-        $path = str_replace('\\', '/', $path);
 
         // Ignore saving when file exists (if needed).
         if (file_exists($path) === true && $overwrite === false) {

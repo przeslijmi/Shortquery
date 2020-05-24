@@ -2,11 +2,12 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
-use Throwable;
 use Przeslijmi\Shortquery\Data\Model;
-use Przeslijmi\Shortquery\Items\Rule;
-use Przeslijmi\Shortquery\Exceptions\Items\FieldValueUnaccesibleException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueUnaccesibleException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueUnaccesibleException;
+use Przeslijmi\Shortquery\Items\Rule;
+use Przeslijmi\Silogger\Log;
+use Throwable;
 
 /**
  * Parent for all items in all models.
@@ -383,9 +384,11 @@ abstract class Instance
     /**
      * Create record.
      *
+     * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
+     *
      * @return self
      */
-    public function create() : self
+    public function create(bool $onlyReturnQuery = false) : self
     {
 
         // Create INSERT query.
@@ -393,6 +396,14 @@ abstract class Instance
 
         // Add logics.
         $insert->setInstance($this);
+
+        // Debug.
+        if ($onlyReturnQuery === true) {
+            if (empty($insert->toString()) === false) {
+                Log::get()->debug($insert->toString());
+            }
+            return $this;
+        }
 
         // Fire query.
         $insert->fire();
@@ -429,9 +440,11 @@ abstract class Instance
     /**
      * Update existing record.
      *
+     * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
+     *
      * @return self
      */
-    public function update() : self
+    public function update(bool $onlyReturnQuery = false) : self
     {
 
         // Create UPDATE query.
@@ -443,6 +456,14 @@ abstract class Instance
         // Add this Instance.
         $update->setInstance($this);
 
+        // Debug.
+        if ($onlyReturnQuery === true) {
+            if (empty($update->toString()) === false) {
+                Log::get()->debug($update->toString());
+            }
+            return $this;
+        }
+
         // Fire query.
         $update->fire();
 
@@ -452,25 +473,29 @@ abstract class Instance
     /**
      * Save record (no matter if update or creation are needed)..
      *
+     * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
+     *
      * @return self
      */
-    public function save() : self
+    public function save(bool $onlyReturnQuery = false) : self
     {
 
         // If this is already added in the Engine - then update.
         if ($this->grabIsAdded() === true) {
-            return $this->update();
+            return $this->update($onlyReturnQuery);
         }
 
-        return $this->create();
+        return $this->create($onlyReturnQuery);
     }
 
     /**
      * Save record (no matter if update or creation are needed)..
      *
+     * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
+     *
      * @return self
      */
-    public function delete() : self
+    public function delete(bool $onlyReturnQuery = false) : self
     {
 
         // If this is not added - it can't be deleted.
@@ -486,6 +511,14 @@ abstract class Instance
 
         // Add this Instance.
         $delete->setInstance($this);
+
+        // Debug.
+        if ($onlyReturnQuery === true) {
+            if (empty($delete->toString()) === false) {
+                Log::get()->debug($delete->toString());
+            }
+            return $this;
+        }
 
         // Fire query.
         $delete->fire();
