@@ -3,12 +3,15 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Sexceptions\Exceptions\FileDonoexException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
+use Przeslijmi\Sexceptions\Sexception;
 use Przeslijmi\Shortquery\Creator\PhpFile;
 use Przeslijmi\Shortquery\Creator\PhpFile\Model as ModelPhpFile;
+use Przeslijmi\Shortquery\Exceptions\Creator\ModelsInSchemaDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileCorruptedException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaMissingException;
 use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 use Throwable;
@@ -146,11 +149,15 @@ final class CreatorTest extends TestCase
         $creator = new Creator();
         $creator->getParams()->setOperation('create');
 
-        // Prepare.
-        $this->expectException(ClassFopException::class);
-
         // Test.
-        $creator->start();
+        try {
+            $creator->start();
+        } catch (Sexception $sexc) {
+            $this->assertTrue($sexc->hasInCauses(SchemaMissingException::class));
+            return;
+        }
+
+        $this->fail('Method did return different Error than Sexception.');
     }
 
     /**
@@ -167,11 +174,15 @@ final class CreatorTest extends TestCase
         $creator->getParams()->setParam('baseDir', 'nonexisting-Dir');
         $creator->getParams()->setParam('schemaUri', 'nonexisting-Uri');
 
-        // Prepare.
-        $this->expectException(ClassFopException::class);
-
         // Test.
-        $creator->start();
+        try {
+            $creator->start();
+        } catch (Sexception $sexc) {
+            $this->assertTrue($sexc->hasInCauses(SchemaFileDonoexException::class));
+            return;
+        }
+
+        $this->fail('Method did return different Error than Sexception.');
     }
 
     /**
@@ -187,11 +198,15 @@ final class CreatorTest extends TestCase
         $creator->getParams()->setOperation('create');
         $creator->getParams()->setParam('schema', false);
 
-        // Prepare.
-        $this->expectException(ClassFopException::class);
-
         // Test.
-        $creator->start();
+        try {
+            $creator->start();
+        } catch (Sexception $sexc) {
+            $this->assertTrue($sexc->hasInCauses(SchemaFileCorruptedException::class));
+            return;
+        }
+
+        $this->fail('Method did return different Error than Sexception.');
     }
 
     /**
@@ -207,11 +222,15 @@ final class CreatorTest extends TestCase
         $creator->getParams()->setOperation('create');
         $creator->getParams()->setParam('schema', []);
 
-        // Prepare.
-        $this->expectException(ClassFopException::class);
-
         // Test.
-        $creator->start();
+        try {
+            $creator->start();
+        } catch (Sexception $sexc) {
+            $this->assertTrue($sexc->hasInCauses(ModelsInSchemaDonoexException::class));
+            return;
+        }
+
+        $this->fail('Method did return different Error than Sexception.');
     }
 
     /**
@@ -235,10 +254,14 @@ final class CreatorTest extends TestCase
             ],
         ]);
 
-        // Prepare.
-        $this->expectException(ClassFopException::class);
-
         // Test.
-        $creator->start();
+        try {
+            $creator->start();
+        } catch (Sexception $sexc) {
+            $this->assertTrue($sexc->hasInCauses(ModelsInSchemaDonoexException::class));
+            return;
+        }
+
+        $this->fail('Method did return different Error than Sexception.');
     }
 }

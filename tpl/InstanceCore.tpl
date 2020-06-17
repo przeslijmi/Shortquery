@@ -148,10 +148,10 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @param <?= $field->getPhpDocsTypeInput() ?> $<?= $field->getName('camelCase') ?> Value to be set.
      *
-     * @return <?= $this->model->getClass('instanceClassName') ?>
+     * @return <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
      */
-    public function set<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->model->getClass('instanceClassName') ?>
+    public function set<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
     {
 
@@ -163,10 +163,10 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @param <?= $field->getPhpDocsTypeInput() ?> $<?= $field->getName('camelCase') ?> Value to be set.
      *
-     * @return <?= $this->model->getClass('instanceClassName') ?>
+     * @return <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
      */
-    public function setCore<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->model->getClass('instanceClassName') ?>
+    public function setCore<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
     {
 
@@ -227,7 +227,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         // If we know that we need this one - read this one.
         if ($this-><?= $relation->getFieldFrom()->getGetterName() ?>() !== null) {
-            $child-><?= $relation->getModelTo()->getPrimaryKeyField()->getSetterName() ?>($this-><?= $relation->getFieldFrom()->getGetterName() ?>());
+            $child-><?= $relation->getFieldTo()->getSetterName() ?>($this-><?= $relation->getFieldFrom()->getGetterName() ?>());
             $child->read();
         }
 

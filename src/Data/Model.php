@@ -623,6 +623,24 @@ class Model
     }
 
     /**
+     * Return Field by given name if that field exists (otherwise return `null`).
+     *
+     * @param string $name Name of Field.
+     *
+     * @return null|Field.
+     */
+    public function getFieldByNameIfExists(string $name) : ?Field
+    {
+
+        // Check if Field exists - if not - return null.
+        if (isset($this->fields[$name]) === false) {
+            return null;
+        }
+
+        return $this->fields[$name];
+    }
+
+    /**
      * Returns Field that is a primary key Field for this model.
      *
      * @todo Make better test for duplicating primary key or accept that there can be more then one.

@@ -296,6 +296,27 @@ abstract class Collection extends Tools
     }
 
     /**
+     * Return real length of Collection (ignore records marked to be deleted).
+     *
+     * @return integer
+     */
+    public function lengthReal() : int
+    {
+
+        // Lvd.
+        $result = 0;
+
+        // Scan.
+        foreach ($this->instances as $instance) {
+            if ($instance->grabIsToBeDeleted() === false) {
+                ++$result;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
      * Add one Instance to Collection.
      *
      * @param Instance|Instance[] $instanceOrInstances Instance or array of Instances to be put.

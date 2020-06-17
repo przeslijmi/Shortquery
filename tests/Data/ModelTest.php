@@ -104,6 +104,8 @@ final class ModelTest extends TestCase
         $this->assertEquals('Namespace', $model->getClass('parentClassName'));
         $this->assertEquals($fields, $model->getFields());
         $this->assertEquals($fields['pk'], $model->getFieldByName('pk'));
+        $this->assertEquals($fields['pk'], $model->getFieldByNameIfExists('pk'));
+        $this->assertEquals(null, $model->getFieldByNameIfExists('pk_nonexisting'));
         $this->assertEquals($fields['pk'], $model->getPrimaryKeyField());
         $this->assertEquals($fields['pk'], $model->getPkField());
         $this->assertEquals(array_keys($fields), $model->getFieldsNames());

@@ -4,8 +4,8 @@ namespace Przeslijmi\Shortquery\ForTests\Models\Core;
 
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
-use Przeslijmi\Shortquery\ForTests\Models\Car as Car4266;
-use Przeslijmi\Shortquery\ForTests\Models\Cars as Cars7580;
+use Przeslijmi\Shortquery\ForTests\Models\Car as Car8245;
+use Przeslijmi\Shortquery\ForTests\Models\Cars as Cars8740;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 use Przeslijmi\Shortquery\ForTests\Models\Girl;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
@@ -403,12 +403,12 @@ class GirlCore extends Instance
      *
      * @return Cars
      */
-    public function getCars() : Cars7580
+    public function getCars() : Cars8740
     {
 
         // Create empty collection if there isn't any added.
         if ($this->cars === null) {
-            $this->cars = new Cars7580();
+            $this->cars = new Cars8740();
             $this->cars->getLogics()->addFromRelation($this->grabModel()->getRelationByName('cars'));
         }
 
@@ -425,7 +425,7 @@ class GirlCore extends Instance
     {
 
         // Get records with those pks.
-        $children = new Cars7580(...func_get_args());
+        $children = new Cars8740(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getPk() !== null) {
@@ -446,11 +446,11 @@ class GirlCore extends Instance
     /**
      * Adds child-Collection to Relation Collection.
      *
-     * @param Cars7580 $collection One child-Instance of child for Relation.
+     * @param Cars8740 $collection One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addCars(Cars7580 $collection) : self
+    public function addCars(Cars8740 $collection) : self
     {
 
         // Put this Instance to this Collection.
@@ -464,12 +464,12 @@ class GirlCore extends Instance
      *
      * @return Cars
      */
-    public function getFastCars() : Cars7580
+    public function getFastCars() : Cars8740
     {
 
         // Create empty collection if there isn't any added.
         if ($this->fastCars === null) {
-            $this->fastCars = new Cars7580();
+            $this->fastCars = new Cars8740();
             $this->fastCars->getLogics()->addFromRelation($this->grabModel()->getRelationByName('fastCars'));
         }
 
@@ -486,7 +486,7 @@ class GirlCore extends Instance
     {
 
         // Get records with those pks.
-        $children = new Cars7580(...func_get_args());
+        $children = new Cars8740(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getPk() !== null) {
@@ -507,11 +507,11 @@ class GirlCore extends Instance
     /**
      * Adds child-Collection to Relation Collection.
      *
-     * @param Cars7580 $collection One child-Instance of child for Relation.
+     * @param Cars8740 $collection One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addFastCars(Cars7580 $collection) : self
+    public function addFastCars(Cars8740 $collection) : self
     {
 
         // Put this Instance to this Collection.

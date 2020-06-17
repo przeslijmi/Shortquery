@@ -7,6 +7,7 @@ use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\CacheByKey;
 use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
+use stdClass;
 
 /**
  * Methods for testing CacheByKey tool.
@@ -30,6 +31,9 @@ final class CacheByKeyTest extends TestCase
         $this->assertInstanceOf('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel', $cache->getModel());
         $this->assertEquals('Adriana', $cache->get(1)->getName());
         $this->assertInstanceOf('Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery', $cache->getSelect());
+        $this->assertTrue(is_array($cache->getData()));
+        $this->assertEquals(12, count($cache->getData()));
+        $this->assertEquals('Adriana', $cache->getData()[1]['name']);
 
         // Count, take out one, count again.
         $firstCount = count($cache->getNonTakenOutKeys());
@@ -64,6 +68,32 @@ final class CacheByKeyTest extends TestCase
 
         // Should be less by one piece.
         $this->assertEquals(( $firstCount - 1 ), $secondCount);
+    }
+
+    /**
+     * Test if freeing memory works.
+     *
+     * @return void
+     */
+    public function testIfFreeingMemoryWorks() : void
+    {
+
+        // Create cache.
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel', 'name');
+        $cache->prepare();
+
+        // Get first id.
+        $firstId = spl_object_hash($cache->get('Adriana'));
+
+        // Delete object - and create new stdClass to take its hash away from "free list".
+        $cache->freeMemory('Adriana');
+        $forNothing = new stdClass();
+
+        // Get second id.
+        $secondId = spl_object_hash($cache->get('Adriana'));
+
+        // Test.
+        $this->assertNotEquals($firstId, $secondId);
     }
 
     /**
@@ -199,5 +229,6 @@ final class CacheByKeyTest extends TestCase
         // Test.
         $this->assertEquals('Adriana', $girl->getName());
         $this->assertEquals(2, $girl->getCars()->length());
+        $this->assertEquals(2, $girl->getCars()->lengthReal());
     }
 }

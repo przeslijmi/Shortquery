@@ -96,6 +96,7 @@ final class ToolsTest extends TestCase
         $this->assertEquals($newGirls[0]['name'], $girls->getOne(0)->getName());
         $this->assertEquals($newGirls[0]['webs'], $girls->getOne(0)->getWebs());
         $this->assertEquals(3, $girls->length());
+        $this->assertEquals(1, $girls->lengthReal());
         $this->assertFalse($girls->getOne(0)->grabIsToBeDeleted());
         $this->assertTrue($girls->getOne(1)->grabIsToBeDeleted());
         $this->assertTrue($girls->getOne(2)->grabIsToBeDeleted());

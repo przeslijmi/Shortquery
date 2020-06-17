@@ -2,20 +2,17 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Exception;
 use Przeslijmi\CliApp\CliApp;
-use Przeslijmi\CliApp\Report;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Sexceptions\Exceptions\FileDonoexException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Creator\Model;
 use Przeslijmi\Shortquery\Creator\PhpFile\Collection;
 use Przeslijmi\Shortquery\Creator\PhpFile\CollectionCore;
 use Przeslijmi\Shortquery\Creator\PhpFile\Instance;
 use Przeslijmi\Shortquery\Creator\PhpFile\InstanceCore;
 use Przeslijmi\Shortquery\Creator\PhpFile\Model as ModelPhpFile;
-use Przeslijmi\Shortquery\Exceptions\Creator\ConfigurationCorruptedException;
-use Przeslijmi\Shortquery\Exceptions\Creator\ConfigurationIncompleteException;
+use Przeslijmi\Shortquery\Exceptions\Creator\ModelsInSchemaDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileCorruptedException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\SchemaMissingException;
 use stdClass;
 
 /**
@@ -34,13 +31,13 @@ class Creator extends CliApp
     /**
      * Main screen of application - creates files.
      *
-     * @throws MethodFopException When no models are given to be created.
+     * @throws ModelsInSchemaDonoexException When no models are given to be created.
      * @return void
      */
     public function create() : void
     {
 
-        // Report.
+        // Log.
         $this->log('notice', 'Przeslijmi\Shortquery\Creator: hello!');
 
         // Check - incomplete params.
@@ -57,7 +54,7 @@ class Creator extends CliApp
 
         // Check if there are any models.
         if (isset($this->schema['models']) === false || count($this->schema['models']) === 0) {
-            throw new MethodFopException('noModelsGiven');
+            throw new ModelsInSchemaDonoexException();
         }
 
         // Define overwriting.
@@ -115,15 +112,15 @@ class Creator extends CliApp
             $phpFile->save($overwriteNonCore);
         }//end foreach
 
-        // Report.
+        // Log.
         $this->log('notice', 'Przeslijmi\Shortquery\Creator: bye bye!');
     }
 
     /**
      * Check and read in schema.
      *
-     * @throws FileDonoexException             When file given as creator schema does not exists.
-     * @throws ConfigurationCorruptedException When configuration file is corrupted.
+     * @throws SchemaFileDonoexException    When file given as creator schema does not exists.
+     * @throws SchemaFileCorruptedException When configuration file is corrupted.
      * @return self
      */
     private function readInModelsToCreate() : self
@@ -143,9 +140,7 @@ class Creator extends CliApp
 
             // Check if source dir exists.
             if (file_exists($schemaUri) === false) {
-                $hint = 'Creator has to take schema from a file given as param -su (--schemaUri). File is missing.';
-                throw (new FileDonoexException('shortqueryModelsCreatorSchemaUri', $schemaUri))
-                    ->addInfo('hint', $hint);
+                throw new SchemaFileDonoexException([ $schemaUri ]);
             }
 
             // Get schema.
@@ -157,7 +152,7 @@ class Creator extends CliApp
 
         // Check if ARRAY was read.
         if (is_array($this->schema) === false) {
-            throw new ConfigurationCorruptedException();
+            throw new SchemaFileCorruptedException([ ( $schemaUri ?? 'not from uri!' ) ]);
         }
 
         return $this;
@@ -166,7 +161,7 @@ class Creator extends CliApp
     /**
      * Check are all neded params present.
      *
-     * @throws ClassFopException When no Schema has been given.
+     * @throws SchemaMissingException When no Schema has been given.
      * @return void
      */
     private function validateParams() : void
@@ -178,10 +173,7 @@ class Creator extends CliApp
 
         // Check params if exist.
         if ($isSchemaUri === false && $isSchema === false) {
-            $hint  = 'Creator has to take schema from a file given as param -su (--schemaUri)';
-            $hint .= 'or as direct injection `->setParam(\'schema\')`. None happend.';
-            throw (new ClassFopException('shortqueryModelsCreatorSchemaMissing'))
-                ->addInfo('hint', $hint);
+            throw new SchemaMissingException();
         }
     }
 }

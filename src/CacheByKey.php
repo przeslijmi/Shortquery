@@ -2,10 +2,10 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Exception;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine;
+use Przeslijmi\Shortquery\Exceptions\CacheByKey\CacheElementMissingException;
 use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 
@@ -169,7 +169,7 @@ class CacheByKey
      * @param string|integer $keyValue       Value of primary key or other field (if used).
      * @param boolean        $throwOnMissing Optional, false. If set to true will throw on missing.
      *
-     * @throws Exception When element from cache is missing.
+     * @throws CacheElementMissingException When element from cache is missing.
      * @return Instance
      */
     public function get($keyValue, bool $throwOnMissing = false) : Instance
@@ -219,7 +219,7 @@ class CacheByKey
             $instance->defineNothingChanged();
 
             // Mark that it was used already.
-            $this->usedKeys[] = $keyValue;
+            $this->usedKeys[$keyValue] = true;
 
             // Save to cache's cache.
             $this->instances[$keyValue] = $instance;
@@ -229,13 +229,11 @@ class CacheByKey
 
         // If data is not present and throwing is on.
         if ($data === null && $throwOnMissing === true) {
-
-            // Lvd.
-            $text  = 'Cache element missing ' . $keyValue . ' on ';
-            $text .= get_class($this->model) . ' (' . $this->fieldOtherThanPk . ').';
-
-            // Throw.
-            throw new Exception($text);
+            throw new CacheElementMissingException([
+                get_class($this->model),
+                $this->fieldOtherThanPk,
+                $keyValue,
+            ]);
         }
 
         // If data was not present - create empty instance with this key value.
@@ -246,8 +244,10 @@ class CacheByKey
         if ($this->fieldOtherThanPk === null) {
             $setter = $this->model->getPkField()->getSetterName();
         } else {
-            $field  = $this->model->getFieldByName($this->fieldOtherThanPk);
-            $setter = $field->getSetterName();
+            $field = $this->model->getFieldByNameIfExists($this->fieldOtherThanPk);
+            if ($field !== null) {
+                $setter = $field->getSetterName();
+            }
         }
 
         // Set key value.
@@ -256,7 +256,7 @@ class CacheByKey
         }
 
         // Mark that it was used already.
-        $this->usedKeys[] = $keyValue;
+        $this->usedKeys[$keyValue] = true;
 
         // Save to cache's cache.
         $this->instances[$keyValue] = $instance;
@@ -292,7 +292,7 @@ class CacheByKey
     {
 
         // Mark that it was used and takenout already.
-        $this->usedKeys[] = $keyValue;
+        $this->usedKeys[$keyValue] = true;
 
         return $this;
     }
@@ -309,13 +309,32 @@ class CacheByKey
     {
 
         // Throw if already taken.
-        if (in_array($keyValue, $this->takenOutKeys, true) === true) {
+        if (isset($this->takenOutKeys[$keyValue]) === true) {
             throw new RecordAlreadyTakenOutFromCacheByKey($keyValue, $this);
         }
 
         // Mark that it was used and takenout already.
-        $this->usedKeys[]     = $keyValue;
-        $this->takenOutKeys[] = $keyValue;
+        $this->usedKeys[$keyValue]     = true;
+        $this->takenOutKeys[$keyValue] = true;
+
+        return $this;
+    }
+
+    /**
+     * It frees memory for one key value by deleting created instance for this key.
+     *
+     * @param string|integer $keyValue Value of primary key or other field (if used).
+     *
+     * @return self
+     */
+    public function freeMemory($keyValue) : self
+    {
+
+        // Take from cache's cache.
+        if (isset($this->instances[$keyValue]) === true) {
+            $this->instances[$keyValue] = null;
+            unset($this->instances[$keyValue]);
+        }
 
         return $this;
     }
@@ -328,7 +347,7 @@ class CacheByKey
     public function getNonUsedKeys() : array
     {
 
-        return array_diff(array_keys($this->data), $this->usedKeys);
+        return array_diff(array_keys($this->data), array_keys($this->usedKeys));
     }
 
     /**
@@ -339,7 +358,7 @@ class CacheByKey
     public function getNonTakenOutKeys() : array
     {
 
-        return array_diff(array_keys($this->data), $this->takenOutKeys);
+        return array_diff(array_keys($this->data), array_keys($this->takenOutKeys));
     }
 
     /**
@@ -374,5 +393,16 @@ class CacheByKey
         $this->dataChildren[$relationName] = [];
 
         return $select;
+    }
+
+    /**
+     * Returns pure data from Cache (that was downloaded from database).
+     *
+     * @return array
+     */
+    public function getData() : array
+    {
+
+        return $this->data;
     }
 }

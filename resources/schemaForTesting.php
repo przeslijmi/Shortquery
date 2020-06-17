@@ -45,14 +45,12 @@ return [
           ->setFieldFrom('pk')
           ->setModelTo('Przeslijmi\Shortquery\ForTests\Models\Core\CarModel')
           ->setFieldTo('owner_girl')
-          ->setFieldTo('owner_girl')
       )
       ->addRelation(
         (new HasManyRelation('fastCars'))
           ->setModelFrom('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel')
           ->setFieldFrom('pk')
           ->setModelTo('Przeslijmi\Shortquery\ForTests\Models\Core\CarModel')
-          ->setFieldTo('owner_girl')
           ->setFieldTo('owner_girl')
           ->addLogicsSyntax('->addRule(\'is_fast\', \'yes\')')
       ),

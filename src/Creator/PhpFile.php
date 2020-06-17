@@ -232,6 +232,6 @@ abstract class PhpFile
     protected function getClassName(string $namespace) : string
     {
 
-        return $this->namespaces[$namespace]['aliasName'];
+        return ( $this->namespaces[$namespace]['aliasName'] ?? 'UnknownClass' );
     }
 }
