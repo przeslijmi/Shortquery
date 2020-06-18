@@ -475,7 +475,7 @@ class Model
     /**
      * Getter for collection class name.
      *
-     * @throws ModelCollectionClassNameDonoexException When namespace is empty (null)..
+     * @throws ModelCollectionClassNameDonoexException When namespace is empty (null).
      * @return string
      */
     public function getCollectionClassName() : string

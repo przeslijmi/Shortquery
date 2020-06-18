@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.2.1 - 2020-06-18
+
+- Fix: after sniffing.
+
 ## v1.2.0 - 2020-06-17
 
 - New: Added `->lengthReal()` for `Collection` witch returns real number of records (etc. minus those that are declared to be deleted).
