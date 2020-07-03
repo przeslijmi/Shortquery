@@ -13,6 +13,7 @@ use Przeslijmi\Shortquery\Items\Field;
 use Przeslijmi\Shortquery\Items\Func;
 use Przeslijmi\Shortquery\Items\Val;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
+use Przeslijmi\Silogger\Log;
 
 /**
  * Tool for creating SELECT query (including its string representation).
@@ -472,6 +473,19 @@ class SelectQuery extends Query
 
         // Go through every record and put it into final array.
         while (( $record = $result->fetch_assoc() ) !== null) {
+
+            // Fire warning if there are duplicates.
+            if (isset($array[$record[$field]]) === true) {
+
+                // Lvd.
+                $warning  = 'Query ' . $this->toString() . ' is read by field `' . $field . '` but there is a ';
+                $warning .= 'duplicate record on key `' . $record[$field] . '`. Continuing work - but check it.';
+
+                // Log.
+                Log::get()->warning($warning);
+            }
+
+            // Add to set.
             $array[$record[$field]] = $record;
         }
 

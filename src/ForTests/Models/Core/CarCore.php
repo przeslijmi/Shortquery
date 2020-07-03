@@ -7,8 +7,8 @@ use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
-use Przeslijmi\Shortquery\ForTests\Models\Girl as Girl6696;
-use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls8546;
+use Przeslijmi\Shortquery\ForTests\Models\Girl as Girl3648;
+use Przeslijmi\Shortquery\ForTests\Models\Girls as Girls6973;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 use stdClass;
 
@@ -426,25 +426,24 @@ class CarCore extends Instance
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
-     * @return Girl6696
+     * @return Girl3648
      */
-    public function getOneOwnerGirl() : Girl6696
+    public function getOneOwnerGirl() : Girl3648
     {
 
         return $this->oneOwnerGirl->getOne();
     }
 
     /**
-     * Call to add children (Girl6696) to this Instance.
+     * Call to add children (Girl3648) to this Instance.
      *
-     * @since  v1.0
      * @return self
      */
     public function expandOneOwnerGirl() : self
     {
 
         // Get records with those pks.
-        $child = new Girl6696(...func_get_args());
+        $child = new Girl3648(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getOwnerGirl() !== null) {
@@ -461,16 +460,16 @@ class CarCore extends Instance
     /**
      * Adds one child-Instance to Relation Collection.
      *
-     * @param Girl6696 $instance One child-Instance of child for Relation.
+     * @param Girl3648 $instance One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addOneOwnerGirl(Girl6696 $instance) : self
+    public function addOneOwnerGirl(Girl3648 $instance) : self
     {
 
         // If there is no Collection created - create one.
         if (is_null($this->oneOwnerGirl) === true) {
-            $this->oneOwnerGirl = new Girls8546();
+            $this->oneOwnerGirl = new Girls6973();
         }
 
         // Put this Instance to this Collection.
@@ -482,25 +481,24 @@ class CarCore extends Instance
     /**
      * Returns child-Instance (one and only - for hasOne Relation type) in Relation.
      *
-     * @return Girl6696
+     * @return Girl3648
      */
-    public function getOneOwnerGirlWithSnapchat() : Girl6696
+    public function getOneOwnerGirlWithSnapchat() : Girl3648
     {
 
         return $this->oneOwnerGirlWithSnapchat->getOne();
     }
 
     /**
-     * Call to add children (Girl6696) to this Instance.
+     * Call to add children (Girl3648) to this Instance.
      *
-     * @since  v1.0
      * @return self
      */
     public function expandOneOwnerGirlWithSnapchat() : self
     {
 
         // Get records with those pks.
-        $child = new Girl6696(...func_get_args());
+        $child = new Girl3648(...func_get_args());
 
         // If we know that we need this one - read this one.
         if ($this->getOwnerGirl() !== null) {
@@ -517,16 +515,16 @@ class CarCore extends Instance
     /**
      * Adds one child-Instance to Relation Collection.
      *
-     * @param Girl6696 $instance One child-Instance of child for Relation.
+     * @param Girl3648 $instance One child-Instance of child for Relation.
      *
      * @return self
      */
-    public function addOneOwnerGirlWithSnapchat(Girl6696 $instance) : self
+    public function addOneOwnerGirlWithSnapchat(Girl3648 $instance) : self
     {
 
         // If there is no Collection created - create one.
         if (is_null($this->oneOwnerGirlWithSnapchat) === true) {
-            $this->oneOwnerGirlWithSnapchat = new Girls8546();
+            $this->oneOwnerGirlWithSnapchat = new Girls6973();
         }
 
         // Put this Instance to this Collection.

@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.2.2 - 2020-07-03
+
+- Change: `SelectQuery` `->readBy()` method logs warning when two records with the same key are found.
+- Change: Removed unused tag `@since` from docs.
+
 ## v1.2.1 - 2020-06-18
 
 - Fix: after sniffing.

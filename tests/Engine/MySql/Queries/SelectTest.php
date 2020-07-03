@@ -216,6 +216,26 @@ final class SelectTest extends TestCase
     }
 
     /**
+     * Test if read by (grouping single on key) fire warning when key has more than one record.
+     *
+     * @return void
+     */
+    public function testIfReadByFireWarning() : void
+    {
+
+        // Create Query.
+        $query = new SelectQuery(new GirlModel());
+        $query->call();
+
+        // Get records.
+        $webs = $query->readBy('webs');
+
+        foreach ($webs as $web => $girl) {
+            $this->assertEquals($web, $girl['webs']);
+        }
+    }
+
+    /**
      * Test if read multiple by (grouping multiple on key) works.
      *
      * @return void
