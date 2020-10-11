@@ -70,7 +70,7 @@ class InsertQuery extends Query
         $query .= '`' . $this->getModel()->getName() . '`';
         $query .= ' (`' . implode('`, `', $columnsToAdd) . '`)';
         $query .= ' VALUES ';
-        $query .= implode(', ', $recordsToAdd) . ';';
+        $query .= implode(',' . PHP_EOL, $recordsToAdd) . ';';
 
         return $query;
     }

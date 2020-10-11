@@ -208,6 +208,43 @@ final class CacheByKeyTest extends TestCase
 
         // Test.
         $this->assertEquals(( $postCount + 1 ), $preCount);
+
+        // Count and mark used.
+        $preCount = count($cache->getNonUsedKeys());
+        $cache->markNotTakenOut(1);
+        $postCount = count($cache->getNonUsedKeys());
+
+        // Test.
+        $this->assertEquals(( $postCount - 1 ), $preCount);
+    }
+
+    /**
+     * Test marking as taken out - and getting non taken out works.
+     *
+     * @return void
+     */
+    public function testIfTakenOutWorks() : void
+    {
+
+        // Create cache.
+        $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');
+        $cache->prepare();
+
+        // Count and mark used.
+        $preCount = count($cache->getNonTakenOutKeys());
+        $cache->markTakenOut(1);
+        $postCount = count($cache->getNonTakenOutKeys());
+
+        // Test.
+        $this->assertEquals(( $postCount + 1 ), $preCount);
+
+        // Count and mark used.
+        $preCount = count($cache->getNonTakenOutKeys());
+        $cache->markNotTakenOut(1);
+        $postCount = count($cache->getNonTakenOutKeys());
+
+        // Test.
+        $this->assertEquals(( $postCount - 1 ), $preCount);
     }
 
     /**

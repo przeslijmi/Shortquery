@@ -118,15 +118,20 @@ abstract class Instance
     /**
      * Getter for field dictionary one value (for set end enum fields).
      *
-     * @param string $fieldName Name of field.
-     * @param string $dictName  Dictionary name (use `main` as standard).
-     * @param string $value     Dictionary value.
+     * @param string      $fieldName Name of field.
+     * @param string      $dictName  Dictionary name (use `main` as standard).
+     * @param null|string $value     Dictionary value.
      *
      * @throws FieldDictValueUnaccesibleException When it is impossible to get this field's dict value.
      * @return string
      */
-    public function grabDictFieldValue(string $fieldName, string $dictName, string $value) : string
+    public function grabDictFieldValue(string $fieldName, string $dictName, ?string $value) : string
     {
+
+        // Short track.
+        if (empty($value) === true) {
+            return '';
+        }
 
         // Lvd.
         $result = '';
@@ -332,7 +337,6 @@ abstract class Instance
         return $this->fieldsValuesHistory[$this->grabPkName()][0];
     }
 
-
     /**
      * Setter for Primary Key value.
      *
@@ -418,6 +422,23 @@ abstract class Instance
     }
 
     /**
+     * Deliver create query.
+     *
+     * @return string
+     */
+    public function createQuery() : string
+    {
+
+        // Create INSERT query.
+        $insert = $this->grabModel()->newInsert();
+
+        // Add logics.
+        $insert->setInstance($this);
+
+        return $insert->toString();
+    }
+
+    /**
      * Create record if it not exists - otherwise try to read.
      *
      * @return self
@@ -471,6 +492,26 @@ abstract class Instance
     }
 
     /**
+     * Deliver update query.
+     *
+     * @return string
+     */
+    public function updateQuery() : string
+    {
+
+        // Create UPDATE query.
+        $update = $this->grabModel()->newUpdate();
+
+        // Add logics.
+        $update->setLogicsSet([ Rule::factoryWrapped($this->grabPkName(), $this->grabPkValue()) ]);
+
+        // Add logics.
+        $update->setInstance($this);
+
+        return $update->toString();
+    }
+
+    /**
      * Save record (no matter if update or creation are needed)..
      *
      * @param boolean $onlyReturnQuery Opt., `false`. If set to true query will be sent to debug log without executing.
@@ -486,6 +527,22 @@ abstract class Instance
         }
 
         return $this->create($onlyReturnQuery);
+    }
+
+    /**
+     * Deliver create or update query.
+     *
+     * @return string
+     */
+    public function saveQuery() : string
+    {
+
+        // If this is already added in the Engine - then update.
+        if ($this->grabIsAdded() === true) {
+            return $this->updateQuery();
+        }
+
+        return $this->createQuery();
     }
 
     /**

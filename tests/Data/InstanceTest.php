@@ -166,6 +166,11 @@ final class InstanceTest extends TestCase
         $girl->create(true);
         $girl->create();
 
+        // Check if query is generated properly.
+        $query = $girl->createQuery();
+        $this->assertEquals('INSERT INTO `girls` (`pk`, `name`, `webs`) VALUES (', substr($query, 0, 51));
+        $this->assertEquals(', \'angelpolikarpova\', NULL);', substr($query, -28));
+
         // Check if PK exists for girl.
         $this->assertEquals('integer', gettype($girl->getPk()));
 
@@ -249,10 +254,10 @@ final class InstanceTest extends TestCase
         $girl->read();
 
         // Expected string.
-        $expectedString = 'pk: 1
-name: Adriana
-webs: is
-';
+        $expectedString  = 'pk: 1' . "\n";
+        $expectedString .= 'name: Adriana' . "\n";
+        $expectedString .= 'webs: is' . "\n";
+        $expectedString .= '';
 
         // Test.
         $this->assertEquals($expectedString, $girl->toString());
@@ -271,10 +276,68 @@ webs: is
         $girl->setName('test');
 
         // Expected string.
-        $expectedString = 'name: test
-';
+        $expectedString = 'name: test' . "\n";
 
         // Test.
         $this->assertEquals($expectedString, $girl->toString());
+    }
+
+    /**
+     * Test if empty dict field value will return empty string.
+     *
+     * @return void
+     */
+    public function testIfEmptyDictFieldValueWorks() : void
+    {
+
+        $girl = new Girl();
+
+        $this->assertEquals('', $girl->grabDictFieldValue('webs', 'main', $girl->getWebs()));
+    }
+
+    /**
+     * Test if delivery of create and save query works.
+     *
+     * @return void
+     */
+    public function testIfCreateQueryDeliveryWorks() : void
+    {
+
+        // Create girl.
+        $girl = new Girl();
+        $girl->setName('angelpolikarpova');
+
+        // Check if query is generated properly.
+        $query = $girl->createQuery();
+        $this->assertEquals('INSERT INTO `girls` (`pk`, `name`, `webs`) VALUES (', substr($query, 0, 51));
+        $this->assertEquals(', \'angelpolikarpova\', NULL);', substr($query, -28));
+
+        // Check if query is generated properly.
+        $query = $girl->saveQuery();
+        $this->assertEquals('INSERT INTO `girls` (`pk`, `name`, `webs`) VALUES (', substr($query, 0, 51));
+        $this->assertEquals(', \'angelpolikarpova\', NULL);', substr($query, -28));
+    }
+
+    /**
+     * Test if delivery of update and save query works
+     *
+     * @return void
+     */
+    public function testIfUpdateQueryDeliveryWorks() : void
+    {
+
+        // Create girl.
+        $girl = new Girl();
+        $girl->setPk(1);
+        $girl->read();
+        $girl->setName('Adriana2');
+
+        // Check if query is generated properly.
+        $query = $girl->updateQuery();
+        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'is\' WHERE `pk`=1;', $query);
+
+        // Check if query is generated properly.
+        $query = $girl->saveQuery();
+        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'is\' WHERE `pk`=1;', $query);
     }
 }

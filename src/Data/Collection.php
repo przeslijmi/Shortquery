@@ -42,6 +42,13 @@ abstract class Collection extends Tools
     protected $model;
 
     /**
+     * Automatic primary key value counter.
+     *
+     * @var integer
+     */
+    protected $pkAutoValue = 0;
+
+    /**
      * Constructor.
      *
      * @throws CollectionCantBeCreatedException If collection cant be created.
@@ -320,10 +327,11 @@ abstract class Collection extends Tools
      * Add one Instance to Collection.
      *
      * @param Instance|Instance[] $instanceOrInstances Instance or array of Instances to be put.
+     * @param boolean             $autoPk              Opt., false. Set to true to create autoincrement pk.
      *
      * @return self
      */
-    public function put($instanceOrInstances) : self
+    public function put($instanceOrInstances, bool $autoPk = false) : self
     {
 
         // Wrap in array.
@@ -335,6 +343,13 @@ abstract class Collection extends Tools
 
         // Add every one.
         foreach ($instances as $instance) {
+
+            // Define automatic pk value.
+            if ($autoPk === true) {
+                ++$this->pkAutoValue;
+                $instance->definePkValue($this->pkAutoValue);
+            }
+
             $this->instances[] = $instance;
         }
 

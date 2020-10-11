@@ -10,6 +10,7 @@ use Przeslijmi\Shortquery\Exceptions\Items\LogicFactoryFailedException;
 use Przeslijmi\Shortquery\Exceptions\Items\RuleFactoryFailedException;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
+use Przeslijmi\Shortquery\ForTests\Models\Girl;
 use Przeslijmi\Shortquery\ForTests\Models\Things;
 
 /**
@@ -261,6 +262,34 @@ final class CollectionTest extends TestCase
 
         $this->assertEquals(3, $girls->length());
         $this->assertEquals('testName1', $girls->getOne(0)->getName());
+    }
+
+    /**
+     * Test if putting with automatic primary key creation works.
+     *
+     * @return void
+     */
+    public function testIfPuttingToCollectionWithAutopkWorks() : void
+    {
+
+        $girls = new Girls();
+
+        $girl1 = new Girl();
+        $girl1->setName('testName1');
+        $girl1->setWebs('fb');
+
+        $girl2 = new Girl();
+        $girl2->setName('testName2');
+        $girl2->setWebs('fb');
+
+        $this->assertEquals(0, $girls->length());
+
+        $girls->put($girl1, true);
+        $girls->put($girl2, true);
+
+        $this->assertEquals(2, $girls->length());
+        $this->assertEquals(1, $girls->getOne(0)->grabPkValue());
+        $this->assertEquals(2, $girls->getOne(1)->grabPkValue());
     }
 
     /**

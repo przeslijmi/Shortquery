@@ -91,7 +91,10 @@ abstract class Tools
             if (isset($new[$key]) === true) {
                 $collections[$key]->makeContentAnalogousToArray($new[$key]);
             } else {
-                unset($collections[$key]);
+                // Mark all elements of this collection to be deleted.
+                foreach ($collections[$key]->get() as $item) {
+                    $item->defineIsToBeDeleted(true);
+                }
             }
         }
 

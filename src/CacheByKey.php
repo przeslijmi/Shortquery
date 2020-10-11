@@ -298,7 +298,7 @@ class CacheByKey
     }
 
     /**
-     * Mark that record has been already takenout - without actually getting it.
+     * Mark that record has been already taken out - without actually getting it.
      *
      * @param string|integer $keyValue Value of primary key or other field (if used).
      *
@@ -316,6 +316,26 @@ class CacheByKey
         // Mark that it was used and takenout already.
         $this->usedKeys[$keyValue]     = true;
         $this->takenOutKeys[$keyValue] = true;
+
+        return $this;
+    }
+
+    /**
+     * Mark (overwrite) that record has NOT been taken out - no matter on real situation.
+     *
+     * @param string|integer $keyValue Value of primary key or other field (if used).
+     *
+     * @return self
+     */
+    public function markNotTakenOut($keyValue) : self
+    {
+
+        if (isset($this->usedKeys[$keyValue]) === true) {
+            unset($this->usedKeys[$keyValue]);
+        }
+        if (isset($this->takenOutKeys[$keyValue]) === true) {
+            unset($this->takenOutKeys[$keyValue]);
+        }
 
         return $this;
     }

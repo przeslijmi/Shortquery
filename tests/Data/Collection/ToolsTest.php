@@ -191,7 +191,8 @@ final class ToolsTest extends TestCase
         // Tests.
         $this->assertEquals($newCars['yes'][0]['name'], $cars->getOne(0)->getName());
         $this->assertEquals($newCars['yes'][1]['name'], $cars->getOne(1)->getName());
-        $this->assertEquals(2, $cars->length());
+        $this->assertEquals(3, $cars->length());
+        $this->assertEquals(2, $cars->lengthReal());
     }
 
     /**

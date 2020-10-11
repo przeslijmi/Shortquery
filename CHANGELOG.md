@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.3.0 - 2020-10-11
+
+- New: Added `->saveQuery()`, `->createQuery()` and `->updateQuery()` for Instance class - they return query contents for all three operations.
+- New: Added auto primary key counter when adding collections - **do not use in production yet**!
+- New: Added `->markNotTakenOut()` method for `CacheByKey`.
+- Change: Multirecords insert query has now every new record in a new line.
+- Fix: Proper deletion created for `makeSplittedContentsAnalogousToArray` tool
+
 ## v1.2.2 - 2020-07-03
 
 - Change: `SelectQuery` `->readBy()` method logs warning when two records with the same key are found.
