@@ -55,6 +55,7 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
         // Get records with those pks.
         $toAdd = new <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>(...func_get_args());
         $toAdd->getLogics()->addRule('<?= $relation->getFieldTo()->getName() ?>', $pks);
+        $toAdd->getLogics()->addFromRelation($this->getModel()->getRelationByName('<?= $relation->getName() ?>'));
         $toAdd->read();
 
         // Unpack child records to existing collection of parents.

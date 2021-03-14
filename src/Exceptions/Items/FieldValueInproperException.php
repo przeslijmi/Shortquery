@@ -22,6 +22,8 @@ class FieldValueInproperException extends MethodFopException
 
         // Define.
         $this->addInfo('context', 'definingValueForField');
+        $this->addInfo('model', get_class($field->getModel()));
+        $this->addInfo('modelName', $field->getModel()->getName());
         $this->addInfo('field', get_class($field));
         $this->addInfo('fieldName', $field->getName());
         $this->addInfo('value', (string) $value);

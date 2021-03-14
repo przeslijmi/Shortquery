@@ -458,11 +458,12 @@ class SelectQuery extends Query
     /**
      * Read records into simple array using `$field` as a key to this array.
      *
-     * @param string $field Name of field to be used as a key.
+     * @param string  $field  Name of field to be used as a key.
+     * @param boolean $silent Optional, false. Set to true to ignore errors.
      *
      * @return array
      */
-    public function readBy(string $field) : array
+    public function readBy(string $field, bool $silent = false) : array
     {
 
         // Lvd.
@@ -475,7 +476,7 @@ class SelectQuery extends Query
         while (( $record = $result->fetch_assoc() ) !== null) {
 
             // Fire warning if there are duplicates.
-            if (isset($array[$record[$field]]) === true) {
+            if ($silent === false && isset($array[$record[$field]]) === true) {
 
                 // Lvd.
                 $warning  = 'Query ' . $this->toString() . ' is read by field `' . $field . '` but there is a ';

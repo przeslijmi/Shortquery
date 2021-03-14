@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.0 - 2021-03-14
+
+- New: Added param `multipleResults` (default `true`) to `getGroupedByField` in `Collection`.
+- Change: `FieldValueInproperException` returns `model` and `modelName` infos.
+- Fix: Small bugs in `CacheByKey`.
+- Fix: `CollectionCore` error.
+- Temp: Logging turned off for `Select` queries.
+
 ## v1.3.0 - 2020-10-11
 
 - New: Added `->saveQuery()`, `->createQuery()` and `->updateQuery()` for Instance class - they return query contents for all three operations.

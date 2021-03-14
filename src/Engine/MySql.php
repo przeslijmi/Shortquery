@@ -53,7 +53,7 @@ abstract class MySql extends Engine implements EngineInterface
 
         // Log.
         if (substr(trim($query), 0, 6) !== 'SELECT') {
-            Log::get()->notice($query);
+            // Log::get()->notice($query);
         }
 
         // Call query.
@@ -102,7 +102,7 @@ abstract class MySql extends Engine implements EngineInterface
         }
 
         // Log.
-        Log::get()->notice($query);
+        // Log::get()->notice($query);
 
         // Call query.
         $result = $mysqli->query($query);
@@ -148,7 +148,7 @@ abstract class MySql extends Engine implements EngineInterface
         }
 
         // Log.
-        Log::get()->notice($query);
+        // Log::get()->notice($query);
 
         // Check connection.
         try {

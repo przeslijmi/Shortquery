@@ -144,7 +144,7 @@ class CacheByKey
         }
 
         // Download data.
-        $this->data = $this->select->readBy($fieldName);
+        $this->data = $this->select->readBy($fieldName, true);
 
         // Download data for children.
         foreach ($this->children as $relationName => $relationInfo) {

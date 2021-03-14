@@ -257,11 +257,15 @@ abstract class Collection extends Tools
      *
      * @param string  $fieldOrGetterName Name of the field or getter.
      * @param boolean $isThisGetter      Optional, false. Set to true if 0nd param is getter already.
+     * @param boolean $multipleResults   Optional, true. Set to false to have only one result per field value.
      *
      * @return Instances[]
      */
-    public function getGroupedByField(string $fieldOrGetterName, bool $isThisGetter = false) : array
-    {
+    public function getGroupedByField(
+        string $fieldOrGetterName,
+        bool $isThisGetter = false,
+        bool $multipleResults = true
+    ) : array {
 
         // Lvd.
         $result = [];
@@ -280,12 +284,16 @@ abstract class Collection extends Tools
             $groupingString = $instance->$getterMethodName();
 
             // Create result for this grouping string.
-            if (isset($result[$groupingString]) === false) {
+            if ($multipleResults === true && isset($result[$groupingString]) === false) {
                 $result[$groupingString] = [];
             }
 
-            // Add id to result.
-            $result[$groupingString][] = $instance;
+            // Add it to result.
+            if ($multipleResults === true) {
+                $result[$groupingString][] = $instance;
+            } else {
+                $result[$groupingString] = $instance;
+            }
         }
 
         return $result;
