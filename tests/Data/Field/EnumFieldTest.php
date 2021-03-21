@@ -4,6 +4,7 @@ namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Data\Field\EnumField;
+use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDictDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDictValueDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
@@ -59,6 +60,7 @@ final class EnumFieldTest extends TestCase
 
         // Create Field.
         $field = new EnumField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setValues('one', 'two', 'three');
         $field->getDict('nonexisting_dict');
     }
@@ -75,6 +77,7 @@ final class EnumFieldTest extends TestCase
 
         // Create Field.
         $field = new EnumField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setValues('one', 'two', 'three');
         $field->getDictValue('nonexistingKey', 'main');
     }
@@ -91,6 +94,7 @@ final class EnumFieldTest extends TestCase
 
         // Create Field.
         $field = new EnumField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setValues('one', 'two', 'three');
 
         // Test.

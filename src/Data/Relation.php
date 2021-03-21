@@ -131,7 +131,7 @@ abstract class Relation
         try {
             RegEx::ifMatches($name, '/^([a-zA-Z_])+([a-zA-Z0-9_])*$/');
         } catch (Throwable $thr) {
-            throw new RelationNameWrosynException($name, $this, $thr);
+            throw new RelationNameWrosynException([ get_class($this), $name], 0, $thr);
         }
 
         $this->name = $name;
@@ -181,14 +181,14 @@ abstract class Relation
 
         // Check if exists.
         if ($this->modelFrom === null) {
-            throw new RelationModelFromDonoexException($this);
+            throw new RelationModelFromDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         // Try to create instance.
         try {
             $instance = $this->modelFrom::getInstance();
         } catch (Throwable $thr) {
-            throw new RelationModelFromIsCorrupted($this, $thr);
+            throw new RelationModelFromIsCorrupted([ $this->getName(), get_class($this)], 0, $thr);
         }
 
         return $instance;
@@ -205,7 +205,7 @@ abstract class Relation
 
         // Check if exists.
         if ($this->modelFrom === null) {
-            throw new RelationModelFromDonoexException($this);
+            throw new RelationModelFromDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->modelFrom;
@@ -242,14 +242,14 @@ abstract class Relation
 
         // Check if exists.
         if ($this->modelTo === null) {
-            throw new RelationModelToDonoexException($this);
+            throw new RelationModelToDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         // Try to create instance.
         try {
             $instance = $this->modelTo::getInstance();
         } catch (Throwable $thr) {
-            throw new RelationModelToIsCorrupted($this, $thr);
+            throw new RelationModelToIsCorrupted([ $this->getName(), get_class($this) ], 0, $thr);
         }
 
         return $instance;
@@ -266,7 +266,7 @@ abstract class Relation
 
         // Check if exists.
         if ($this->modelTo === null) {
-            throw new RelationModelToDonoexException($this);
+            throw new RelationModelToDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->modelTo;
@@ -319,14 +319,14 @@ abstract class Relation
 
         // Check if exists.
         if ($this->fieldFrom === null) {
-            throw new RelationFieldFromDonoexException($this);
+            throw new RelationFieldFromDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         // Try to create field.
         try {
             $field = $this->getModelFrom()->getFieldByName($this->fieldFrom);
         } catch (Throwable $thr) {
-            throw new RelationFieldFromIsCorrupted($this, $thr);
+            throw new RelationFieldFromIsCorrupted([ $this->getName(), get_class($this) ], 0, $thr);
         }
 
         return $field;
@@ -343,7 +343,7 @@ abstract class Relation
 
         // Check if exists.
         if ($this->fieldFrom === null) {
-            throw new RelationFieldFromDonoexException($this);
+            throw new RelationFieldFromDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->fieldFrom;
@@ -379,14 +379,14 @@ abstract class Relation
 
         // Check if exists.
         if ($this->fieldTo === null) {
-            throw new RelationFieldToDonoexException($this);
+            throw new RelationFieldToDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         // Try to create field.
         try {
             $field = $this->getModelTo()->getFieldByName($this->fieldTo);
         } catch (Throwable $thr) {
-            throw new RelationFieldToIsCorrupted($this, $thr);
+            throw new RelationFieldToIsCorrupted([ $this->getName(), get_class($this) ], 0, $thr);
         }
 
         return $field;
@@ -403,7 +403,7 @@ abstract class Relation
 
         // Check if exists.
         if ($this->fieldTo === null) {
-            throw new RelationFieldToDonoexException($this);
+            throw new RelationFieldToDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->fieldTo;
@@ -504,7 +504,7 @@ abstract class Relation
         try {
             $logicItem = Rule::factoryWrapped(...func_get_args());
         } catch (Throwable $thr) {
-            throw new RelationFailedToCreateRule(func_get_args(), $this);
+            throw new RelationFailedToCreateRule([ $this->getName(), get_class($this) ]);
         }
 
         $this->addLogic($logicItem);

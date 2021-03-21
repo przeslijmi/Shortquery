@@ -2,31 +2,18 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Data;
 
-use Throwable;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
  * There were problems with reading Collection.
  */
-class CollectionCantBeReadException extends ClassFopException
+class CollectionCantBeReadException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $className For which Collection problem occurs.
-     * @param null|Throwable $cause     Throwable that caused problem.
+     * @var string
      */
-    public function __construct(string $className, ?Throwable $cause = null)
-    {
-
-        // Define.
-        $this->addInfo('className', $className);
-        $this->addInfo('context', 'ShortqueryCreatingCollection');
-        $this->addInfo('hint', 'There was an error during creation of Collection. See causes.');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    protected $hint = 'There was an error during creation of Collection. See causes.';
 }

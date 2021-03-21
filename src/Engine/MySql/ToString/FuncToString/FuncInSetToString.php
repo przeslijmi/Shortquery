@@ -16,30 +16,21 @@ class FuncInSetToString extends FuncToStringParent
     protected $onlyForCompMethods = [ 'eq', 'neq' ];
 
     /**
-     * Converts func IN SET to string.
+     * Converts func `FIND_IN_SET` to string.
      *
      * @return string
      */
     public function toString() : string
     {
 
-        $negation = '';
-
-        $this->makeCompSilent();
         $this->throwIfItemsCountNotEquals(2);
         $this->throwIfCompMethodIsInappropriate();
-
-        if ($this->func->isRuleAParent() === true) {
-            if ($this->func->getRuleParent()->getComp()->getMethod() === 'neq') {
-                $negation = ' NOT';
-            }
-        }
 
         $result  = ' FIND_IN_SET( ';
         $result .= $this->itemToString($this->func->getItem(0));
         $result .= ', ';
         $result .= $this->itemToString($this->func->getItem(1));
-        $result .= ') IS ' . $negation . ' ';
+        $result .= ' )';
 
         return trim($result) . ' ';
     }

@@ -2,10 +2,10 @@
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
-use Przeslijmi\Sexceptions\Sexception;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncNameOtosetException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringFopException;
 use Przeslijmi\Shortquery\Items\Func;
+use Throwable;
 
 /**
  * Converts Func element into string.
@@ -75,8 +75,8 @@ class FuncToString
     /**
      * Converts to string.
      *
-     * @throws ParamOtosetException On functionName when given function name is not present.
-     * @throws MethodFopException When sth went wrong on converting Func toString.
+     * @throws FuncNameOtosetException When given function name is not present.
+     * @throws FuncToStringFopException When sth went wrong on converting Func toString.
      * @return string
      */
     public function toString() : string
@@ -85,11 +85,10 @@ class FuncToString
         try {
 
             if (isset(self::SERVED_FUNCS[$this->func->getName()]) === false) {
-                throw new ParamOtosetException(
-                    'functionName',
-                    self::SERVED_FUNCS,
-                    $this->func->getName()
-                );
+                throw new FuncNameOtosetException([
+                    implode(', ', self::SERVED_FUNCS),
+                    $this->func->getName(),
+                ]);
             }
 
             $childClassName = self::SERVED_FUNCS[$this->func->getName()];
@@ -100,9 +99,8 @@ class FuncToString
                 $result .= ' AS `' . $this->func->getAlias() . '`';
             }
 
-        } catch (Sexception $e) {
-            throw ( new MethodFopException('toString', $e) )
-                ->addInfo('funcName', $this->func->getName());
+        } catch (Throwable $thr) {
+            throw new FuncToStringFopException([ $this->func->getName() ], 0, $thr);
         }//end try
 
         return $result;

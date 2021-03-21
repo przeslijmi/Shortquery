@@ -256,7 +256,7 @@ final class InstanceTest extends TestCase
         // Expected string.
         $expectedString  = 'pk: 1' . "\n";
         $expectedString .= 'name: Adriana' . "\n";
-        $expectedString .= 'webs: is' . "\n";
+        $expectedString .= 'webs: sc,is' . "\n";
         $expectedString .= '';
 
         // Test.
@@ -334,10 +334,10 @@ final class InstanceTest extends TestCase
 
         // Check if query is generated properly.
         $query = $girl->updateQuery();
-        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'is\' WHERE `pk`=1;', $query);
+        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'sc,is\' WHERE `pk`=1;', $query);
 
         // Check if query is generated properly.
         $query = $girl->saveQuery();
-        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'is\' WHERE `pk`=1;', $query);
+        $this->assertEquals('UPDATE `girls` SET `name`=\'Adriana2\', `webs`=\'sc,is\' WHERE `pk`=1;', $query);
     }
 }

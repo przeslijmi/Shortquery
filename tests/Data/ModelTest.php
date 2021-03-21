@@ -3,12 +3,12 @@
 namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 use Przeslijmi\Shortquery\Data\Field\IntField;
 use Przeslijmi\Shortquery\Data\Field\VarCharField;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Data\Relation\HasManyRelation;
 use Przeslijmi\Shortquery\Data\Relation\HasOneRelation;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionUnknownNameGetterException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelDatabaseDonoexException;
@@ -359,7 +359,7 @@ final class ModelTest extends TestCase
     public function testIfAskingForWrongClassNameThrows() : void
     {
 
-        $this->expectException(ParamOtosetException::class);
+        $this->expectException(CollectionUnknownNameGetterException::class);
 
         // Create Model without collection class name and ask for it.
         $model = new Model();

@@ -2,9 +2,9 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\CacheByKey;
+use Przeslijmi\Shortquery\Exceptions\CacheByKey\CacheElementMissingException;
 use Przeslijmi\Shortquery\Exceptions\Data\RecordAlreadyTakenOutFromCacheByKey;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 use stdClass;
@@ -141,7 +141,7 @@ final class CacheByKeyTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(Exception::class);
+        $this->expectException(CacheElementMissingException::class);
 
         // Create cache.
         $cache = new CacheByKey('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel');

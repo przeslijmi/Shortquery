@@ -2,36 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Throwable;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Relation;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * FieldTo in Relation is corrupted - can not be created (instantiated).
+ * Relation has FieldTo defined but when tries to instantiate it ... fails. See causes.
  */
-class RelationFieldToIsCorrupted extends ClassFopException
+class RelationFieldToIsCorrupted extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Relation       $relation Relation that has the problem.
-     * @param null|Throwable $cause    Throwable that caused the problem.
+     * @var string
      */
-    public function __construct(Relation $relation, ?Throwable $cause = null)
-    {
+    protected $hint = 'Relation has FieldTo defined but when tries to instantiate it ... fails. See causes.';
 
-        // Lvd.
-        $hint = 'Relation has FieldTo defined but when tries to instantiate it ... fails. See causes.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningRelation');
-        $this->addInfo('relationName', $relation->getName());
-        $this->addInfo('relationClass', get_class($relation));
-        $this->addHint($hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'relationName',
+        'relationClass',
+    ];
 }

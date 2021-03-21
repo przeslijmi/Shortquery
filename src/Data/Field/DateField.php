@@ -64,7 +64,21 @@ class DateField extends Field implements FieldInterface
 
         // Throws.
         if ($throws === true) {
-            throw new FieldValueInproperException($value, $this);
+
+            // Prepare info.
+            $info = [
+                $this->getProperValueHint(),
+                get_class($this),
+                $this->getName(),
+                (string) $value,
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldValueInproperException($info);
         }
 
         return false;

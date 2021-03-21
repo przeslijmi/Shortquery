@@ -2,34 +2,29 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Throwable;
-use Przeslijmi\Sexceptions\Exceptions\FopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Was trying to create SELECT, UPDATE, INSERT or DELETE query but it failed.
+ * Tryed to crete query type for model, but failed. See cause.
  */
-class ModelQueryCreationFailedException extends FopException
+class ModelQueryCreationFailedException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model          $model     Model that has the problem.
-     * @param string         $queryType Query type (SELECT, UPDATE, INSERT, DELETE).
-     * @param null|Throwable $cause     Throwable that caused the problem.
+     * @var string
      */
-    public function __construct(Model $model, string $queryType, ?Throwable $cause = null)
-    {
+    protected $hint = 'Tryed to crete query type for model, but failed. See cause.';
 
-        $this->addInfo('context', 'CreatingModelQuery');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('queryType', $queryType);
-        $this->addInfo('hint', 'Tryed to crete >>' . $queryType . '<< for model, but failed. See cause.');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+        'queryType',
+    ];
 }

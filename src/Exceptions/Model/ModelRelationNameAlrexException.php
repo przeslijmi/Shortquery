@@ -2,33 +2,32 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model Relation name already exists - name's are duplicated.
+ * You\'re trying to add next Relation to the model - but the name is already taken by another Relation
+ * in this Model. Model can\'t have two or more Relations with the same name.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class ModelRelationNameAlrexException extends ClassFopException
+class ModelRelationNameAlrexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string $relationName Name of the field that duplicates.
-     * @param Model  $model        Model that has the problem.
+     * @var string
      */
-    public function __construct(string $relationName, Model $model)
-    {
+    protected $hint = 'You\'re trying to add next Relation to the model - but the name is already taken by another Relation in this Model. Model can\'t have two or more Relations with the same name.';
 
-        // Lvd.
-        $hint  = 'You\'re trying to add next Relation to the model - but the name is already taken';
-        $hint .= 'by another Relation in this Model. Model can\'t have two or more Relations with the same name.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('relationName', $relationName);
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+        'relationName',
+    ];
 }

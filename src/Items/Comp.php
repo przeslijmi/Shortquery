@@ -2,9 +2,11 @@
 
 namespace Przeslijmi\Shortquery\Items;
 
-use Przeslijmi\Shortquery\Shoq;
+use Throwable;
+use Przeslijmi\Shortquery\Exceptions\Items\CompCreationFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\CompMethodOtosetException;
 use Przeslijmi\Shortquery\Items\Rule;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
+use Przeslijmi\Shortquery\Shoq;
 
 /**
  * Comparison method between two ContentItems (eg. field and value).
@@ -49,12 +51,18 @@ class Comp extends AnyItem
      *
      * @param string $method Method of comparison (eg. eq, noq, gt, etc.).
      *
-     * @throws ParamOtosetException When given comp. method does not exists.
+     * @throws CompCreationFopException When creation of Comp has failed.
      */
     public function __construct(string $method)
     {
 
-        $this->setMethod($method);
+        try {
+
+            $this->setMethod($method);
+
+        } catch (Throwable $thr) {
+            throw new CompCreationFopException([], 0, $thr);
+        }
     }
 
     /**
@@ -73,7 +81,7 @@ class Comp extends AnyItem
      *
      * @param string $method Method name (eg. `eq`, `neq`).
      *
-     * @throws ParamOtosetException If this comparison method does not exists.
+     * @throws CompMethodOtosetException If this comparison method does not exists.
      * @return self
      */
     public function setMethod(string $method) : self
@@ -81,7 +89,10 @@ class Comp extends AnyItem
 
         // Check.
         if (in_array($method, Shoq::COMPARISON_METHODS) === false) {
-            throw new ParamOtosetException('compareMethod', Shoq::COMPARISON_METHODS, $method);
+            throw new CompMethodOtosetException([
+                implode(', ', Shoq::COMPARISON_METHODS),
+                $method,
+            ]);
         }
 
         // Save.

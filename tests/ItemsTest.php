@@ -3,10 +3,11 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Sexceptions\Exceptions\TemporaryException;
+use Przeslijmi\Shortquery\Exceptions\Items\CompCreationFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncItemOtosetException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncWrongComponentsException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicWrongComponentsException;
+use Przeslijmi\Shortquery\Exceptions\Items\RuleCreationFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
 use Przeslijmi\Shortquery\Items\Comp;
 use Przeslijmi\Shortquery\Items\ContentItem;
@@ -59,7 +60,7 @@ final class ItemsTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(ParamOtosetException::class);
+        $this->expectException(CompCreationFopException::class);
 
         // Test.
         $item = new Comp('nonexisting_mehtod');
@@ -179,7 +180,7 @@ final class ItemsTest extends TestCase
         $this->assertTrue(is_a($item->getItem(4), Val::class));
 
         // Prepare for throwing.
-        $this->expectException(ParamOtosetException::class);
+        $this->expectException(FuncItemOtosetException::class);
         $item->getItem(5);
     }
 
@@ -192,7 +193,7 @@ final class ItemsTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(ParamWrotypeException::class);
+        $this->expectException(FuncWrongComponentsException::class);
 
         // Test.
         new Func('funcName', [ 'funcVal' ]);
@@ -286,7 +287,7 @@ final class ItemsTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(TemporaryException::class);
+        $this->expectException(LogicWrongComponentsException::class);
 
         // Test.
         LogicItem::factory(true);
@@ -355,7 +356,7 @@ final class ItemsTest extends TestCase
         $true = new TrueVal();
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(RuleCreationFopException::class);
 
         // Create.
         Rule::factory($true, 'error', $true);

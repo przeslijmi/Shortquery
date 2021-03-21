@@ -2,31 +2,32 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Items;
 
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Shortquery\Data\Field;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Value for given Field is not proper.
+ * Given value for Field is inproper.
  */
-class FieldValueInproperException extends MethodFopException
+class FieldValueInproperException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param mixed $value Contents of value.
-     * @param Field $field Field that have a problem.
+     * @var string
      */
-    public function __construct($value, Field $field)
-    {
+    protected $hint = 'Given value for Field is inproper.';
 
-        // Define.
-        $this->addInfo('context', 'definingValueForField');
-        $this->addInfo('model', get_class($field->getModel()));
-        $this->addInfo('modelName', $field->getModel()->getName());
-        $this->addInfo('field', get_class($field));
-        $this->addInfo('fieldName', $field->getName());
-        $this->addInfo('value', (string) $value);
-        $this->addHint('Given value for Field is inproper. ' . $field->getProperValueHint());
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'warning',
+        'field',
+        'fieldName',
+        'value',
+        'model',
+        'modelName',
+    ];
 }

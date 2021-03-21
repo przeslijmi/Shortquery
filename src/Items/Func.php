@@ -2,9 +2,10 @@
 
 namespace Przeslijmi\Shortquery\Items;
 
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncItemOtosetException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncWrongComponentsException;
+use Przeslijmi\Shortquery\Items\ContentItem;
 use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
@@ -64,15 +65,18 @@ class Func extends ContentItem
      * @param string $name  Name of the function.
      * @param array  $items Parameters.
      *
-     * @throws ParamWrotypeException When not every given item is a ContentItem.
+     * @throws FuncWrongComponentsException When not every given item is a ContentItem.
      */
     public function __construct(string $name, array $items)
     {
 
         try {
             TypeHinting::isArrayOf($items, 'Przeslijmi\Shortquery\Items\ContentItem');
-        } catch (TypeHintingFailException $e) {
-            throw new ParamWrotypeException('items', 'ContentItem[]', $e->getIsInFact());
+        } catch (TypeHintingFailException $sexc) {
+            throw new FuncWrongComponentsException([
+                'Przeslijmi\Shortquery\Items\ContentItem[]',
+                $sexc->getIsInFact(),
+            ], 0, $sexc);
         }
 
         $this->name  = strtolower($name);
@@ -121,15 +125,17 @@ class Func extends ContentItem
      *
      * @param integer $itemId Id of needed item (starting with 0 [zero]).
      *
-     * @throws ParamOtosetException When no parameter at given id is present.
+     * @throws FuncItemOtosetException When no parameter at given id is present.
      * @return ContentItem
      */
     public function getItem(int $itemId) : ContentItem
     {
 
         if (isset($this->items[$itemId]) === false) {
-            throw (new ParamOtosetException('itemId', array_keys($this->items), (string) $itemId))
-                ->addInfo('funcName', $this->name);
+            throw new FuncItemOtosetException([
+                implode(', ', array_keys($this->items)),
+                (string) $itemId,
+            ]);
         }
 
         return $this->items[$itemId];

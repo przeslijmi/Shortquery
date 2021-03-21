@@ -2,9 +2,9 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceConstructionFopException;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceCreationWrongParamException;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
 use Przeslijmi\Shortquery\Tools\InstancesFactory;
 
@@ -23,7 +23,7 @@ final class InstancesFactoryTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(Exception::class);
+        $this->expectException(InstanceCreationWrongParamException::class);
 
         // Test.
         InstancesFactory::fromArray(true, []);
@@ -38,7 +38,7 @@ final class InstancesFactoryTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(InstanceConstructionFopException::class);
 
         // Test.
         InstancesFactory::fromArray('NonexistingClass', []);
@@ -53,7 +53,7 @@ final class InstancesFactoryTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(InstanceConstructionFopException::class);
 
         // Test.
         InstancesFactory::fromArray(Girls::class, [ 5, 5, 5 ]);
@@ -68,9 +68,9 @@ final class InstancesFactoryTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(InstanceConstructionFopException::class);
 
         // Test.
-        InstancesFactory::fromArray(MethodFopException::class, [ 'pk' => '1' ]);
+        InstancesFactory::fromArray(InstanceConstructionFopException::class, [ 'pk' => '1' ]);
     }
 }

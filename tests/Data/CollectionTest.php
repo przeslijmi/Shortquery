@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeCreatedException;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionSliceNotPossibleException;
 use Przeslijmi\Shortquery\Exceptions\Data\CollectionCantBeReadException;
-use Przeslijmi\Shortquery\Exceptions\Items\LogicFactoryFailedException;
-use Przeslijmi\Shortquery\Exceptions\Items\RuleFactoryFailedException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicCreationFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\RuleCreationFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Girls;
 use Przeslijmi\Shortquery\ForTests\Models\Girl;
@@ -35,13 +35,22 @@ final class CollectionTest extends TestCase
         $this->assertEquals(12, count($girls->get()));
         $this->assertEquals(12, $girls->length());
         $this->assertEquals(13, count($girls->count([ 'name' ])));
-        $this->assertEquals(12, count($girls->getGroupedByField('name')));
-        $this->assertEquals(12, count($girls->getGroupedByField('getName', true)));
         $this->assertEquals(1, count($girls->get(0, 1)));
         $this->assertInstanceOf('Przeslijmi\Shortquery\ForTests\Models\Girl', $girls->getOne());
         $this->assertInstanceOf('Przeslijmi\Shortquery\ForTests\Models\Girl', $girls->getByPk(1));
         $this->assertEquals('Adriana', $girls->getValuesByField('name')[0]);
         $this->assertEquals('Adriana', $girls->getValuesByField('getName', true)[0]);
+
+        // Tests for getGroupedByField - first two are for multiple results, last one is not.
+        // But because names are unique - result is identical.
+        $this->assertEquals(12, count($girls->getGroupedByField('name')));
+        $this->assertEquals(12, count($girls->getGroupedByField('getName', true)));
+        $this->assertEquals(12, count($girls->getGroupedByField('name', false, false)));
+
+        // Test if first records are identcal - both ways.
+        $multipleMethod    = $girls->getGroupedByField('name')['Adriana'][0];
+        $nonMultipleMethod = $girls->getGroupedByField('name', false, false)['Adriana'];
+        $this->assertEquals($multipleMethod, $nonMultipleMethod);
     }
 
     /**
@@ -184,7 +193,7 @@ final class CollectionTest extends TestCase
     public function testIfCreatingWrongRuleThrows1() : void
     {
 
-        $this->expectException(RuleFactoryFailedException::class);
+        $this->expectException(RuleCreationFopException::class);
 
         // Create new Collection and call it to be read.
         $girls = new Girls();
@@ -199,7 +208,7 @@ final class CollectionTest extends TestCase
     public function testIfCreatingWrongRuleThrows2() : void
     {
 
-        $this->expectException(RuleFactoryFailedException::class);
+        $this->expectException(LogicCreationFopException::class);
 
         // Create new Collection and call it to be read.
         $girls = new Girls();
@@ -228,7 +237,7 @@ final class CollectionTest extends TestCase
     public function testIfCreatingWrongLogicThrows() : void
     {
 
-        $this->expectException(LogicFactoryFailedException::class);
+        $this->expectException(LogicCreationFopException::class);
 
         // Create new Collection and call it to be read.
         $girls = new Girls();

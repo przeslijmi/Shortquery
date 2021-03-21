@@ -109,7 +109,7 @@ abstract class Instance
             $getter = $this->grabField($fieldName)->getGetterName();
             $result = $this->$getter();
         } catch (Throwable $thr) {
-            throw new FieldValueUnaccesibleException($fieldName, $this, $thr);
+            throw new FieldValueUnaccesibleException([ get_class($this), $fieldName ], 0, $thr);
         }
 
         return $result;
@@ -140,7 +140,11 @@ abstract class Instance
         try {
             $result = $this->grabField($fieldName)->getDictValue($value, $dictName);
         } catch (Throwable $thr) {
-            throw new FieldDictValueUnaccesibleException($fieldName, $dictName, $value, $this, $thr);
+            throw new FieldDictValueUnaccesibleException(
+                [ get_class($this), $fieldName, $dictName, $value ],
+                0,
+                $thr
+            );
         }
 
         return $result;
@@ -182,7 +186,11 @@ abstract class Instance
             // Impolode.
             $result = implode(',', $results);
         } catch (Throwable $thr) {
-            throw new FieldDictValueUnaccesibleException($fieldName, $dictName, $value, $this, $thr);
+            throw new FieldDictValueUnaccesibleException(
+                [ get_class($this), $fieldName, $dictName, $value ],
+                0,
+                $thr
+            );
         }
 
         return $result;

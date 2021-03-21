@@ -61,8 +61,8 @@ abstract class Collection extends Tools
             $this->getLogics()->add(...LogicItem::factory(...func_get_args()));
         } catch (Throwable $thr) {
             throw new CollectionCantBeCreatedException(
-                get_class($this),
-                func_get_args(),
+                [ get_class($this), var_export(func_get_args(), true) ],
+                0,
                 $thr
             );
         }
@@ -128,7 +128,9 @@ abstract class Collection extends Tools
 
             // If this is not possible - throw.
             if (count($this->instances) < $minLength) {
-                throw new CollectionSliceNotPossibleException($this, $sliceFrom, $sliceLength);
+                throw new CollectionSliceNotPossibleException(
+                    [ $this->getModel()->getName(), $sliceFrom, $sliceLength ]
+                );
             }
 
             // If this is possible - return slice.
@@ -553,7 +555,7 @@ abstract class Collection extends Tools
             $select->readIntoCollection($this);
 
         } catch (Throwable $thr) {
-            throw new CollectionCantBeReadException(get_class($this), $thr);
+            throw new CollectionCantBeReadException([ get_class($this) ], 0, $thr);
         }//end try
 
         return $this;

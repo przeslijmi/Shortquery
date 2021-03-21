@@ -2,13 +2,10 @@
 
 namespace Przeslijmi\Shortquery\Items;
 
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
-use Przeslijmi\Sexceptions\Exceptions\TemporaryException;
-use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Shortquery\Data\Collection;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicWrongComponentsException;
 use Przeslijmi\Shortquery\Items\LogicAnd;
 use Przeslijmi\Shortquery\Items\Rule;
-use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
  * Abstract parent class for LogicOr and LogicAnd objects.
@@ -19,7 +16,7 @@ abstract class LogicItem extends AnyItem
     /**
      * Creates logic item collection in array.
      *
-     * @throws TemporaryException When sth will go wrong.
+     * @throws LogicWrongComponentsException When wrong components are sent to usage.
      * @return array
      */
     public static function factory() : array
@@ -42,7 +39,9 @@ abstract class LogicItem extends AnyItem
             } elseif (is_a($args[$id], 'Przeslijmi\Shortquery\Items\LogicItem') === true) {
                 $logics[] = $args[$id];
             } else {
-                throw new TemporaryException('Creation of rules and logics failed...');
+                throw new LogicWrongComponentsException([
+                    'Przeslijmi\Shortquery\Items\Rule, Przeslijmi\Shortquery\Items\LogicItem',
+                ]);
             }
         }
 
@@ -69,8 +68,6 @@ abstract class LogicItem extends AnyItem
 
     /**
      * Constructor.
-     *
-     * @throws ParamWrotypeException On creationOfLogicItemFromWrongElements.
      */
     public function __construct()
     {

@@ -79,12 +79,16 @@ class DecimalField extends Field implements FieldInterface
 
         // On too low.
         if ($maxLength < 1) {
-            throw new FieldDefinitionWrosynException('Max lenght can not be lower than 1.', $this);
+            throw new FieldDefinitionWrosynException(
+                [ 'Max lenght can not be lower than 1.', get_class($this), $this->getName() ]
+            );
         }
 
         // On too high.
         if ($maxLength > 21) {
-            throw new FieldDefinitionWrosynException('Max lenght can not be greater than 21.', $this);
+            throw new FieldDefinitionWrosynException(
+                [ 'Max lenght can not be greater than 21.', get_class($this), $this->getName() ]
+            );
         }
 
         // Save.
@@ -106,7 +110,9 @@ class DecimalField extends Field implements FieldInterface
 
         // On too low.
         if ($fractionDigits < 1) {
-            throw new FieldDefinitionWrosynException('Number of fraction digits can not be lower than 1.', $this);
+            throw new FieldDefinitionWrosynException(
+                [ 'Number of fraction digits can not be lower than 1.', get_class($this), $this->getName() ]
+            );
         }
 
         // On too high.
@@ -116,7 +122,7 @@ class DecimalField extends Field implements FieldInterface
             $info  = 'Number of fraction digits have to be included in max length of field ';
             $info .= '(eg. 4.5331 is number with max lenght 5, and 4 fraction digits.';
 
-            throw new FieldDefinitionWrosynException($info, $this);
+            throw new FieldDefinitionWrosynException([ $info, get_class($this), $this->getName() ]);
         }
 
         // Save.
@@ -186,7 +192,21 @@ class DecimalField extends Field implements FieldInterface
 
         // Throw.
         if ($result === false && $throws === true) {
-            throw new FieldValueInproperException($value, $this);
+
+            // Prepare info.
+            $info = [
+                $this->getProperValueHint(),
+                get_class($this),
+                $this->getName(),
+                (string) $value,
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldValueInproperException($info);
         }
 
         return $result;

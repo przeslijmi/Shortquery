@@ -2,30 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Relation;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
  * There is no ModelTo in this Model.
  */
-class RelationModelToDonoexException extends ClassFopException
+class RelationModelToDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Relation $relation Relation that has the problem.
+     * @var string
      */
-    public function __construct(Relation $relation)
-    {
+    protected $hint = 'Relation has no defined model from. Use `$relation->setModelTo()`.';
 
-        // Lvd.
-        $hint = 'Relation has no defined model from. Use `$relation->setModelTo()`.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningRelation');
-        $this->addInfo('relationName', $relation->getName());
-        $this->addInfo('relationClass', get_class($relation));
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'relationName',
+        'relationClass',
+    ];
 }

@@ -2,37 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Relation;
-use Throwable;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Relation has wrong name.
+ * Given name of Relation is not proper. See causes.
  */
-class RelationNameWrosynException extends ClassFopException
+class RelationNameWrosynException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $name  Given wrong name.
-     * @param Relation       $model Relation that has the problem.
-     * @param null|Throwable $cause Throwable that caused the problem.
+     * @var string
      */
-    public function __construct(string $name, Relation $model, ?Throwable $cause = null)
-    {
+    protected $hint = 'Given name of Relation is not proper. See causes.';
 
-        // Lvd.
-        $hint = 'Given name of Relation is not proper. See causes.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('givenName', $name);
-        $this->addHint($hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+        'givenName',
+    ];
 }

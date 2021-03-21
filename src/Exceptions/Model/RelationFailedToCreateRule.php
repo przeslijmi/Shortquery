@@ -2,34 +2,31 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Relation;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Relation asked to create Rule but this Rule failed to be created.
+ * Relation was created with call to create Rule. But Rule Factory failed its operation - given settings
+ * for Rule were inproper. See causes.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class RelationFailedToCreateRule extends ClassFopException
+class RelationFailedToCreateRule extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param array    $params   What was the params sent to constructor.
-     * @param Relation $relation Relation which suffers the problem.
+     * @var string
      */
-    public function __construct(array $params, Relation $relation)
-    {
+    protected $hint = 'Relation was created with call to create Rule. But Rule Factory failed its operation - given settings for Rule were inproper. See causes.';
 
-        // Lvd.
-        $hint  = 'Relation was created with call to create Rule. But Rule Factory ';
-        $hint .= 'failed its operation - given settings for Rule were inproper. See causes.';
-
-        // Define.
-        if (count($params) > 0) {
-            $this->addInfo('params', var_export($params, true));
-        }
-        $this->addInfo('relationName', $relation->getName());
-        $this->addInfo('relationClass', get_class($relation));
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'relationName',
+        'relationClass',
+    ];
 }

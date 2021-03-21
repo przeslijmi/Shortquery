@@ -2,16 +2,17 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\FieldToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\IntValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\NullValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\TrueValToString;
-use Przeslijmi\Shortquery\Engine\MySql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValToString;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringInappropriateCompMethodException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringItemsNotEqualException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringItemsToFewException;
 use Przeslijmi\Shortquery\Items\ContentItem;
 use Przeslijmi\Shortquery\Items\Func;
 
@@ -60,16 +61,18 @@ class FuncToStringParent
      *
      * @param integer $properCount Proper (and only proper) number of parameters for given func.
      *
-     * @throws MethodFopException On convertingFuncToString.
+     * @throws FuncToStringItemsNotEqualException When func parameter count is not equal to desired one.
      * @return void
      */
     protected function throwIfItemsCountNotEquals(int $properCount) : void
     {
 
         if ($this->func->countItems() !== $properCount) {
-            throw (new MethodFopException('convertingFuncToString'))
-                ->addInfo('itemsNeeded', (string) $properCount)
-                ->addInfo('itemsGiven', (string) $this->func->countItems());
+            throw new FuncToStringItemsNotEqualException([
+                $this->func->getName(),
+                (string) $properCount,
+                (string) $this->func->countItems(),
+            ]);
         }
     }
 
@@ -78,16 +81,18 @@ class FuncToStringParent
      *
      * @param integer $minCount Minimum acceptable number of parameters for given func.
      *
-     * @throws MethodFopException On convertingFuncToString.
+     * @throws FuncToStringItemsToFewException When func parameter count is not equal to desired one.
      * @return void
      */
     protected function throwIfItemsCountLessThan(int $minCount) : void
     {
 
         if ($this->func->countItems() < $minCount) {
-            throw (new MethodFopException('convertingFuncToString'))
-                ->addInfo('itemsNeededAtLeast', (string) $minCount)
-                ->addInfo('itemsGiven', (string) $this->func->countItems());
+            throw new FuncToStringItemsToFewException([
+                $this->func->getName(),
+                (string) $minCount,
+                (string) $this->func->countItems(),
+            ]);
         }
     }
 
@@ -96,8 +101,7 @@ class FuncToStringParent
      *
      * @todo Line 8 of this method's body. Shortcut - parent of this func is rule ... ???
      *
-     * @throws ParamOtosetException When rule comp method is not proper for this func.
-     * @throws MethodFopException Rethrown from above.
+     * @throws FuncToStringInappropriateCompMethodException When rule comp method is not proper for this func.
      * @return void
      */
     protected function throwIfCompMethodIsInappropriate() : void
@@ -111,13 +115,13 @@ class FuncToStringParent
         // Get comparison method name (string).
         $compMethod = $this->func->getRuleParent()->getComp()->getMethod();
 
-        try {
-            if (in_array($compMethod, $this->onlyForCompMethods) === false) {
-                throw new ParamOtosetException('ruleCompMethod', $this->onlyForCompMethods, $compMethod);
-            }
-        } catch (ParamOtosetException $e) {
-            throw (new MethodFopException('convertingFuncToString', $e))
-                ->addInfo('funcUsedWithInappropriateCompMethod', $compMethod);
+        // Throw.
+        if (in_array($compMethod, $this->onlyForCompMethods) === false) {
+            throw new FuncToStringInappropriateCompMethodException([
+                $this->func->getName(),
+                implode(', ', $this->onlyForCompMethods),
+                $compMethod,
+            ]);
         }
     }
 

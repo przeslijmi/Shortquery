@@ -89,7 +89,7 @@ class CarModel extends Model
                 ->setFieldFrom('owner_girl')
                 ->setModelTo('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel')
                 ->setFieldTo('pk')
-                ->addRule('webs', 'sc')
+                ->addRule([ 'inset', [ 'sc', '`webs`' ]], 'eq', true)
         );
     }
 }

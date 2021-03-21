@@ -24,5 +24,7 @@ class SchemaFileCorruptedException extends Sexception
      *
      * @var array
      */
-    protected $keys = [ 'schemaFileUri' ];
+    protected $keys = [
+        'schemaFileUri',
+    ];
 }

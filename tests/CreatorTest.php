@@ -3,8 +3,6 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\FileDonoexException;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 use Przeslijmi\Sexceptions\Sexception;
 use Przeslijmi\Shortquery\Creator\PhpFile;
 use Przeslijmi\Shortquery\Creator\PhpFile\Model as ModelPhpFile;
@@ -12,6 +10,8 @@ use Przeslijmi\Shortquery\Exceptions\Creator\ModelsInSchemaDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileCorruptedException;
 use Przeslijmi\Shortquery\Exceptions\Creator\SchemaFileDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Creator\SchemaMissingException;
+use Przeslijmi\Shortquery\Exceptions\Creator\TemplateFileDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\TemplateNameOtosetException;
 use Przeslijmi\Shortquery\ForTests\CreatorStarter;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 use Throwable;
@@ -94,7 +94,7 @@ final class CreatorTest extends TestCase
         $settings = [ 'srcDir' => 'test' ];
 
         // Expect.
-        $this->expectException(ParamOtosetException::class);
+        $this->expectException(TemplateNameOtosetException::class);
 
         // Test.
         $file = new ModelPhpFile($settings, $model);
@@ -128,7 +128,7 @@ final class CreatorTest extends TestCase
         } catch (Throwable $thr) {
 
             // Test.
-            $this->assertEquals(get_class($thr), FileDonoexException::class);
+            $this->assertEquals(get_class($thr), TemplateFileDonoexException::class);
 
         } finally {
 

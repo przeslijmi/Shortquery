@@ -34,7 +34,7 @@ CREATE TABLE `girls` (
 --
 -- Dumping data for table `girls`
 --
-INSERT INTO `girls` VALUES (1,'Adriana','is'),(2,'Kylie','fb'),(3,'Diamond','pt'),(4,'Makenzie','sc'),(5,'Mikaela','sc,fb'),(6,'Krystal','is'),(7,'Maliyah','pt,fb'),(8,'Paityn','sc,pt,is'),(9,'Lillianna','fb'),(10,'Annabella','pt'),(11,'Avah','is'),(12,'Kaley','sc,pt,is,fb');
+INSERT INTO `girls` VALUES (1,'Adriana','sc,is'),(2,'Kylie','fb'),(3,'Diamond','pt'),(4,'Makenzie','sc'),(5,'Mikaela','sc,fb'),(6,'Krystal','is'),(7,'Maliyah','pt,fb'),(8,'Paityn','sc,pt,is'),(9,'Lillianna','fb'),(10,'Annabella','pt'),(11,'Avah','is'),(12,'Kaley','sc,pt,is,fb');
 
 --
 -- Table structure for table `things`

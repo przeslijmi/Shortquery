@@ -2,30 +2,31 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model no database defined.
+ * Model has no given database name, use eg. `$model->setDatabase(\'mySql\')` to fix.
+ *
+ * Database has to be defined in `PRZESLIJMI_SHORTQUERY_DATABASES`.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class ModelDatabaseDonoexException extends ClassFopException
+class ModelDatabaseDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no given database name, use eg. `$model->setDatabase(\'mySql\')` to fix. Database has to be defined in `PRZESLIJMI_SHORTQUERY_DATABASES`.';
 
-        // Lvd.
-        $hint  = 'Model has no given database name, use eg. `$model->setDatabase(\'mySql\')`';
-        $hint .= ' to fix. Database has to be defined in `PRZESLIJMI_SHORTQUERY_DATABASES`.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+    ];
 }

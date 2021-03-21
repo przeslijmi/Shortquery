@@ -2,17 +2,15 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql;
 
-use Exception;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine\MySql;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ValuifyFopException;
 use Przeslijmi\Shortquery\Items\LogicAnd;
 use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Items\LogicOr;
 use Przeslijmi\Shortquery\Items\Rule;
 use stdClass;
-use Throwable;
 
 /**
  * Query contructor for MySql.
@@ -98,20 +96,12 @@ abstract class Query extends MySql
     /**
      * Add rule to query (send Rules as params).
      *
-     * @throws MethodFopException When creation of Rule failed.
      * @return self
      */
     public function addRule() : self
     {
 
-        try {
-            $rule = Rule::factory(...func_get_args());
-        } catch (Throwable $thr) {
-            throw ( new MethodFopException('creationOfRuleFailed', $thr) )
-                ->addInfos(func_get_args(), 'ruleArgs');
-        }
-
-        $this->addLogics(new LogicAnd($rule));
+        $this->addLogics(new LogicAnd(Rule::factory(...func_get_args())));
 
         return $this;
     }
@@ -216,7 +206,7 @@ abstract class Query extends MySql
      *
      * @param mixed $value Value to be converted to value in MySQL query.
      *
-     * @throws Exception When can't valuify this value.
+     * @throws ValuifyFopException When can't valuify this value.
      * @return string
      */
     public function valueify($value) : string
@@ -235,6 +225,7 @@ abstract class Query extends MySql
             return "'" . json_encode($value) . "'";
         }
 
-        throw new Exception('Can\'t valuify this value: ' . var_export($value, true) . '.');
+        // Throw.
+        throw new ValuifyFopException([ var_export($value, true) ]);
     }
 }

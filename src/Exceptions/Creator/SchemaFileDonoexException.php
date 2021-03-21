@@ -24,5 +24,7 @@ class SchemaFileDonoexException extends Sexception
      *
      * @var array
      */
-    protected $keys = [ 'schemaFileUri' ];
+    protected $keys = [
+        'schemaFileUri',
+    ];
 }

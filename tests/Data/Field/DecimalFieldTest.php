@@ -4,8 +4,9 @@ namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Data\Field\DecimalField;
-use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
+use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDefinitionWrosynException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
 /**
  * Methods for testing DecimalField.
@@ -47,6 +48,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(-5, 3);
     }
 
@@ -62,6 +64,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(22, 3);
     }
 
@@ -77,6 +80,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(5, -3);
     }
 
@@ -92,6 +96,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(5, 6);
     }
 
@@ -107,6 +112,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(5, 3);
 
         // Test.
@@ -125,6 +131,7 @@ final class DecimalFieldTest extends TestCase
 
         // Create Field.
         $field = new DecimalField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setSize(5, 3);
 
         // Test.

@@ -2,11 +2,11 @@
 
 namespace Przeslijmi\Shortquery\Data;
 
-use Throwable;
-use Przeslijmi\Shortquery\Engine;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
 use Przeslijmi\Shortquery\Data\Relation;
+use Przeslijmi\Shortquery\Engine;
+use Przeslijmi\Shortquery\Exceptions\Data\CollectionUnknownNameGetterException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelCollectionClassNameWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelDatabaseDonoexException;
@@ -20,13 +20,13 @@ use Przeslijmi\Shortquery\Exceptions\Model\ModelNameDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNamespaceDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNamespaceWrosynException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelNameWrosynException;
-use Przeslijmi\Shortquery\Exceptions\Model\ModelQueryCreationFailedException;
-use Przeslijmi\Shortquery\Exceptions\Model\ModelPrimaryKeyFieldDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelPrimaryKeyFieldAlrexException;
-use Przeslijmi\Shortquery\Exceptions\Model\ModelRelationNameAlrexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelPrimaryKeyFieldDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelQueryCreationFailedException;
 use Przeslijmi\Shortquery\Exceptions\Model\ModelRelationDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Model\ModelRelationNameAlrexException;
 use Przeslijmi\Sivalidator\RegEx;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
+use Throwable;
 
 /**
  * Child class of Collection containing Model related information.
@@ -98,7 +98,7 @@ class Model
         try {
             RegEx::ifMatches($name, '/^([a-zA-Z_])+([a-zA-Z0-9_])*$/');
         } catch (Throwable $thr) {
-            throw new ModelNameWrosynException($name, $this, $thr);
+            throw new ModelNameWrosynException([ get_class($this), $name ], 0, $thr);
         }
 
         // Save.
@@ -118,7 +118,7 @@ class Model
 
         // Throw on null.
         if (is_null($this->name) === true) {
-            throw new ModelNameDonoexException($this);
+            throw new ModelNameDonoexException([ get_class($this) ]);
         }
 
         return $this->name;
@@ -138,7 +138,12 @@ class Model
         // If any database is not proper.
         foreach (func_get_args() as $database) {
             if (isset(PRZESLIJMI_SHORTQUERY_DATABASES[$database]) === false) {
-                throw new ModelDatabaseNameOtosetException($database, $this);
+                throw new ModelDatabaseNameOtosetException([
+                    implode(', ', array_keys(PRZESLIJMI_SHORTQUERY_DATABASES)),
+                    $database,
+                    $this->getName(),
+                    get_class($this),
+                ]);
             }
         }
 
@@ -191,7 +196,7 @@ class Model
             return $this->databases[0];
         }
 
-        throw new ModelDatabaseDonoexException($this);
+        throw new ModelDatabaseDonoexException([ get_class($this) ]);
     }
 
     /**
@@ -218,7 +223,7 @@ class Model
             $engine = $database['engine'];
 
         } catch (Throwable $thr) {
-            throw new ModelEngineDonoexException($this, $thr);
+            throw new ModelEngineDonoexException([ get_class($this) ], 0, $thr);
         }
 
         return $engine;
@@ -249,7 +254,11 @@ class Model
             $query = new $queryClass($this, $database);
 
         } catch (Throwable $thr) {
-            throw new ModelQueryCreationFailedException($this, 'SELECT', $thr);
+            throw new ModelQueryCreationFailedException(
+                [ $this->getName(), get_class($this), 'SELECT' ],
+                0,
+                $thr
+            );
         }
 
         return $query;
@@ -280,7 +289,11 @@ class Model
             $query = new $queryClass($this, $database);
 
         } catch (Throwable $thr) {
-            throw new ModelQueryCreationFailedException($this, 'UPDATE', $thr);
+            throw new ModelQueryCreationFailedException(
+                [ $this->getName(), get_class($this), 'UPDATE' ],
+                0,
+                $thr
+            );
         }
 
         return $query;
@@ -311,7 +324,11 @@ class Model
             $query = new $queryClass($this, $database);
 
         } catch (Throwable $thr) {
-            throw new ModelQueryCreationFailedException($this, 'INSERT', $thr);
+            throw new ModelQueryCreationFailedException(
+                [ $this->getName(), get_class($this), 'INSERT' ],
+                0,
+                $thr
+            );
         }
 
         return $query;
@@ -342,7 +359,11 @@ class Model
             $query = new $queryClass($this, $database);
 
         } catch (Throwable $thr) {
-            throw new ModelQueryCreationFailedException($this, 'DELETE', $thr);
+            throw new ModelQueryCreationFailedException(
+                [ $this->getName(), get_class($this), 'DELETE' ],
+                0,
+                $thr
+            );
         }
 
         return $query;
@@ -366,7 +387,7 @@ class Model
         try {
             RegEx::ifMatches($namespace, '/^(([A-Z])+([a-zA-Z0-9_])*(\\\\){1}){3,}$/');
         } catch (Throwable $thr) {
-            throw new ModelNamespaceWrosynException($namespace, $this, $thr);
+            throw new ModelNamespaceWrosynException([ get_class($this), $namespace ], 0, $thr);
         }
 
         // Add last slash.
@@ -392,7 +413,7 @@ class Model
 
         // Throw on null.
         if (is_null($this->namespace) === true) {
-            throw new ModelNamespaceDonoexException($this);
+            throw new ModelNamespaceDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         // If only slice of namespace is needed.
@@ -422,7 +443,7 @@ class Model
         try {
             RegEx::ifMatches($instanceClassName, '/^([A-Z])+([a-zA-Z0-9_])*$/');
         } catch (Throwable $thr) {
-            throw new ModelInstanceClassNameWrosynException($instanceClassName, $this, $thr);
+            throw new ModelInstanceClassNameWrosynException([ get_class($this), $instanceClassName ], 0, $thr);
         }
 
         // Save.
@@ -442,7 +463,7 @@ class Model
 
         // Throw on null.
         if (is_null($this->instanceClassName) === true) {
-            throw new ModelInstanceClassNameDonoexException($this);
+            throw new ModelInstanceClassNameDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->instanceClassName;
@@ -463,7 +484,7 @@ class Model
         try {
             RegEx::ifMatches($collectionClassName, '/^([A-Z])+([a-zA-Z0-9_])*$/');
         } catch (Throwable $thr) {
-            throw new ModelCollectionClassNameWrosynException($collectionClassName, $this, $thr);
+            throw new ModelCollectionClassNameWrosynException([ get_class($this), $collectionClassName ], 0, $thr);
         }
 
         // Save.
@@ -483,7 +504,7 @@ class Model
 
         // Throw on null.
         if (is_null($this->collectionClassName) === true) {
-            throw new ModelCollectionClassNameDonoexException($this);
+            throw new ModelCollectionClassNameDonoexException([ $this->getName(), get_class($this) ]);
         }
 
         return $this->collectionClassName;
@@ -507,7 +528,7 @@ class Model
      *
      * @param string $which One question as mentioned above.
      *
-     * @throws ParamOtosetException When calling method with wrong parameter.
+     * @throws CollectionUnknownNameGetterException When calling method with wrong parameter.
      * @return string
      *
      * @phpcs:disable Generic.Metrics.CyclomaticComplexity
@@ -563,8 +584,8 @@ class Model
             return $result;
         }
 
-        throw (new ParamOtosetException('getClass:0', $set, $which))
-            ->addHint('You\'re calling `getClass` method with wrong first parameter.');
+        // Throw.
+        throw new CollectionUnknownNameGetterException([ implode(', ', $set), $which ]);
     }
 
     /**
@@ -580,7 +601,9 @@ class Model
 
         // Check for duplicates.
         if (isset($this->fields[$field->getName()]) === true) {
-            throw new ModelFieldNameAlrexException($field->getName(), $this);
+            throw new ModelFieldNameAlrexException([
+                $this->getName(), get_class($this), $field->getName()
+            ]);
         }
 
         // Add Field.
@@ -616,7 +639,7 @@ class Model
 
         // Check if Field exists.
         if (isset($this->fields[$name]) === false) {
-            throw new ModelFieldDonoexException($name, $this);
+            throw new ModelFieldDonoexException([ $this->getName(), get_class($this), $name ]);
         }
 
         return $this->fields[$name];
@@ -661,7 +684,7 @@ class Model
                 if (is_null($result) === true) {
                     $result = $field;
                 } else {
-                    throw new ModelPrimaryKeyFieldAlrexException($this);
+                    throw new ModelPrimaryKeyFieldAlrexException([ $this->getName(), get_class($this) ]);
                 }
             }
         }
@@ -671,7 +694,7 @@ class Model
             return $result;
         }
 
-        throw new ModelPrimaryKeyFieldDonoexException($this);
+        throw new ModelPrimaryKeyFieldDonoexException([ $this->getName(), get_class($this) ]);
     }
 
     /**
@@ -773,7 +796,11 @@ class Model
 
         // Check and throw.
         if (isset($this->relations[$relation->getName()]) === true) {
-            throw new ModelRelationNameAlrexException($relation->getName(), $this);
+            throw new ModelRelationNameAlrexException([
+                $this->getName(),
+                get_class($this),
+                $relation->getName(),
+            ]);
         }
 
         // Add Field.
@@ -809,7 +836,11 @@ class Model
 
         // Check if Relation exists.
         if (isset($this->relations[$name]) === false) {
-            throw new ModelRelationDonoexException($name, $this);
+            throw new ModelRelationDonoexException([
+                $this->getName(),
+                get_class($this),
+                $name,
+            ]);
         }
 
         return $this->relations[$name];

@@ -2,33 +2,27 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Data;
 
-use Throwable;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model collection class name is empty.
+ * There was an error during creation of Collection. See causes.
  */
-class CollectionCantBeCreatedException extends ClassFopException
+class CollectionCantBeCreatedException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $className For which collection the problem occurs.
-     * @param array          $params    What was the params sent to constructor.
-     * @param null|Throwable $cause     Throwable that caused the problem.
+     * @var string
      */
-    public function __construct(string $className, array $params, ?Throwable $cause = null)
-    {
+    protected $hint = 'There was an error during creation of Collection. See causes.';
 
-        // Define.
-        $this->addInfo('className', $className);
-        $this->addInfo('params', var_export($params, true));
-        $this->addInfo('context', 'ShortqueryCreatingCollection');
-        $this->addInfo('hint', 'There was an error during creation of Collection. See causes.');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'params',
+    ];
 }

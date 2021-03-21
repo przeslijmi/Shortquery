@@ -55,12 +55,16 @@ class IntField extends Field implements FieldInterface
 
         // On too low.
         if ($maxLength < 1) {
-            throw new FieldDefinitionWrosynException('Max lenght can not be lower than 1.', $this);
+            throw new FieldDefinitionWrosynException(
+                [ 'Max lenght can not be lower than 1.', get_class($this), $this->getName() ]
+            );
         }
 
         // On too high.
         if ($maxLength > 11) {
-            throw new FieldDefinitionWrosynException('Max lenght can not be greater than 11.', $this);
+            throw new FieldDefinitionWrosynException(
+                [ 'Max lenght can not be greater than 11.', get_class($this), $this->getName() ]
+            );
         }
 
         // Save.
@@ -110,7 +114,21 @@ class IntField extends Field implements FieldInterface
 
         // Throw.
         if ($result === false && $throws === true) {
-            throw new FieldValueInproperException($value, $this);
+
+            // Prepare info.
+            $info = [
+                $this->getProperValueHint(),
+                get_class($this),
+                $this->getName(),
+                (string) $value,
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldValueInproperException($info);
         }
 
         return $result;

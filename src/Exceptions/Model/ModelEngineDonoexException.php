@@ -2,36 +2,30 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Throwable;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model has database defined but there is no engine present as said in database.
+ * Model has given database name but its engine is not existing.
+ * All engines has to be defined in `PRZESLIJMI_SHORTQUERY_ENGINES`.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class ModelEngineDonoexException extends ClassFopException
+class ModelEngineDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model          $model Model that has the problem.
-     * @param null|Throwable $cause Throwable that caused the problem.
+     * @var string
      */
-    public function __construct(Model $model, ?Throwable $cause = null)
-    {
+    protected $hint = 'Model has given database name but its engine is not existing. All engines has to be defined in `PRZESLIJMI_SHORTQUERY_ENGINES`.';
 
-        // Lvd.
-        $hint  = 'Model has given database name but its engine is not existing. ';
-        $hint .= 'All engines has to be defined in `PRZESLIJMI_SHORTQUERY_ENGINES`.';
-
-        // Define.
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addHint($hint);
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+    ];
 }

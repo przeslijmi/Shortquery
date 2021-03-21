@@ -2,11 +2,7 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
-use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
-use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Items\LogicItem;
-use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
  * Abstract parent class for every engine.

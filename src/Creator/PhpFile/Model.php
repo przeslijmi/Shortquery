@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Creator\PhpFile;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
 use Przeslijmi\Shortquery\Creator\PhpFile;
 
 /**

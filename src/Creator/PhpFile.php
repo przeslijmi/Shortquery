@@ -2,12 +2,10 @@
 
 namespace Przeslijmi\Shortquery\Creator;
 
-use Przeslijmi\Sexceptions\Exceptions\FileDonoexException;
-use Przeslijmi\Sexceptions\Exceptions\ParamOtosetException;
 use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Shortquery\Exceptions\Creator\TemplateFileDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Creator\TemplateNameOtosetException;
 use Przeslijmi\SiHDD\File;
-use Przeslijmi\Sivalidator\RegEx;
-use stdClass;
 
 /**
  * Parent for classes that create ShortQuery models *.php files.
@@ -97,8 +95,8 @@ abstract class PhpFile
      *
      * @param string $name Template name (eg. `Collection`) - one from `TPL_*` constants.
      *
-     * @throws ParamOtosetException When Template of this name does not exists.
-     * @throws FileDonoexException  When template file does not exists.
+     * @throws TemplateNameOtosetException When Template of this name does not exists.
+     * @throws TemplateFileDonoexException When template file does not exists.
      * @return string
      */
     public function getTplUri(string $name) : string
@@ -115,7 +113,10 @@ abstract class PhpFile
 
         // Check template name.
         if (in_array($name, $properRange) === false) {
-            throw new ParamOtosetException('templateName', $properRange, $name);
+            throw new TemplateNameOtosetException([
+                implode(', ', $properRange),
+                $name
+            ]);
         }
 
         // Define possible URIs.
@@ -134,9 +135,7 @@ abstract class PhpFile
         }
 
         // Throw on failure.
-        $hint  = 'None of possible locations for shortQuery Creator template file worked from location `';
-        $hint .= getcwd() . '`.';
-        throw (new FileDonoexException('templateFile', implode(', ', $possibleUris)))->addHint($hint);
+        throw new TemplateFileDonoexException([ getcwd(), implode(', ', $possibleUris) ]);
     }
 
     /**

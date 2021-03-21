@@ -2,29 +2,30 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ValueOtosetException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model has wrong database name.
+ * There is no database with that name.
  */
-class ModelDatabaseNameOtosetException extends ValueOtosetException
+class ModelDatabaseNameOtosetException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string $databse Given database name.
-     * @param Model  $model   Model that has the problem.
+     * @var string
      */
-    public function __construct(string $databse, Model $model)
-    {
+    protected $hint = 'There is no database with that name.';
 
-        $this->addInfo('name', 'databaseName');
-        $this->addInfo('range', implode(', ', array_keys(PRZESLIJMI_SHORTQUERY_DATABASES)));
-        $this->addInfo('actualValue', $databse);
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('hint', 'There is no database with name `' . $databse . '`. See possibilities above.');
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'range',
+        'actualValue',
+        'modelName',
+        'modelClass',
+    ];
 }

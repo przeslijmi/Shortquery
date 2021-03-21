@@ -135,7 +135,21 @@ class EnumField extends Field implements FieldInterface
 
         // Throw if not found.
         if (isset($this->dicts[$dictName]) === false) {
-            throw new FieldDictDonoexException($dictName, $this);
+
+            // Prepare info.
+            $info = [
+                get_class($this),
+                $this->getName(),
+                $dictName,
+                implode(', ', array_keys($this->getDicts()))
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldDictDonoexException($info);
         }
 
         return $this->dicts[$dictName];
@@ -172,7 +186,22 @@ class EnumField extends Field implements FieldInterface
 
         // Throw.
         if (is_int($id) === false) {
-            throw new FieldDictValueDonoexException($dictName, $key, $this);
+
+            // Prepare info.
+            $info = [
+                get_class($this),
+                $this->getName(),
+                $dictName,
+                $key,
+                implode(', ', $this->getValues($dictName)),
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldDictValueDonoexException($info);
         }
 
         return $dict[$id];
@@ -205,7 +234,21 @@ class EnumField extends Field implements FieldInterface
 
         // Throw.
         if ($result === false && $throws === true) {
-            throw new FieldValueInproperException($value, $this);
+
+            // Prepare info.
+            $info = [
+                $this->getProperValueHint(),
+                get_class($this),
+                $this->getName(),
+                (string) $value,
+            ];
+            if ($this->hasModel() === true) {
+                $info['model']     = get_class($this->getModel());
+                $info['modelName'] = $this->getModel()->getName();
+            }
+
+            // Throw.
+            throw new FieldValueInproperException($info);
         }
 
         return $result;

@@ -2,26 +2,27 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model name is empty.
+ * Model has no given name, use `$model->setName($nonEmptyName)` to fix.
  */
-class ModelNameDonoexException extends ClassFopException
+class ModelNameDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no given name, use `$model->setName($nonEmptyName)` to fix.';
 
-        $this->setCodeName('ModelNameDonoexException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('hint', 'Model has no given name, use `$model->setName($nonEmptyName)` to fix.');
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+    ];
 }

@@ -4,11 +4,11 @@ namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\Mysql\Queries\UpdateQuery;
-use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
+use Przeslijmi\Shortquery\Exceptions\Items\RuleCreationFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
+use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 
 /**
  * Methods for testing UpdateQuery from MySql Engine.
@@ -95,7 +95,7 @@ final class UpdateTest extends TestCase
         $update = new UpdateQuery(new CarModel());
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(RuleCreationFopException::class);
 
         // Test.
         $update->addRule(null);

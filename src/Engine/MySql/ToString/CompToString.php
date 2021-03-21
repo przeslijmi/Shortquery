@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
-use Exception;
 use Przeslijmi\Shortquery\Items\Comp;
 
 /**

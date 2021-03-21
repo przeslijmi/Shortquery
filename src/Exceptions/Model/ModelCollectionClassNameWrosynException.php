@@ -2,34 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model has wrong collection class name.
+ * Given collection class name is not proper proper class name (see regex below).
  */
-class ModelCollectionClassNameWrosynException extends ClassFopException
+class ModelCollectionClassNameWrosynException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $collectionClassName Given wrong collection class name.
-     * @param Model          $model               Model that has the problem.
-     * @param Exception|null $cause               Exception that caused the problem.
+     * @var string
      */
-    public function __construct(string $collectionClassName, Model $model, ?Exception $cause = null)
-    {
+    protected $hint = 'Given collection class name is not proper proper class name (see regex below).';
 
-        $this->setCodeName('ModelCollectionClassNameWrosynException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('givenCollectionClassName', $collectionClassName);
-        $this->addInfo('hint', 'Given collection class name is not proper proper class name (see regex below).');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+        'givenCollectionClassName',
+    ];
 }

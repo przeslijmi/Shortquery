@@ -2,26 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * There are more than one Primary Key Fields in this Model.
+ * Model has no two or more Primary Key Fields. It is impossible in this version of Shoq?
  */
-class ModelPrimaryKeyFieldAlrexException extends ClassFopException
+class ModelPrimaryKeyFieldAlrexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no two or more Primary Key Fields. It is impossible in this version of Shoq?';
 
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addHint('Model has no two or more Primary Key Fields. It is impossible in this version of Shoq?');
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+    ];
 }

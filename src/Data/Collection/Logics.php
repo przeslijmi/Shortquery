@@ -2,11 +2,10 @@
 
 namespace Przeslijmi\Shortquery\Data\Collection;
 
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Relation;
-use Przeslijmi\Shortquery\Exceptions\Items\RuleFactoryFailedException;
-use Przeslijmi\Shortquery\Exceptions\Items\LogicFactoryFailedException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicCreationFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\RuleCreationFopException;
 use Przeslijmi\Shortquery\Items\ContentItem;
 use Przeslijmi\Shortquery\Items\LogicAnd;
 use Przeslijmi\Shortquery\Items\LogicItem;
@@ -90,7 +89,7 @@ class Logics
     /**
      * Setter for adding new rule (and therefore also LogicAnd) to the model.
      *
-     * @throws RuleFactoryFailedException When creation of Rule have failed.
+     * @throws RuleCreationFopException When creation of Rule failed.
      * @return self
      */
     public function addRule() : self
@@ -100,7 +99,7 @@ class Logics
         try {
             $rule = Rule::factory(...func_get_args());
         } catch (Throwable $thr) {
-            throw new RuleFactoryFailedException(func_get_args(), $thr);
+            throw new RuleCreationFopException([], 0, $thr);
         }
 
         // Create new AND Logic for this rule.
@@ -152,8 +151,7 @@ class Logics
      *
      * @param array ...$rulesDefinitions Array of arrays with rules definitions.
      *
-     * @throws RuleFactoryFailedException  When creation of Rule failed.
-     * @throws LogicFactoryFailedException When creation of Logic failed.
+     * @throws LogicCreationFopException When creation of Logic failed.
      * @return self
      */
     public function addLogicOr(array ...$rulesDefinitions) : self
@@ -162,21 +160,19 @@ class Logics
         // Lvd.
         $rules = [];
 
-        // Create Rules.
-        foreach ($rulesDefinitions as $ruleDefinition) {
-            try {
-                $rules[] = Rule::factory(...$ruleDefinition);
-            } catch (Throwable $thr) {
-                throw new RuleFactoryFailedException($ruleDefinition, $thr);
-            }
-        }
-
-        // Create logic OR from given set of Rules.
         try {
+
+            // Create Rules.
+            foreach ($rulesDefinitions as $ruleDefinition) {
+                $rules[] = Rule::factory(...$ruleDefinition);
+            }
+
+            // Create logic OR from given set of Rules.
             $logic = new LogicOr(...$rules);
             $logic->setCollectionParent($this->collection);
+
         } catch (Throwable $thr) {
-            throw new LogicFactoryFailedException($rules, $thr);
+            throw new LogicCreationFopException([], 0, $thr);
         }
 
         $this->logics[] = $logic;

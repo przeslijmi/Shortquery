@@ -91,7 +91,7 @@ return [
           ->setFieldFrom('owner_girl')
           ->setModelTo('Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel')
           ->setFieldTo('pk')
-          ->addLogicsSyntax('->addRule(\'webs\', \'sc\')')
+          ->addLogicsSyntax('->addRule([ \'inset\', [ \'sc\', \'`webs`\' ]], \'eq\', true)')
       ),
     (new Model()) // things
       ->setName('things')

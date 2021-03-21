@@ -2,31 +2,29 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * There is no Relation with this name in this Model.
+ * Model has no Relation with given name - maybe a Relation name or Model name mismatch?
  */
-class ModelRelationDonoexException extends ClassFopException
+class ModelRelationDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string $relationName Name of field.
-     * @param Model  $model        Model that has the problem.
+     * @var string
      */
-    public function __construct(string $relationName, Model $model)
-    {
+    protected $hint = 'Model has no Relation with given name - maybe a Relation name or Model name mismatch?';
 
-        // Lvd.
-        $hint = 'Model has no Relation with given name - maybe a Relation name or Model name mismatch?';
-
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('relationName', $relationName);
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+        'relationName',
+    ];
 }

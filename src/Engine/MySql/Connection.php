@@ -3,8 +3,7 @@
 namespace Przeslijmi\Shortquery\Engine\Mysql;
 
 use MySQLi;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
 
 /**
  * Connection to MySqli creator.
@@ -25,7 +24,6 @@ class Connection
      * @param string  $database Name of database to get configs from (PRZESLIJMI_SHORTQUERY_DATABASES).
      * @param integer $id       Opt., 0. Id of instance of connection.
      *
-     * @throws ClassFopException When connection is not established.
      * @return MySqli
      */
     public static function get(string $database, int $id = 0) : MySQLi
@@ -36,17 +34,13 @@ class Connection
 
         // No instance with given id - create new one.
         if (isset($connections[$database][$id]) === false) {
-            try {
-                $connections[$database][$id] = self::startConnection(
-                    $auth['url'],
-                    $auth['user'],
-                    $auth['pass'],
-                    $auth['db'],
-                    $auth['port']
-                );
-            } catch (MethodFopException $e) {
-                throw new ClassFopException('mysqliConnectionNotEstablished', $e);
-            }
+            $connections[$database][$id] = self::startConnection(
+                $auth['url'],
+                $auth['user'],
+                $auth['pass'],
+                $auth['db'],
+                $auth['port']
+            );
         }
 
         // Return instance of given id.
@@ -62,7 +56,7 @@ class Connection
      * @param string  $database Name of database.
      * @param integer $port     Opt., 3306. Port for database.
      *
-     * @throws MethodFopException When connection is not established.
+     * @throws ConnectionFopException When connection is not established.
      * @return MySqli
      *
      * @phpcs:disable Generic.PHP.NoSilencedErrors
@@ -83,14 +77,15 @@ class Connection
 
         // If there was an error - throw exception.
         if (empty($connection->connect_error) === false) {
-            throw (new MethodFopException('mysqliConnectionError'))
-                ->addInfo('errorNo', (string) $connection->connect_errno)
-                ->addInfo('error', trim($connection->connect_error))
-                ->addInfo('host', $host)
-                ->addInfo('user', $user)
-                ->addInfo('usingPassword', [ 'NO', 'YES' ][ (bool) $password])
-                ->addInfo('database', $database)
-                ->addInfo('port', (string) $port);
+            throw new ConnectionFopException([
+                (string) $connection->connect_errno,
+                trim($connection->connect_error),
+                $host,
+                $user,
+                [ 'NO', 'YES' ][ (bool) $password],
+                $database,
+                (string) $port,
+            ]);
         }
 
         return $connection;

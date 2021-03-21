@@ -2,8 +2,8 @@
 
 namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
 
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicsToStringWrongComponentsException;
 use Przeslijmi\Sivalidator\TypeHinting;
 
 /**
@@ -42,20 +42,18 @@ class LogicsToString
      * @param LogicItem[] $logics  Collection of LogicItem elements to be converted to string.
      * @param string      $context Name of context.
      *
-     * @throws ParamWrotypeException On mysqlEngineConvLogicsToString.
+     * @throws LogicsToStringWrongComponentsException When sent components are inproper.
      */
     public function __construct(array $logics, string $context = '')
     {
 
         try {
             TypeHinting::isArrayOf($logics, 'Przeslijmi\Shortquery\Items\LogicItem');
-        } catch (TypeHintingFailException $e) {
-            throw new ParamWrotypeException(
-                'mysqlEngineConvLogicsToString',
+        } catch (TypeHintingFailException $sexc) {
+            throw new LogicsToStringWrongComponentsException([
                 'Przeslijmi\Shortquery\Items\LogicItem[]',
-                $e->getIsInFact(),
-                $e
-            );
+                $sexc->getIsInFact(),
+            ], 0, $sexc);
         }
 
         $this->logics  = $logics;

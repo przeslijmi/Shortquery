@@ -310,7 +310,9 @@ class CacheByKey
 
         // Throw if already taken.
         if (isset($this->takenOutKeys[$keyValue]) === true) {
-            throw new RecordAlreadyTakenOutFromCacheByKey($keyValue, $this);
+            throw new RecordAlreadyTakenOutFromCacheByKey(
+                [ (string) $keyValue, get_class($this->getModel()), $this->getModel()->getName() ]
+            );
         }
 
         // Mark that it was used and takenout already.

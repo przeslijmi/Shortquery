@@ -2,10 +2,11 @@
 
 namespace Przeslijmi\Shortquery;
 
-use Exception;
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Engine\Mysql\Queries\CustomQuery;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopConnectionDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ValuifyFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use stdClass;
 
@@ -96,7 +97,7 @@ final class CustomTest extends TestCase
         $query = new CustomQuery('test');
 
         // Prepare.
-        $this->expectException(Exception::class);
+        $this->expectException(ValuifyFopException::class);
 
         // Test.
         $query->valueify($anonymousClass);
@@ -115,7 +116,7 @@ final class CustomTest extends TestCase
         $query->set('SELECT COUNT(*) FROM `nonexisting_table`;');
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(QueryFopConnectionDonoexException::class);
 
         // Test.
         $query->call();
@@ -134,7 +135,7 @@ final class CustomTest extends TestCase
         $query->set('SELECT COUNT(*) FROM `nonexisting_table`;');
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(QueryFopConnectionDonoexException::class);
 
         // Test.
         $query->callMulti();
@@ -153,7 +154,7 @@ final class CustomTest extends TestCase
         $query->set('SELECT COUNT(*) FROM `nonexisting_table`;');
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(QueryFopConnectionDonoexException::class);
 
         // Test.
         $query->fire();
@@ -187,7 +188,7 @@ final class CustomTest extends TestCase
         $query->set('WRONG QUERY;');
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(QueryFopException::class);
 
         // Test.
         $this->assertTrue($query->fire());
@@ -278,7 +279,7 @@ final class CustomTest extends TestCase
         $custom->set($query);
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(QueryFopException::class);
 
         // Test.
         $this->assertTrue($custom->callMulti());

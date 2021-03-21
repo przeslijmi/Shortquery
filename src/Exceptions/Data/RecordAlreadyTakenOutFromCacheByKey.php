@@ -2,32 +2,33 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Data;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\CacheByKey;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Record was already taken out from CacheByKey instance.
+ * Key has been already taken from this cache.
+ *
+ * If you want to get from cache more than one - use `get()`, not `getOnce()` method.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class RecordAlreadyTakenOutFromCacheByKey extends ClassFopException
+class RecordAlreadyTakenOutFromCacheByKey extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param mixed      $keyValue   Key value that is missing.
-     * @param CacheByKey $cacheByKey Whole CacheByKey instance.
+     * @var string
      */
-    public function __construct($keyValue, CacheByKey $cacheByKey)
-    {
+    protected $hint = 'Key has been already taken from this cache. If you want to get from cache more than one - use `get()`, not `getOnce()` method.';
 
-        // Lvd.
-        $hint  = 'Key has been already taken from this cache. If you want to get from cache ';
-        $hint .= 'more than one - use `get()`, not `getOnce()` method.';
-
-        // Define.
-        $this->addInfo('keyValue', (string) $keyValue);
-        $this->addInfo('model', get_class($cacheByKey->getModel()));
-        $this->addInfo('modelName', $cacheByKey->getModel()->getName());
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'keyValue',
+        'model',
+        'modelName',
+    ];
 }

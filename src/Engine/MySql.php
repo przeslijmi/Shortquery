@@ -3,12 +3,12 @@
 namespace Przeslijmi\Shortquery\Engine;
 
 use mysqli_result;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Engine;
 use Przeslijmi\Shortquery\Engine\EngineInterface;
 use Przeslijmi\Shortquery\Engine\Mysql\Connection;
-use Przeslijmi\Silogger\Log;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopConnectionDonoexException;
 
 /**
  * Engine creating queries for MySql language.
@@ -26,8 +26,8 @@ abstract class MySql extends Engine implements EngineInterface
     /**
      * Method of calling query including waiting for response.
      *
-     * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
-     * @throws MethodFopException On mysqliQueryWrosyn.
+     * @throws QueryFopConnectionDonoexException When query cant be sent because no connection is set.
+     * @throws QueryFopException When query is not working.
      * @return boolean|mysqli_result
      *
      * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
@@ -47,13 +47,8 @@ abstract class MySql extends Engine implements EngineInterface
         // Check connection.
         try {
             $mysqli = Connection::get($this->database);
-        } catch (ClassFopException $e) {
-            throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
-        }
-
-        // Log.
-        if (substr(trim($query), 0, 6) !== 'SELECT') {
-            // Log::get()->notice($query);
+        } catch (ConnectionFopException $sexc) {
+            throw new QueryFopConnectionDonoexException([ $query ], 0, $sexc);
         }
 
         // Call query.
@@ -64,10 +59,11 @@ abstract class MySql extends Engine implements EngineInterface
 
         // Throw when result is false.
         if ($result === false) {
-            throw (new MethodFopException('mysqliQueryWrosyn'))
-                ->addInfo('query', trim($query))
-                ->addInfo('errorNo', (string) $mysqli->errno)
-                ->addInfo('error', $mysqli->error);
+            throw new QueryFopException([
+                trim($query),
+                (string) $mysqli->errno,
+                $mysqli->error,
+            ]);
         }
 
         return $result;
@@ -76,8 +72,8 @@ abstract class MySql extends Engine implements EngineInterface
     /**
      * Method of calling query without waiting for any response.
      *
-     * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
-     * @throws MethodFopException On mysqliQueryWrosyn.
+     * @throws QueryFopConnectionDonoexException When query cant be sent because no connection is set.
+     * @throws QueryFopException When query is not working.
      * @return mysqli_result
      *
      * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
@@ -97,12 +93,9 @@ abstract class MySql extends Engine implements EngineInterface
         // Check connection.
         try {
             $mysqli = Connection::get($this->database);
-        } catch (ClassFopException $e) {
-            throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
+        } catch (ConnectionFopException $sexc) {
+            throw new QueryFopConnectionDonoexException([ $query ], 0, $sexc);
         }
-
-        // Log.
-        // Log::get()->notice($query);
 
         // Call query.
         $result = $mysqli->query($query);
@@ -112,10 +105,11 @@ abstract class MySql extends Engine implements EngineInterface
 
         // Throw when result is false.
         if ($result === false) {
-            throw (new MethodFopException('mysqliQueryWrosyn'))
-                ->addInfo('query', trim($query))
-                ->addInfo('errorNo', (string) $mysqli->errno)
-                ->addInfo('error', $mysqli->error);
+            throw new QueryFopException([
+                trim($query),
+                (string) $mysqli->errno,
+                $mysqli->error,
+            ]);
         }
 
         if (method_exists($this, 'setAddedPk') === true) {
@@ -128,8 +122,8 @@ abstract class MySql extends Engine implements EngineInterface
     /**
      * Method of calling multi query including waiting for the response.
      *
-     * @throws MethodFopException On mysqliQueryCantBeCalledWhileNoConnection.
-     * @throws MethodFopException On mysqliQueryWrosyn.
+     * @throws QueryFopConnectionDonoexException When query cant be sent because no connection is set.
+     * @throws QueryFopException When query is not working.
      * @return array
      *
      * @phpcs:disable Squiz.NamingConventions.ValidVariableName.NotCamelCaps
@@ -147,14 +141,11 @@ abstract class MySql extends Engine implements EngineInterface
             return [];
         }
 
-        // Log.
-        // Log::get()->notice($query);
-
         // Check connection.
         try {
             $mysqli = Connection::get($this->database);
-        } catch (ClassFopException $e) {
-            throw (new MethodFopException('mysqliQueryCantBeCalledWhileNoConnection', $e))->addInfo('query', $query);
+        } catch (ConnectionFopException $sexc) {
+            throw new QueryFopConnectionDonoexException([ $query ], 0, $sexc);
         }
 
         // Call query.
@@ -168,10 +159,11 @@ abstract class MySql extends Engine implements EngineInterface
                 $result[] = $resultOfThis;
             } while ($mysqli->more_results() === true && $mysqli->next_result() === true);
         } else {
-            throw (new MethodFopException('mysqliQueryWrosyn'))
-                ->addInfo('query', trim($query))
-                ->addInfo('errorNo', (string) $mysqli->errno)
-                ->addInfo('error', $mysqli->error);
+            throw new QueryFopException([
+                trim($query),
+                (string) $mysqli->errno,
+                $mysqli->error,
+            ]);
         }
         $mysqli->close();
 

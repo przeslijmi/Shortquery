@@ -2,34 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model has wrong instance class name.
+ * Given instance class name is not proper proper class name (see regex)
  */
-class ModelInstanceClassNameWrosynException extends ClassFopException
+class ModelInstanceClassNameWrosynException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $instanceClassName Given wrong instance class name.
-     * @param Model          $model             Model that has the problem.
-     * @param Exception|null $cause             Exception that caused the problem.
+     * @var string
      */
-    public function __construct(string $instanceClassName, Model $model, ?Exception $cause = null)
-    {
+    protected $hint = 'Given instance class name is not proper proper class name (see regex).';
 
-        $this->setCodeName('ModelInstanceClassNameWrosynException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('givenInstanceClassName', $instanceClassName);
-        $this->addInfo('hint', 'Given instance class name is not proper proper class name (see regex below).');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+        'givenInstanceClassName',
+    ];
 }

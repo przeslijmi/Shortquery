@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.5.0 - 2021-03-21
+
+- New: Added multiple new Exceptions to use in code.
+- Change: Changed all `Exceptions` directly from `Preslijmi\Sexception` tool to own `Exceptions`.
+- Change: Logging turned off for all queries as absolute solution (because of efficiency and RODO).
+
 ## v1.4.0 - 2021-03-14
 
 - New: Added param `multipleResults` (default `true`) to `getGroupedByField` in `Collection`.

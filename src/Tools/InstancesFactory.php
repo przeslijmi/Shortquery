@@ -2,15 +2,14 @@
 
 namespace Przeslijmi\Shortquery\Tools;
 
-use Throwable;
-use Exception;
-use Przeslijmi\Sexceptions\Exceptions\ClassDonoexException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Sexceptions\Exceptions\ParamWrosynException;
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
-use Przeslijmi\Sivalidator\TypeHinting;
 use Przeslijmi\Shortquery\Data\Collection;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceClassDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceConstructionFopException;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceCreationWrongParamException;
+use Przeslijmi\Shortquery\Exceptions\Data\InstanceFopPropsNoStringsException;
+use Przeslijmi\Sivalidator\TypeHinting;
+use Throwable;
 
 /**
  * Creates model objects from array with values.
@@ -24,13 +23,10 @@ class InstancesFactory
      * @param object|string $classOrClassName Model class or model class name.
      * @param array         $props            Array with properties of object.
      *
-     * @throws Exception InstancesFactory can take only collection name or collection instance as argument.
-     * @throws ClassDonoexException On creatingInstanceForShortquery.
-     * @throws ParamWrosynException On className.
-     * @throws ParamWrotypeException On props.
-     * @throws MethodFopException On constructorOfInstancesFailed.
-     * @throws MethodFopException On creatingInstanceFromArrayFailed.
-     *
+     * @throws InstanceCreationWrongParamException When wrong object is used to create Instance.
+     * @throws InstanceClassDonoexException When instance dos not exists.
+     * @throws InstanceFopPropsNoStringsException When trying to create instance of nonexisting class.
+     * @throws InstanceConstructionFopException When creation of instance failed on process.
      * @return object Model object.
      */
     public static function fromArray($classOrClassName, array $props) : object
@@ -46,7 +42,7 @@ class InstancesFactory
         } elseif (is_object($classOrClassName) === true) {
             $instance = $classOrClassName;
         } else {
-            throw new Exception('InstancesFactory can take only collection name or collection instance as argument');
+            throw new InstanceCreationWrongParamException();
         }
 
         try {
@@ -54,34 +50,26 @@ class InstancesFactory
             if (is_null($className) === false) {
 
                 // Chk arg 1.
-                try {
-                    if (class_exists($className) === false) {
-                        throw new ClassDonoexException('creatingInstanceForShortquery', $className);
-                    }
-                } catch (ClassDonoexException $e) {
-                    throw new ParamWrosynException('className', $className, $e);
+                if (class_exists($className) === false) {
+                    throw new InstanceClassDonoexException([ $className ]);
                 }
 
                 // Chk arg 2.
                 try {
                     TypeHinting::isArrayOfStrings($props, true);
-                } catch (TypeHintingFailException $e) {
-                    throw new ParamWrotypeException('props', 'string[]', $e->getIsInFact(), $e);
+                } catch (TypeHintingFailException $sexc) {
+                    throw new InstanceFopPropsNoStringsException([ $className ], 0, $sexc);
                 }
 
                 // Create instance.
-                try {
-                    $instance = new $className(null);
-                } catch (Throwable $e) {
-                    throw (new MethodFopException('constructorOfInstancesFailed', $e))->addInfo('class', $className);
-                }
+                $instance = new $className(null);
             }//end if
 
             // Inject properties to object.
             $instance->injectData($props);
 
-        } catch (Throwable $e) {
-            throw (new MethodFopException('creatingInstanceFromArrayFailed', $e))->addInfo('class', $className);
+        } catch (Throwable $sexc) {
+            throw new InstanceConstructionFopException([ (string) $className ], 0, $sexc);
         }//end try
 
         return $instance;

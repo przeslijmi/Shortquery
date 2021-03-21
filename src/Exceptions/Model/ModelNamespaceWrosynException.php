@@ -2,34 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Exception;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model has wrong namespace.
+ * Given namespace is not proper proper model namespace (see regex).
  */
-class ModelNamespaceWrosynException extends ClassFopException
+class ModelNamespaceWrosynException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string         $namespace Given wrong namespace.
-     * @param Model          $model     Model that has the problem.
-     * @param Exception|null $cause     Exception that caused the problem.
+     * @var string
      */
-    public function __construct(string $namespace, Model $model, ?Exception $cause = null)
-    {
+    protected $hint = 'Given namespace is not proper proper model namespace (see regex).';
 
-        $this->setCodeName('ModelNamespaceWrosynException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('givenNamespace', $namespace);
-        $this->addInfo('hint', 'Given namespace is not proper proper model namespace (see regex below).');
-
-        if (is_null($cause) === false) {
-            $this->setCause($cause);
-        }
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelClass',
+        'givenNamespace',
+    ];
 }

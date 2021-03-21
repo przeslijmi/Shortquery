@@ -4,8 +4,9 @@ namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Data\Field\IntField;
-use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
+use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldDefinitionWrosynException;
+use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
 /**
  * Methods for testing IntField.
@@ -45,6 +46,7 @@ final class IntFieldTest extends TestCase
 
         // Create Field.
         $field = new IntField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setMaxLength(-5);
     }
 
@@ -60,6 +62,7 @@ final class IntFieldTest extends TestCase
 
         // Create Field.
         $field = new IntField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setMaxLength(12);
     }
 
@@ -75,6 +78,7 @@ final class IntFieldTest extends TestCase
 
         // Create Field.
         $field = new IntField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
         $field->setMaxLength(3);
 
         // Test.

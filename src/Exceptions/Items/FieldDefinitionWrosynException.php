@@ -2,28 +2,29 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Items;
 
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
-use Przeslijmi\Shortquery\Data\Field;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Definition of type for given Field is not proper.
+ * You\'re trying to create Field with wrong type.
  */
-class FieldDefinitionWrosynException extends MethodFopException
+class FieldDefinitionWrosynException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param string $error What is the error (goes to hint).
-     * @param Field  $field Field that have a problem.
+     * @var string
      */
-    public function __construct(string $error, Field $field)
-    {
+    protected $hint = 'You\'re trying to create Field with wrong type.';
 
-        // Define.
-        $this->addInfo('context', 'definingFieldType');
-        $this->addInfo('field', get_class($field));
-        $this->addInfo('fieldName', $field->getName());
-        $this->addHint('You\'re trying to create Field with wrong type. ' . $error);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'error',
+        'field',
+        'fieldName',
+    ];
 }

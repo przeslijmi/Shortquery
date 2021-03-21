@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql;
 
-use Exception;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\CompToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\FalseValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\FieldToString;
@@ -15,6 +14,7 @@ use Przeslijmi\Shortquery\Engine\Mysql\ToString\RuleToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\TrueValToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValToString;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ToStringFopException;
 use Przeslijmi\Shortquery\Items\AnyItem;
 
 /**
@@ -45,7 +45,7 @@ class ToString
      * @param Item|LogicItem[] $item    Item to be converted to string.
      * @param string           $context Name of context.
      *
-     * @throws Exception When send Item not fits to any maker.
+     * @throws ToStringFopException When send Item not fits to any maker.
      * @return string
      */
     private static function getMaker($item, string $context)
@@ -55,8 +55,9 @@ class ToString
             return new LogicsToString($item, $context);
         }
 
+        // Fast track.
         if (is_object($item) === false) {
-            throw new Exception('ups');
+            throw new ToStringFopException();
         }
 
         if (is_a($item, 'Przeslijmi\Shortquery\Items\Comp') === true) {
@@ -93,6 +94,6 @@ class ToString
             return new ValsToString($item, $context);
         }//end if
 
-        throw new Exception('ups');
+        throw new ToStringFopException();
     }
 }

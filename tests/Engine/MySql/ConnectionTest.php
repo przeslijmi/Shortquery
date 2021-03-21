@@ -4,7 +4,7 @@ namespace Przeslijmi\Shortquery\Engine\Mysql;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\Mysql\Connection;
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
 
 /**
  * Methods for testing Connection class.
@@ -36,7 +36,7 @@ final class ConnectionTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(ClassFopException::class);
+        $this->expectException(ConnectionFopException::class);
 
         // Test.
         Connection::get('testWrong');

@@ -2,26 +2,28 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model namespace is empty.
+ * Model has no given namespace, use `$model->setNamespace($nonEmptyNamespace)` to fix.
  */
-class ModelNamespaceDonoexException extends ClassFopException
+class ModelNamespaceDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no given namespace, use `$model->setNamespace($nonEmptyNamespace)` to fix.';
 
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addInfo('hint', 'Model has no given namespace, use `$model->setNamespace($nonEmptyNamespace)` to fix.');
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+    ];
 }

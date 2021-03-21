@@ -4,6 +4,7 @@ namespace Przeslijmi\Shortquery\Data;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Data\Field\DateField;
+use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Exceptions\Items\FieldValueInproperException;
 
 /**
@@ -42,6 +43,7 @@ final class DataFieldTest extends TestCase
 
         // Create Field.
         $field = new DateField('test_name');
+        $field->setModel(( new Model() )->setName('test'));
 
         // Test.
         $this->assertFalse($field->isValueValid('2019-01-32'));

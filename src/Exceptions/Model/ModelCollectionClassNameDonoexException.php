@@ -2,32 +2,30 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model collection class name is empty.
+ * Model has no given collection class name, use `$model->setCollectionClassName($nonEmptyCollectionClassName)` to fix.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class ModelCollectionClassNameDonoexException extends ClassFopException
+class ModelCollectionClassNameDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no given collection class name, use `$model->setCollectionClassName($nonEmptyCollectionClassName)` to fix.';
 
-        // Lvd.
-        $hint  = 'Model has no given collection class name, ';
-        $hint .= 'use `$model->setCollectionClassName($nonEmptyCollectionClassName)` to fix.';
-
-        // Define.
-        $this->setCodeName('ModelCollectionClassNameDonoexException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+    ];
 }

@@ -129,8 +129,8 @@ final class ModelsTest extends TestCase
 
         // Test.
         $this->assertEquals('Adriana', $girl->getName());
-        $this->assertEquals('is', $girl->getWebs());
-        $this->assertEquals('instagram', $girl->getWebs('main'));
+        $this->assertEquals('sc,is', $girl->getWebs());
+        $this->assertEquals('snapchat,instagram', $girl->getWebs('main'));
         $this->assertEquals(Cars::class, get_class($girl->getCars()));
         $this->assertEquals(Cars::class, get_class($girl->getFastCars()));
         $this->assertEquals(2, count($girl->getCars()->get()));
@@ -186,8 +186,8 @@ final class ModelsTest extends TestCase
 
         // Test girl A.
         $this->assertEquals('Adriana', $girlA->getName());
-        $this->assertEquals('is', $girlA->getWebs());
-        $this->assertEquals('instagram', $girlA->getWebs('main'));
+        $this->assertEquals('sc,is', $girlA->getWebs());
+        $this->assertEquals('snapchat,instagram', $girlA->getWebs('main'));
         $this->assertEquals(Cars::class, get_class($girlA->getFastCars()));
         $this->assertEquals('Toyota', $girlA->getCars()->get()[0]->getName());
         $this->assertEquals('Toyota', $girlA->getFastCars()->get()[0]->getName());

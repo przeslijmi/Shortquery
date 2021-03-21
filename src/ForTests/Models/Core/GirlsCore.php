@@ -4,7 +4,7 @@ namespace Przeslijmi\Shortquery\ForTests\Models\Core;
 
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Field;
-use Przeslijmi\Shortquery\ForTests\Models\Cars as Cars1356;
+use Przeslijmi\Shortquery\ForTests\Models\Cars as Cars9348;
 use Przeslijmi\Shortquery\ForTests\Models\Core\GirlModel;
 
 /**
@@ -45,8 +45,9 @@ class GirlsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Cars1356(...func_get_args());
+        $toAdd = new Cars9348(...func_get_args());
         $toAdd->getLogics()->addRule('owner_girl', $pks);
+        $toAdd->getLogics()->addFromRelation($this->getModel()->getRelationByName('cars'));
         $toAdd->read();
 
         // Unpack child records to existing collection of parents.
@@ -74,8 +75,9 @@ class GirlsCore extends Collection
         }
 
         // Get records with those pks.
-        $toAdd = new Cars1356(...func_get_args());
+        $toAdd = new Cars9348(...func_get_args());
         $toAdd->getLogics()->addRule('owner_girl', $pks);
+        $toAdd->getLogics()->addFromRelation($this->getModel()->getRelationByName('fastCars'));
         $toAdd->read();
 
         // Unpack child records to existing collection of parents.

@@ -2,15 +2,14 @@
 
 namespace Przeslijmi\Shortquery;
 
-use stdClass;
-use Exception;
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Sexceptions\Exceptions\ParamWrotypeException;
-use Przeslijmi\Sexceptions\Exceptions\MethodFopException;
 use Przeslijmi\Shortquery\Engine\MySql\ToString;
+use Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicsToString;
 use Przeslijmi\Shortquery\Engine\Mysql\ToString\RuleToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ToStringFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringFopException;
+use Przeslijmi\Shortquery\Exceptions\Items\LogicsToStringWrongComponentsException;
 use Przeslijmi\Shortquery\Items\Comp;
 use Przeslijmi\Shortquery\Items\FalseVal;
 use Przeslijmi\Shortquery\Items\Field;
@@ -23,6 +22,7 @@ use Przeslijmi\Shortquery\Items\Rule;
 use Przeslijmi\Shortquery\Items\TrueVal;
 use Przeslijmi\Shortquery\Items\Val;
 use Przeslijmi\Shortquery\Items\Vals;
+use stdClass;
 
 /**
  * Methods for testing CustomQuery from MySql Engine.
@@ -77,8 +77,8 @@ final class ToStringTest extends TestCase
                 'TRUE!=DATEDIFF(\'start\', \'end\')',
             ],
             [
-                new Rule(Func::factory('inset', [ 'set', 'needle' ]), new Comp('neq'), new TrueVal()),
-                'FIND_IN_SET( \'set\', \'needle\') IS  NOT TRUE',
+                new Rule(Func::factory('inset', [ 'needle', 'set' ]), new Comp('neq'), new TrueVal()),
+                'FIND_IN_SET( \'needle\', \'set\' ) !=TRUE',
             ],
             [
                 new Rule(new TrueVal(), new Comp('neq'), Func::factory('in', [ 'wordA', 'wordB' ])),
@@ -226,7 +226,7 @@ final class ToStringTest extends TestCase
 
 
         // Prepare.
-        $this->expectException(ParamWrotypeException::class);
+        $this->expectException(LogicsToStringWrongComponentsException::class);
 
         // Call.
         ToString::convert([ 'notALogicsArray' ]);
@@ -271,7 +271,7 @@ final class ToStringTest extends TestCase
         $func = Func::factory('nonExistingFunc', [ 'aa', 'bb' ]);
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(FuncToStringFopException::class);
 
         // Test.
         ( new FuncToString($func) )->toString();
@@ -289,7 +289,7 @@ final class ToStringTest extends TestCase
         $func = Func::factory('between', [ 2 ]);
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(FuncToStringFopException::class);
 
         // Test.
         ( new FuncToString($func) )->toString();
@@ -307,7 +307,7 @@ final class ToStringTest extends TestCase
         $func = Func::factory('concat', [ ]);
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(FuncToStringFopException::class);
 
         // Test.
         ( new FuncToString($func) )->toString();
@@ -325,7 +325,7 @@ final class ToStringTest extends TestCase
         $rule = new Rule(new TrueVal(), new Comp('leq'), Func::factory('in', [ 'wordA', 'wordB' ]));
 
         // Prepare.
-        $this->expectException(MethodFopException::class);
+        $this->expectException(FuncToStringFopException::class);
 
         // Test.
         ( new RuleToString($rule) )->toString();
@@ -340,7 +340,7 @@ final class ToStringTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(Exception::class);
+        $this->expectException(ToStringFopException::class);
 
         // Test.
         ToString::convert(new stdClass());
@@ -355,7 +355,7 @@ final class ToStringTest extends TestCase
     {
 
         // Prepare.
-        $this->expectException(Exception::class);
+        $this->expectException(ToStringFopException::class);
 
         // Test.
         ToString::convert('test');

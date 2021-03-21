@@ -2,7 +2,6 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql\Queries;
 
-use Exception;
 use mysqli_result;
 use Przeslijmi\Shortquery\Data\Collection;
 use Przeslijmi\Shortquery\Data\Instance;

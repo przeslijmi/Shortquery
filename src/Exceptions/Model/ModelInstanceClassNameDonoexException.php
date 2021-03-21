@@ -2,32 +2,30 @@
 
 namespace Przeslijmi\Shortquery\Exceptions\Model;
 
-use Przeslijmi\Sexceptions\Exceptions\ClassFopException;
-use Przeslijmi\Shortquery\Data\Model;
+use Przeslijmi\Sexceptions\Sexception;
 
 /**
- * Model instance class name is empty.
+ * Model has no given instance class name, use `$model->setInstanceClassName($nonEmptyInstanceClassName)` to fix.
+ *
+ * @phpcs:disable Generic.Files.LineLength
  */
-class ModelInstanceClassNameDonoexException extends ClassFopException
+class ModelInstanceClassNameDonoexException extends Sexception
 {
 
     /**
-     * Constructor.
+     * Hint.
      *
-     * @param Model $model Model that has the problem.
+     * @var string
      */
-    public function __construct(Model $model)
-    {
+    protected $hint = 'Model has no given instance class name, use `$model->setInstanceClassName($nonEmptyInstanceClassName)` to fix.';
 
-        // Lvd.
-        $hint  = 'Model has no given instance class name,';
-        $hint .= ' use `$model->setInstanceClassName($nonEmptyInstanceClassName)` to fix.';
-
-        // Define.
-        $this->setCodeName('ModelInstanceClassNameDonoexException');
-        $this->addInfo('context', 'DefiningModel');
-        $this->addInfo('modelName', $model->getName());
-        $this->addInfo('modelClass', get_class($model));
-        $this->addHint($hint);
-    }
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'modelName',
+        'modelClass',
+    ];
 }
