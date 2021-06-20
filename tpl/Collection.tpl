@@ -5,6 +5,8 @@ use <?= $this->model->getClass('namespaceCore') ?>\<?= $this->model->getClass('c
 
 /**
  * ShortQuery Collection class for <?= $this->model->getClass('instanceClassName') ?> Model.
+ *
+ * This is a `<shortquery-role:collection>`.
  */
 class <?= $this->model->getClass('collectionClassName') ?> extends <?= $this->model->getClass('collectionCoreClassName') ?>
 

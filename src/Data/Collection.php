@@ -632,7 +632,7 @@ abstract class Collection extends Tools
             unset($record['counter']);
             $key = implode($separator, $record);
 
-            // If the key is empty - it means no aggregaiton columns where used - so adding this result
+            // If the key is empty - it means no aggregation columns where used - so adding this result
             // among @@total result will be just a duplication.
             if (empty($key) === false) {
                 $result[$key] = $counter;

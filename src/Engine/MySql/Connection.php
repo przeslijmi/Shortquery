@@ -4,6 +4,8 @@ namespace Przeslijmi\Shortquery\Engine\Mysql;
 
 use MySQLi;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\MysqlNotAvailableException;
+use Throwable;
 
 /**
  * Connection to MySqli creator.
@@ -73,7 +75,13 @@ class Connection
     ) : MySqli {
 
         // Try to connect.
-        $connection = @new MySQLi($host, $user, $password, $database, $port);
+        try {
+            $connection = @new MySQLi($host, $user, $password, $database, $port);
+        } catch (Throwable $thr) {
+            throw new MysqlNotAvailableException(
+                [ $host, $port, $user, [ 'NO', 'YES' ][ (bool) $password], $database ]
+            );
+        }
 
         // If there was an error - throw exception.
         if (empty($connection->connect_error) === false) {

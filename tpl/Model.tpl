@@ -14,6 +14,8 @@ use Przeslijmi\Shortquery\Data\Relation\HasOneRelation;
 
 /**
  * ShortQuery Model definition for <?= $this->model->getClass('instanceClassName') ?>.
+ *
+ * This is a `<shortquery-role:model>`.
  */
 class <?= $this->model->getClass('modelClassName') ?> extends Model
 {

@@ -149,6 +149,16 @@ abstract class PhpFile
         return $this->contents;
     }
 
+    public function getShortUri() : string
+    {
+
+        // Lvd.
+        $fullUri = $this->getUri();
+        $baseUri = rtrim(str_replace('\\', '/', $this->settings['schemaSettingsUri']), '/') . '/';
+
+        return str_replace('\\', '/', substr($fullUri, strlen($baseUri)));
+    }
+
     /**
      * Returns first line (start tag and declaration) for every PHP file.
      *

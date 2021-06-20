@@ -29,6 +29,13 @@ class Creator extends CliApp
     private $schema;
 
     /**
+     * Created uris (list).
+     *
+     * @var string[]
+     */
+    private $createdUris;
+
+    /**
      * Main screen of application - creates files.
      *
      * @throws ModelsInSchemaDonoexException When no models are given to be created.
@@ -60,6 +67,7 @@ class Creator extends CliApp
         // Define overwriting.
         $overwriteCore    = ( $this->getParams()->getParam('overwriteCore', false) ?? true );
         $overwriteNonCore = ( $this->getParams()->getParam('overwriteNonCore', false) ?? false );
+        $deleteOtherPhps  = ( $this->getParams()->getParam('deleteOtherPhps', false) ?? 'none' );
 
         // Call to create every Model itself - for now.
         foreach ($this->schema['models'] as $model) {
@@ -77,6 +85,7 @@ class Creator extends CliApp
             $phpFile = new ModelPhpFile($settings, $model);
             $phpFile->prepare();
             $phpFile->save($overwriteCore);
+            $this->createdUris[] = $phpFile->getShortUri();
         }
 
         // Call to create all other files.
@@ -95,22 +104,29 @@ class Creator extends CliApp
             $phpFile = new CollectionCore($settings, $model);
             $phpFile->prepare();
             $phpFile->save($overwriteCore);
+            $this->createdUris[] = $phpFile->getShortUri();
 
             // Model Core.
             $phpFile = new InstanceCore($settings, $model);
             $phpFile->prepare();
             $phpFile->save($overwriteCore);
+            $this->createdUris[] = $phpFile->getShortUri();
 
             // Model Coll.
             $phpFile = new Collection($settings, $model);
             $phpFile->prepare();
             $phpFile->save($overwriteNonCore);
+            $this->createdUris[] = $phpFile->getShortUri();
 
             // Model.
             $phpFile = new Instance($settings, $model);
             $phpFile->prepare();
             $phpFile->save($overwriteNonCore);
+            $this->createdUris[] = $phpFile->getShortUri();
         }//end foreach
+
+        // Call to delete other files from src.
+        $this->deleteOtherPhps($deleteOtherPhps);
 
         // Log.
         $this->log('notice', 'Przeslijmi\Shortquery\Creator: bye bye!');
@@ -159,6 +175,63 @@ class Creator extends CliApp
     }
 
     /**
+     * Deletes any other PHP files other than created inside working directory.
+     *
+     * First param means:
+     *   - `none` - do not delete any files,
+     *   - `onlyShortquery` - only files that directly relate to Shortquery elements,
+     *   - `any` - delete all PHP files in dir and subdirs.
+     *
+     * @param string $mode One of: `none`, `onlyShortquery` or `any`.
+     *
+     * @return void
+     */
+    private function deleteOtherPhps(string $mode) : void
+    {
+
+        // Short way.
+        if ($mode === 'none') {
+            return;
+        }
+
+        // Find existing files.
+        foreach ($this->schema['settings']['src'] as $namespace => $src) {
+            $existing = array_merge(
+                ( $existing ?? [] ),
+                $this->findAllPhpFilesInDirRecursively($src, true)
+            );
+        }
+
+        // Create short list - ie. list of presumabely unneeded PHP files.
+        $shortList = array_values(array_diff($existing, $this->createdUris));
+
+        // Depending on mode - `any` will delete all files from the shortlist, while `onlyShortquery`
+        // is safer thus smaller - will only delete those that have one of those inside:
+        // `<shortquery-role:collection>`
+        // `<shortquery-role:collection-core>`
+        // `<shortquery-role:instance>`
+        // `<shortquery-role:instance-core>`
+        // `<shortquery-role:model>`
+        foreach ($shortList as $phpUri) {
+
+            // Lvd.
+            $delete = false;
+
+            // Decide on deletion.
+            if ($mode === 'any') {
+                $delete = true;
+            } elseif ($mode === 'onlyShortquery') {
+                $delete = ( (bool) strpos(file_get_contents($phpUri), '`<shortquery-role:'));
+            }
+
+            // Delete if decided to.
+            if ($delete === true) {
+                unlink($phpUri);
+            }
+        }
+    }
+
+    /**
      * Check are all neded params present.
      *
      * @throws SchemaMissingException When no Schema has been given.
@@ -175,5 +248,26 @@ class Creator extends CliApp
         if ($isSchemaUri === false && $isSchema === false) {
             throw new SchemaMissingException();
         }
+    }
+
+    private function findAllPhpFilesInDirRecursively(string $dir, bool $firstIteration = false) : array
+    {
+
+        $found = [];
+        $dir   = rtrim(str_replace('\\', '/', $dir), '/') . '/';
+
+        if ($firstIteration === true) {
+            $dir .= 'Models/';
+        }
+
+        foreach (glob($dir . '*') as $element) {
+            if (is_dir($element) === true) {
+                $found = array_merge($found, $this->findAllPhpFilesInDirRecursively($element));
+            } elseif (substr($element, -4) === '.php') {
+                $found[] = $element;
+            }
+        }
+
+        return $found;
     }
 }

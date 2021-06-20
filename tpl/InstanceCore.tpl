@@ -17,7 +17,9 @@ $this->showNamespaces();
 ?>
 
 /**
- * ShortQuery Core class for <?= $this->model->getClass('instanceClassName') ?> Model.
+ * ShortQuery Instance Core class for <?= $this->model->getClass('instanceClassName') ?> Model.
+ *
+ * This is a `<shortquery-role:instance-core>`.
  */
 class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 {

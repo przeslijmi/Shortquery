@@ -16,6 +16,8 @@ $this->showNamespaces();
 
 /**
  * ShortQuery Collection Core class for <?= $this->model->getClass('instanceClassName') ?> Model Collection.
+ *
+ * This is a `<shortquery-role:collection-core>`.
  */
 class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collection
 {
