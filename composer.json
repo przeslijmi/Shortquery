@@ -1,7 +1,7 @@
 {
   "name": "przeslijmi/shortquery",
   "description": "PHP library working as database connector.",
-  "version": "v1.5.1",
+  "version": "v1.5.2",
   "type": "library",
   "license": "MIT",
   "authors": [
@@ -34,11 +34,11 @@
   ],
   "require": {
     "php" : "^7.3",
-    "przeslijmi/sexceptions": ">0",
-    "przeslijmi/cliapp": ">0",
-    "przeslijmi/silogger": ">0",
-    "przeslijmi/sivalidator": ">0",
-    "przeslijmi/sihdd": ">0"
+    "przeslijmi/sexceptions": ">=1.8",
+    "przeslijmi/cliapp": ">=1.3",
+    "przeslijmi/silogger": ">=1.3",
+    "przeslijmi/sivalidator": ">=2.2",
+    "przeslijmi/sihdd": ">=2.2"
   },
   "autoload": {
     "psr-4": {
