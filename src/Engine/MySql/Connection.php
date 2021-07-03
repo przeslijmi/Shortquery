@@ -28,11 +28,13 @@ class Connection
      *
      * @return MySqli
      */
-    public static function get(string $database, int $id = 0) : MySQLi
+    public static function get(string $database, int $id = 0, ?array $auth = null) : MySQLi
     {
 
         // Lvd.
-        $auth = PRZESLIJMI_SHORTQUERY_DATABASES[$database]['auth'];
+        if ($auth === null) {
+            $auth = PRZESLIJMI_SHORTQUERY_DATABASES[$database]['auth'];
+        }
 
         // No instance with given id - create new one.
         if (isset($connections[$database][$id]) === false) {
@@ -41,7 +43,7 @@ class Connection
                 $auth['user'],
                 $auth['pass'],
                 $auth['db'],
-                $auth['port']
+                ( $auth['port'] ?? null )
             );
         }
 
@@ -71,7 +73,7 @@ class Connection
         string $user,
         string $password,
         string $database,
-        int $port = 330
+        ?int $port = 330
     ) : MySqli {
 
         // Try to connect.

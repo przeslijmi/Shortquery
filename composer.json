@@ -1,7 +1,7 @@
 {
   "name": "przeslijmi/shortquery",
   "description": "PHP library working as database connector.",
-  "version": "v1.5.2",
+  "version": "v1.5.3",
   "type": "library",
   "license": "MIT",
   "authors": [
