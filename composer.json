@@ -33,7 +33,7 @@
     }
   ],
   "require": {
-    "php" : "^7.3",
+    "php" : "^7|^8",
     "przeslijmi/sexceptions": ">=1.8",
     "przeslijmi/cliapp": ">=1.3",
     "przeslijmi/silogger": ">=1.3",
