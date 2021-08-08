@@ -108,7 +108,7 @@ class IntField extends Field implements FieldInterface
         $result = RegEx::ifMatches((string) $value, '/^(\-)?([0-9])+$/', false);
 
         // Checks max length.
-        if ($result === true && mb_strlen(preg_replace('/([^0-9])/', '', $value)) > $this->maxLength) {
+        if ($result === true && mb_strlen(preg_replace('/([^0-9])/', '', (string) $value)) > $this->maxLength) {
             $result = false;
         }
 

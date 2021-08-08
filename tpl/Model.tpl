@@ -34,7 +34,7 @@ class <?= $this->model->getClass('modelClassName') ?> extends Model
      * @return <?= $this->model->getClass('modelClassName') ?>
 
      */
-    public static function getInstance() : <?= $this->model->getClass('modelClassName') ?>
+    public static function getInstance(): <?= $this->model->getClass('modelClassName') ?>
 
     {
 

@@ -42,7 +42,7 @@ class <?= $this->model->getClass('collectionCoreClassName') ?> extends Collectio
      * @since  v1.0
      * @return self
      */
-    public function <?= $relation->getExpanderName() ?>() : self
+    public function <?= $relation->getExpanderName() ?>(): self
     {
 
         // Get pks (primary-keys) present in current collection.

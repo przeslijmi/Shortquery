@@ -167,7 +167,7 @@ abstract class PhpFile
     protected function getFirstLinePhp() : string
     {
 
-        return chr(60) . chr(63) . 'php declare(strict_types=1);' . "\n";
+        return chr(60) . chr(63) . 'php' . "\n\n" . 'declare(strict_types=1);' . "\n";
     }
 
     /**

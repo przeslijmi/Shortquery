@@ -220,7 +220,7 @@ abstract class Query extends MySql
         } elseif (is_bool($value) === true) {
             return (string) (int) $value;
         } elseif (is_scalar($value) === true) {
-            return str_replace(',', '.', $value);
+            return str_replace(',', '.', (string) $value);
         } elseif (is_a($value, 'stdClass') === true) {
             return "'" . json_encode($value) . "'";
         }

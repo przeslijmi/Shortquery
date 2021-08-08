@@ -252,7 +252,8 @@ class DecimalField extends Field implements FieldInterface
     public function compareToPhp() : string
     {
 
-        $php  = $this->ln(0, 'if (' . $this->cc(true) . ' === $' . $this->cc() . '');
+        $php  = $this->ln(0, 'if (');
+        $php .= $this->ln(3, $this->cc(true) . ' === $' . $this->cc() . '');
         $php .= $this->ln(3, '|| (string) ' . $this->cc(true) . ' === (string) $' . $this->cc() . '');
         $php .= $this->ln(2, ') {');
 

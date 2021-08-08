@@ -66,7 +66,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return self
      */
-    public function injectData(array $inject) : self
+    public function injectData(array $inject): self
     {
 
         // Inject properties.
@@ -87,7 +87,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return boolean
      */
-    public function hasPrimaryKey() : bool
+    public function hasPrimaryKey(): bool
     {
 
         if ($this-><?= $this->model->getPrimaryKeyField()->getName('camelCase') ?> === null) {
@@ -102,7 +102,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return self
      */
-    protected function resetPrimaryKey() : self
+    protected function resetPrimaryKey(): self
     {
 
         $this-><?= $this->model->getPrimaryKeyField()->getName('camelCase') ?> = null;
@@ -123,7 +123,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $field->getPhpDocsTypeOutput() ?>
 
      */
-    public function get<?= $field->getName('pascalCase') ?>() : <?= $field->getPhpTypeOutput() ?>
+    public function get<?= $field->getName('pascalCase') ?>(): <?= $field->getPhpTypeOutput() ?>
 
     {
 
@@ -136,7 +136,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $field->getPhpDocsTypeOutput() ?>
 
      */
-    public function getCore<?= $field->getName('pascalCase') ?>() : <?= $field->getPhpTypeOutput() ?>
+    public function getCore<?= $field->getName('pascalCase') ?>(): <?= $field->getPhpTypeOutput() ?>
 
     {
 
@@ -153,7 +153,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
      */
-    public function set<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
+    public function set<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>): <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
     {
 
@@ -168,7 +168,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
      */
-    public function setCore<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>) : <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
+    public function setCore<?= $field->getName('pascalCase') ?>(<?= $field->getPhpTypeInput() ?>$<?= $field->getName('camelCase') ?>): <?= $this->getClassName($this->model->getClass('instanceClass')) ?>
 
     {
 
@@ -208,7 +208,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>
 
      */
-    public function <?= $relation->getGetterName() ?>() : <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>
+    public function <?= $relation->getGetterName() ?>(): <?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?>
 
     {
 
@@ -221,7 +221,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @since  v1.0
      * @return self
      */
-    public function <?= $relation->getExpanderName() ?>() : self
+    public function <?= $relation->getExpanderName() ?>(): self
     {
 
         // Get records with those pks.
@@ -246,7 +246,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return self
      */
-    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?> $instance) : self
+    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('instanceClass')) ?> $instance): self
     {
 
         // If there is no Collection created - create one.
@@ -267,7 +267,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @return <?= $relation->getModelTo()->getClass('collectionClassName') ?>
 
      */
-    public function <?= $relation->getGetterName() ?>() : <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>
+    public function <?= $relation->getGetterName() ?>(): <?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?>
 
     {
 
@@ -286,7 +286,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      * @since  v1.0
      * @return self
      */
-    public function <?= $relation->getExpanderName() ?>() : self
+    public function <?= $relation->getExpanderName() ?>(): self
     {
 
         // Get records with those pks.
@@ -318,7 +318,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
      *
      * @return self
      */
-    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?> $collection) : self
+    public function <?= $relation->getAdderName() ?>(<?= $this->getClassName($relation->getModelTo()->getClass('collectionClass')) ?> $collection): self
     {
 
         // Put this Instance to this Collection.

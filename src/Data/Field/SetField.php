@@ -323,7 +323,8 @@ class SetField extends Field implements FieldInterface
     public function compareToPhp() : string
     {
 
-        $php  = $this->ln(0, 'if (is_null($' . $this->cc() . ') === is_null(' . $this->cc(true) . ')');
+        $php  = $this->ln(0, 'if (');
+        $php  = $this->ln(3, 'is_null($' . $this->cc() . ') === is_null(' . $this->cc(true) . ')');
         $php .= $this->ln(
             3,
             '&& count(array_diff((array) $' . $this->cc() . ', (array) ' . $this->cc(true) . ')) === 0'
