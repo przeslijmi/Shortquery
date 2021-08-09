@@ -46,7 +46,7 @@ class VarCharField extends Field implements FieldInterface
      *
      * @param integer $maxLength Maximum length of the value in Field.
      *
-     * @throws FieldDefinitionWrosynException When max length is below 1 or above 8000.
+     * @throws FieldDefinitionWrosynException When max length is below 1 or above 65000.
      * @return self
      */
     public function setMaxLength(int $maxLength) : self
@@ -60,9 +60,9 @@ class VarCharField extends Field implements FieldInterface
         }
 
         // On too high.
-        if ($maxLength > 8000) {
+        if ($maxLength > 65000) {
             throw new FieldDefinitionWrosynException(
-                [ 'Max lenght can not be greater than 8000.', get_class($this), $this->getName() ]
+                [ 'Max lenght can not be greater than 65000.', get_class($this), $this->getName() ]
             );
         }
 
