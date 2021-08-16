@@ -3,7 +3,7 @@
 namespace Przeslijmi\Shortquery\Engine\Mysql;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\Engine\Mysql\Connection;
+use Przeslijmi\Shortquery\Engine\MySql\Connection;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
 
 /**

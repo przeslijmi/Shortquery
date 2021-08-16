@@ -3,7 +3,7 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\UpdateQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\UpdateQuery;
 use Przeslijmi\Shortquery\Exceptions\Items\RuleCreationFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;

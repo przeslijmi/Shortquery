@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
+namespace Przeslijmi\Shortquery\Engine\MySql\ToString;
 
 use Przeslijmi\Sexceptions\Exceptions\TypeHintingFailException;
 use Przeslijmi\Shortquery\Exceptions\Items\LogicsToStringWrongComponentsException;

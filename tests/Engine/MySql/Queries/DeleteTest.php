@@ -3,9 +3,9 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\DeleteQuery;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\InsertQuery;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\SelectQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\DeleteQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\InsertQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
 

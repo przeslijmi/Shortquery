@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Engine\Mysql\ToString;
+namespace Przeslijmi\Shortquery\Engine\MySql\ToString;
 
 use Przeslijmi\Shortquery\Exceptions\Items\FuncNameOtosetException;
 use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringFopException;
@@ -48,15 +48,15 @@ class FuncToString
     private $context;
 
     const SERVED_FUNCS = [
-        'between'      => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncBetweenToString',
-        'concat'       => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncConcatToString',
-        'count'        => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncCountToString',
-        'localfunc'    => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncLocalToString',
-        'datediffdays' => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncDateDiffDaysToString',
-        'in'           => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInToString',
-        'inset'        => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncInSetToString',
-        'min'          => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncMinToString',
-        'sum'          => 'Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString\FuncSumToString',
+        'between'      => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncBetweenToString',
+        'concat'       => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncConcatToString',
+        'count'        => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncCountToString',
+        'localfunc'    => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncLocalToString',
+        'datediffdays' => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncDateDiffDaysToString',
+        'in'           => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncInToString',
+        'inset'        => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncInSetToString',
+        'min'          => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncMinToString',
+        'sum'          => 'Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString\FuncSumToString',
     ];
 
     /**

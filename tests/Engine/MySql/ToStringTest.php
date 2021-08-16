@@ -4,9 +4,9 @@ namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\MySql\ToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicsToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\RuleToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\LogicsToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\RuleToString;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ToStringFopException;
 use Przeslijmi\Shortquery\Exceptions\Items\FuncToStringFopException;
 use Przeslijmi\Shortquery\Exceptions\Items\LogicsToStringWrongComponentsException;

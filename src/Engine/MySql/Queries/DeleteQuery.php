@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery\Engine\MySql\Queries;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine\MySql;
 use Przeslijmi\Shortquery\Engine\MySql\Query;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicsToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\LogicsToString;
 use Przeslijmi\Shortquery\Items\Rule;
 
 /**

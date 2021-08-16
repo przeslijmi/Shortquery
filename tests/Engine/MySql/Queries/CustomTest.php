@@ -3,7 +3,7 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\CustomQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\CustomQuery;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopConnectionDonoexException;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopException;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ValuifyFopException;

@@ -2,18 +2,18 @@
 
 namespace Przeslijmi\Shortquery\Engine\MySql;
 
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\CompToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FalseValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FieldToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\FuncToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\IntValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicsToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\LogicToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\NullValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\RuleToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\TrueValToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValsToString;
-use Przeslijmi\Shortquery\Engine\Mysql\ToString\ValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\CompToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FalseValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FieldToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\FuncToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\IntValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\LogicsToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\LogicToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\NullValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\RuleToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\TrueValToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\ValsToString;
+use Przeslijmi\Shortquery\Engine\MySql\ToString\ValToString;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ToStringFopException;
 use Przeslijmi\Shortquery\Items\AnyItem;
 

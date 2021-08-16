@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery\Engine;
 use mysqli_result;
 use Przeslijmi\Shortquery\Engine;
 use Przeslijmi\Shortquery\Engine\EngineInterface;
-use Przeslijmi\Shortquery\Engine\Mysql\Connection;
+use Przeslijmi\Shortquery\Engine\MySql\Connection;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopException;
 use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopConnectionDonoexException;

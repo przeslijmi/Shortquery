@@ -3,7 +3,7 @@
 namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
-use Przeslijmi\Shortquery\Engine\Mysql\Queries\SelectQuery;
+use Przeslijmi\Shortquery\Engine\MySql\Queries\SelectQuery;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use Przeslijmi\Shortquery\ForTests\Models\Cars;
 use Przeslijmi\Shortquery\ForTests\Models\Core\CarModel;
