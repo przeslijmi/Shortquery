@@ -16,4 +16,13 @@ class CollectionCantBeReadException extends Sexception
      * @var string
      */
     protected $hint = 'There was an error during creation of Collection. See causes.';
+
+    /**
+     * Keys for extra data array.
+     *
+     * @var array
+     */
+    protected $keys = [
+        'collectionClass',
+    ];
 }
