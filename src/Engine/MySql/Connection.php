@@ -35,9 +35,12 @@ class Connection
         if ($auth === null) {
             $auth = PRZESLIJMI_SHORTQUERY_DATABASES[$database]['auth'];
         }
+        $def = ( PRZESLIJMI_SHORTQUERY_DATABASES[$database]['def'] ?? [] );
 
         // No instance with given id - create new one.
         if (isset($connections[$database][$id]) === false) {
+
+            // Connect.
             $connections[$database][$id] = self::startConnection(
                 $auth['url'],
                 $auth['user'],
@@ -45,6 +48,11 @@ class Connection
                 $auth['db'],
                 ( $auth['port'] ?? null )
             );
+
+            // Define charset.
+            if (isset($def['charSet']) && empty($def['charSet']) === false) {
+                $connections[$database][$id]->set_charset($def['charSet']);
+            }
         }
 
         // Return instance of given id.

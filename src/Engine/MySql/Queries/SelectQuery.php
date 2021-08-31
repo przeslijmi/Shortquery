@@ -63,6 +63,13 @@ class SelectQuery extends Query
     private $orderBy = [];
 
     /**
+     * Contents of logic section (WHERE) which was put to this instance to overwrite calculated string.
+     *
+     * @var string
+     */
+    private $forcedLogicSection;
+
+    /**
      * Setter for limit.
      *
      * @param integer $sliceFrom   Where from cut the results.
@@ -232,6 +239,21 @@ class SelectQuery extends Query
     }
 
     /**
+     * Force use of this WHERE (logic) section instead of caluclating one from fields.
+     *
+     * @param string $logicSection Logiv section to use.
+     *
+     * @return self
+     */
+    public function overwriteLogicSection(string $logicSection): self
+    {
+
+        $this->forcedLogicSection = $logicSection;
+
+        return $this;
+    }
+
+    /**
      * Converts ContentItems from SELECT section into final SELECT section string.
      *
      * @return string
@@ -333,7 +355,12 @@ class SelectQuery extends Query
     private function logicsSectionToString() : string
     {
 
-        $result = trim(ToString::convert($this->getLogicsSet()));
+        // Use forced (if defined) or calculated.
+        if (empty($this->forcedLogicSection) === false) {
+            $result = $this->forcedLogicSection;
+        } else {
+            $result = trim(ToString::convert($this->getLogicsSet()));
+        }
 
         return ( ( $result === '' ) ? '' : 'WHERE ' . $result );
     }
