@@ -5,7 +5,7 @@ namespace Przeslijmi\Shortquery\Engine\MySql;
 use Przeslijmi\Shortquery\Data\Instance;
 use Przeslijmi\Shortquery\Data\Model;
 use Przeslijmi\Shortquery\Engine\MySql;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ValuifyFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\ValuifyFopException;
 use Przeslijmi\Shortquery\Items\LogicAnd;
 use Przeslijmi\Shortquery\Items\LogicItem;
 use Przeslijmi\Shortquery\Items\LogicOr;

@@ -14,7 +14,7 @@ use Przeslijmi\Shortquery\Engine\MySql\ToString\RuleToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\TrueValToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValsToString;
 use Przeslijmi\Shortquery\Engine\MySql\ToString\ValToString;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ToStringFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\ToStringFopException;
 use Przeslijmi\Shortquery\Items\AnyItem;
 
 /**

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Engine\Mysql;
+namespace Przeslijmi\Shortquery\Engine\MySql;
 
 /**
  * Definitions for MySQL.

@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Engine\Mysql;
+namespace Przeslijmi\Shortquery\Engine\MySql;
 
 use MySQLi;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\MysqlNotAvailableException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\ConnectionFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\MySqlNotAvailableException;
 use Throwable;
 
 /**
@@ -88,7 +88,7 @@ class Connection
         try {
             $connection = @new MySQLi($host, $user, $password, $database, $port);
         } catch (Throwable $thr) {
-            throw new MysqlNotAvailableException(
+            throw new MySqlNotAvailableException(
                 [ $host, $port, $user, [ 'NO', 'YES' ][ (bool) $password], $database ]
             );
         }

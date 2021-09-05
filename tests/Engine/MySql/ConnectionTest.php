@@ -1,10 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Engine\Mysql;
+namespace Przeslijmi\Shortquery\Engine\MySql;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\MySql\Connection;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ConnectionFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\ConnectionFopException;
 
 /**
  * Methods for testing Connection class.

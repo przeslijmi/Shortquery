@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace Przeslijmi\Shortquery\Exceptions\Engines\Mysql;
+namespace Przeslijmi\Shortquery\Exceptions\Engines\MySql;
 
 use Przeslijmi\Sexceptions\Sexception;
 

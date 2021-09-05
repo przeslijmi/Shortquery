@@ -4,9 +4,9 @@ namespace Przeslijmi\Shortquery;
 
 use PHPUnit\Framework\TestCase;
 use Przeslijmi\Shortquery\Engine\MySql\Queries\CustomQuery;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopConnectionDonoexException;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\QueryFopException;
-use Przeslijmi\Shortquery\Exceptions\Engines\Mysql\ValuifyFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\QueryFopConnectionDonoexException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\QueryFopException;
+use Przeslijmi\Shortquery\Exceptions\Engines\MySql\ValuifyFopException;
 use Przeslijmi\Shortquery\ForTests\Models\Car;
 use stdClass;
 
