@@ -107,7 +107,7 @@ class <?= $this->model->getClass('instanceCoreClassName') ?> extends Instance
 
         $this-><?= $this->model->getPrimaryKeyField()->getName('camelCase') ?> = null;
 
-        $noInSet = array_search('<?= $this->model->getPrimaryKeyField()->getName('camelCase') ?>', $this->setFields);
+        $noInSet = array_search('<?= $this->model->getPrimaryKeyField()->getName() ?>', $this->setFields);
 
         if (is_int($noInSet) === true) {
             unset($this->setFields[$noInSet]);
