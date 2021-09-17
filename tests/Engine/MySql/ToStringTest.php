@@ -224,7 +224,6 @@ final class ToStringTest extends TestCase
     public function testIfConvertingFakeLogicsToStringThrows() : void
     {
 
-
         // Prepare.
         $this->expectException(LogicsToStringWrongComponentsException::class);
 

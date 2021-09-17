@@ -135,7 +135,6 @@ class ThingCore extends Instance
         return $this->pk;
     }
 
-
     /**
      * Setter for `pk` field value.
      *
@@ -204,7 +203,6 @@ class ThingCore extends Instance
 
         return $this->name;
     }
-
 
     /**
      * Setter for `name` field value.
@@ -279,7 +277,6 @@ class ThingCore extends Instance
 
         return $this->jsonData;
     }
-
 
     /**
      * Setter for `json_data` field value.

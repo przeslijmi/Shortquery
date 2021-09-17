@@ -324,7 +324,6 @@ abstract class Field extends FieldEchoingMethods
         return $this;
     }
 
-
     /**
      * Setter for `phpDocsTypeInput` and `phpDocsTypeOutput`.
      *
